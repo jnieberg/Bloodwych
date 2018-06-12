@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-String.prototype.replaceAt = function(index, character) {
+String.prototype.replaceAt = function (index, character) {
 	return this.substr(0, index) + character + this.substr(index + character.length);
 };
 //Sets a hex value at a certain index
@@ -55,8 +55,8 @@ function dec2hex(num) {
 }
 
 function convertBase(num) {
-	this.from = function(baseFrom) {
-		this.to = function(baseTo) {
+	this.from = function (baseFrom) {
+		this.to = function (baseTo) {
 			return parseInt(num, baseFrom).toString(baseTo);
 		};
 		return this;
@@ -261,7 +261,7 @@ function decimalToHex(d) {
 
 function PrintLog(myString, log) {
 	if (debug) {
-		if(typeof log === "undefined" || log) {
+		if (typeof log === "undefined" || log) {
 			console.log(getTimeStamp() + " Debug: " + myString);
 		} else {
 			console.log(myString);
@@ -322,7 +322,7 @@ function flipImageVert(image) {
 	flipcontext.save();
 	return can;
 };
-String.prototype.contains = function(it) {
+String.prototype.contains = function (it) {
 	return this.indexOf(it) !== -1;
 };
 
@@ -377,7 +377,7 @@ function dropClasses(o) {
 function hexToRgb(hex) {
 	// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
 	var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+	hex = hex.replace(shorthandRegex, function (m, r, g, b) {
 		return r + r + g + g + b + b;
 	});
 	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -390,7 +390,7 @@ function hexToRgb(hex) {
 
 function getObjectByKey(obj, key, val) {
 	var ret = [];
-	for(var i in obj) {
+	for (var i in obj) {
 		if (obj.hasOwnProperty(i)) {
 			if (i == key && (typeof val === "undefined" || obj[key] == val)) {
 				ret.push(obj[i]);
@@ -404,7 +404,7 @@ function getObjectByKey(obj, key, val) {
 
 function getObjectRootByKey(obj, key, val) {
 	var ret = [];
-	for(var i in obj) {
+	for (var i in obj) {
 		if (obj.hasOwnProperty(i)) {
 			if (i == key && (typeof val === "undefined" || obj[key] == val)) {
 				ret.push(obj);
@@ -417,11 +417,11 @@ function getObjectRootByKey(obj, key, val) {
 }
 
 function getObjectByKeys(obj1, key1, key2, key3) {
-	if(typeof obj1 !== "undefined") {
+	if (typeof obj1 !== "undefined") {
 		var obj2 = getObjectByKey(obj1, key1)[0];
-		if(typeof obj2 !== "undefined" && typeof key2 !== "undefined") {
+		if (typeof obj2 !== "undefined" && typeof key2 !== "undefined") {
 			var obj3 = getObjectByKey(obj2, key2)[0];
-			if(typeof obj3 !== "undefined" && typeof key3 !== "undefined") {
+			if (typeof obj3 !== "undefined" && typeof key3 !== "undefined") {
 				return getObjectByKey(obj3, key3)[0];
 			}
 			return obj3;
@@ -431,8 +431,8 @@ function getObjectByKeys(obj1, key1, key2, key3) {
 	return undefined;
 }
 
-String.prototype.getVar = function() {
-	if(typeof this !== "undefined") {
+String.prototype.getVar = function () {
+	if (typeof this !== "undefined") {
 		eval('var t = ' + this);
 		return t;
 	}
@@ -440,10 +440,10 @@ String.prototype.getVar = function() {
 }
 
 function getVarArray(arr) {
-	if(typeof arr !== "undefined") {
-		return arr.map(function(x) {
-	        return x.getVar();
-	    });
+	if (typeof arr !== "undefined") {
+		return arr.map(function (x) {
+			return x.getVar();
+		});
 	}
 	return undefined;
 }

@@ -162,7 +162,7 @@ Projectile.prototype.move = function() {
 		}
 		var pr = getProjectilesAt(this.floor, this.x, this.y);
 		if (pr.length > 1) {
-			for (var p = 0; p < pr.length; p++) {
+			for (let p = 0; p < pr.length; p++) {
 				pr[p].die();
 			}
 			return false;
@@ -474,7 +474,7 @@ Projectile.prototype.attack = function(target, prc) {
 	if (typeof this.spell === 'number' || this.spell.id === SPELL_MISSILE) {
 		single = true;
 	}
-	//for (var i = 3; i >= 0; i--) {
+	//for (let i = 3; i >= 0; i--) {
 		if (single) {
 			var combat = calculateAttack(this, target);
 		} else {
@@ -562,7 +562,7 @@ function newProjectile(type, palette, snd, s, power, f, x, y, d, m, act) {
 
 function getProjectilesAt(f, x, y) {
 	var pr = new Array();
-	for (var p = 0; p < projectile[towerThis].length; p++) {
+	for (let p = 0; p < projectile[towerThis].length; p++) {
 		if (projectile[towerThis][p].dead === 0 && projectile[towerThis][p].floor === f && projectile[towerThis][p].x === x && projectile[towerThis][p].y === y) {
 			pr.push(projectile[towerThis][p]);
 		}
@@ -585,7 +585,7 @@ function getProjectileDistanceByPos(pos) {
 }
 
 function getProjectileById(t, id) {
-	for (var p = 0; p < projectile[t].length; p++) {
+	for (let p = 0; p < projectile[t].length; p++) {
 		if(id === projectile[t][p].id){
 			return projectile[t][p];
 		}

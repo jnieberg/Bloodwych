@@ -1,4 +1,5 @@
-function Game() { };
+function Game() { }
+
 Game.prototype = {
 
 	init: function () {
@@ -34,17 +35,21 @@ Game.prototype = {
 	},
 
 	publish: function (e) {
-		this.subs && this.subs[e].forEach(function (sub) {
-			var args = [].slice.call(arguments, 1);
-			sub.callback.apply(sub.target, args);
-		});
+		if (this.subs) {
+			this.subs[e].forEach(function (sub) {
+				var args = [].slice.call(arguments, 1);
+				sub.callback.apply(sub.target, args);
+			});
+		}
 	}
-}
+};
 
 function timerAction() {
 
 	//try {
-
+	var tm;
+	var p;
+	var m;
 	cutpurseTrueview = (Math.floor(Math.random() * 10) === 0);
 	var tmf = 1.0;
 	if (player.length === 1 && player[0].sleeping) {
@@ -53,8 +58,8 @@ function timerAction() {
 
 	//monster timer actions
 	mon = getMonstersInTower(towerThis, true);
-	for (var m in mon) {
-		var tm = mon[m].getCurseTimers();
+	for (m in mon) {
+		tm = mon[m].getCurseTimers();
 
 		var br = Math.floor(Math.random() * 20);
 		mon[m].blur = 0;
@@ -72,10 +77,11 @@ function timerAction() {
 	}
 
 	//player timer actions
-	for (var p in player) {
+	for (p in player) {
+		var c;
 		p = parseInt(p);
 		var pl = player[p];
-		var tm = 100;
+		tm = 100;
 		var chs = pl.getOrderedChampions();
 		if (pl.sleeping) {
 			tm = 50;
@@ -86,7 +92,7 @@ function timerAction() {
 			if (pl.sleeping) {
 				pl.checkChampionUp();
 			}
-			for (var c in chs) {
+			for (c in chs) {
 				if (chs[c] !== null) {
 					chs[c].restoreStats();
 				}
@@ -94,7 +100,7 @@ function timerAction() {
 		}
 		if (timerMaster - pl.timerActiveSpell >= 10 * tmf) {
 			pl.timerActiveSpell = timerMaster;
-			for (var c in chs) {
+			for (c in chs) {
 				if (chs[c] !== null) {
 					chs[c].checkSpell();
 				}
@@ -105,8 +111,8 @@ function timerAction() {
 		}
 
 		var att = 0;
-		for (var c in chs) {
-			var tm = chs[c].getMonster().getCurseTimers();
+		for (c in chs) {
+			tm = chs[c].getMonster().getCurseTimers();
 			if (chs[c] !== null) {
 				chs[c].recruitment.attackTimer++;
 				if (tm > 0 && chs[c].recruitment.attackTimer % (chs[c].getAttackSpeed(20) * tmf) === 0) {
@@ -129,7 +135,7 @@ function timerAction() {
 	}
 
 	//projectile timer actions
-	for (var p = 0; p < projectile[towerThis].length; p++) {
+	for (p = 0; p < projectile[towerThis].length; p++) {
 		if (timerMaster - projectile[towerThis][p].timer >= 2 * tmf) {
 			projectile[towerThis][p].timer = timerMaster;
 			projectile[towerThis][p].move();
@@ -145,20 +151,20 @@ function timerAction() {
 	//10 second timer actions
 	if (timerMaster - timerChampionStats >= 100 * tmf) {
 		timerChampionStats = timerMaster;
-		for (var ch in champion) {
+		for (let ch in champion) {
 			if (champion[ch].recruitment.playerId === -1) {
 				champion[ch].restoreStats();
 			} else {
 				champion[ch].addHunger();
 			}
 		}
-		for (var m = 0; m < monster[towerThis].length; m++) {
+		for (m = 0; m < monster[towerThis].length; m++) {
 			if (monster[towerThis][m].dead) {
 				monster[towerThis].splice(m, 1);
 				m--;
 			}
 		}
-		for (var p = 0; p < projectile[towerThis].length; p++) {
+		for (p = 0; p < projectile[towerThis].length; p++) {
 			if (projectile[towerThis][p].dead >= 2) {
 				projectile[towerThis].splice(p, 1);
 				p--;

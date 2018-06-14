@@ -30,8 +30,8 @@ function loadDefaultGfx(event) {
 }
 
 function loadCustomGfx(event) {
-	for (var i in event.manifest) {
-		for (var x in defaultManifest.manifest) {
+	for (let i in event.manifest) {
+		for (let x in defaultManifest.manifest) {
 			if (defaultManifest.manifest[x].id === event.manifest[i].id) {
 				defaultManifest.manifest[x] = event.manifest[i];
 			}
@@ -146,7 +146,7 @@ function initData() {
 	initMonsters();
 	initSpells();
 	initItemRefs();
-	for (var i = 0; i < tower.length; i++) {
+	for (let i = 0; i < tower.length; i++) {
 		initItems(tower[i]);
 	}
 	initChampions();
@@ -154,7 +154,7 @@ function initData() {
 
 function initJSONData() {
 	var i = 0;
-	for (var c in colourData) {
+	for (let c in colourData) {
 		colourData[i] = colourData[c];
 		i++;
 	}
@@ -180,7 +180,7 @@ function parseJSONValues(obj, o2, from) {
 	if (typeof from === "undefined") {
 		var from = '';
 	}
-	for (var c in obj) {
+	for (let c in obj) {
 		if (typeof obj[c] === 'string') {
 			if (from === '') {
 				var val = o2[obj[c]];
@@ -219,7 +219,7 @@ function startGame(singlePlayer, quickStart, p1_cid, p2_cid) {
 	//        }
 	gameStarted = true;
 	progressScreen("PROCESSING CHAMPIONS");
-	for (var pl in championSelect) {
+	for (let pl in championSelect) {
 		if (championSelect[pl].champID > -1) {
 			champion[championSelect[pl].champID].selectedSpell = null;
 			championSelect[pl].champID = -1;
@@ -266,9 +266,9 @@ function checkMergeJSON(objStorage, objNewData) {
 	if (typeof objStorage !== 'undefined') {
 		if (objStorage.length > 0) {
 			var newItems = new Array();
-			for (var i in objNewData) {
+			for (let i in objNewData) {
 				var matched = false;
-				for (var x in objStorage) {
+				for (let x in objStorage) {
 					if (objStorage[x].id === objNewData[i].id) {
 						objStorage[x] = objNewData[i];
 						matched = true;

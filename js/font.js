@@ -1,9 +1,9 @@
 function grabFont() {
 	//Grab the font characters from an image and store it in an array.
-	var fontImage = gfx['misc']['font'];
+	var fontImage = gfx.misc.font;
 	var myFont = [];
 
-	for(var x = 0; x < 95; x++) {
+	for (var x = 0; x < 95; x++) {
 		myFont.push(grabImageAt(fontImage, x * 8, 0, 8, 7, false, 1));
 	}
 	return myFont;
@@ -14,11 +14,11 @@ function fadeFont(p, fontString, speed, delay, locationX, locationY, paletteTo, 
 	if (typeof myContent === 'undefined') {
 		myContent = ctx;
 	}
-	(function(fontString, locationX, locationY, paletteTo, alignment) {
+	(function (fontString, locationX, locationY, paletteTo, alignment) {
 		var alpha = 0.0;
 		clearInterval(p.messageTimeout);
 		clearTimeout(p.messageTimeout);
-		p.messageTimeout = setInterval(function() {
+		p.messageTimeout = setInterval(function () {
 			myContent.clearRect(locationX * scale, (locationY - 9) * scale, 320 * scale, 8 * scale);
 			myContent.save();
 			myContent.globalAlpha = alpha;
@@ -26,14 +26,14 @@ function fadeFont(p, fontString, speed, delay, locationX, locationY, paletteTo, 
 			myContent.restore();
 			alpha = alpha + 0.1;
 			if (alpha > 1) {
-				(function(fontString, locationX, locationY, paletteTo, alignment) {
+				(function (fontString, locationX, locationY, paletteTo, alignment) {
 					clearInterval(p.messageTimeout);
 					p.messageTimeout = 0;
 					if (delay > 0) {
 						var alpha = 1.0;
-						p.messageTimeout = setTimeout(function() {
-							(function(fontString, locationX, locationY, paletteTo, alignment, alpha) {
-								p.messageTimeout = setInterval(function() {
+						p.messageTimeout = setTimeout(function () {
+							(function (fontString, locationX, locationY, paletteTo, alignment, alpha) {
+								p.messageTimeout = setInterval(function () {
 									myContent.clearRect(locationX * scale, (locationY - 9) * scale, 320 * scale, 8 * scale);
 									myContent.save();
 									myContent.globalAlpha = alpha;
@@ -57,24 +57,24 @@ function fadeFont(p, fontString, speed, delay, locationX, locationY, paletteTo, 
 
 function writeFontImage(fontString, locationX, locationY, paletteTo, alignment, myContent) {
 	try {
-		if (typeof(font[0]) !== 'undefined') {
-			if (typeof alignment === "undefined") {
+		if (typeof (font[0]) !== 'undefined') {
+			if (typeof alignment === 'undefined') {
 				alignment = FONT_ALIGNMENT_LEFT;
 			}
 			if (typeof myContent === 'undefined') {
 				myContent = ctx;
 			}
 
-			fontString = ("" + fontString).toUpperCase();
+			fontString = ('' + fontString).toUpperCase();
 
 			var chars = fontString.split('');
 
 			var can = document.createElement('canvas');
 			can.width = chars.length * 8;
 			can.height = 7;
-			var fontContent = can.getContext("2d");
+			var fontContent = can.getContext('2d');
 
-			for (var x = 0; x < chars.length; x++) {
+			for (let x = 0; x < chars.length; x++) {
 				var chr = fontCharacterToIndex(chars[x]);
 				if (chr >= 0) {
 					fontContent.drawImage(font[chr], (x * 8), 0);
@@ -85,11 +85,11 @@ function writeFontImage(fontString, locationX, locationY, paletteTo, alignment, 
 			// pull the entire image into an array of pixel data
 			var imageData = fontContent.getImageData(0, 0, can.width, can.height);
 
-			for (var i = 0; i < imageData.data.length; i += 4) {
+			for (let i = 0; i < imageData.data.length; i += 4) {
 				// is this pixel the old rgb?
-				if (imageData.data[i] === paletteData['DEFAULT_ITEM'][0][0] &&
-					imageData.data[i + 1] === paletteData['DEFAULT_ITEM'][0][1] &&
-					imageData.data[i + 2] === paletteData['DEFAULT_ITEM'][0][2]
+				if (imageData.data[i] === paletteData.DEFAULT_ITEM[0][0] &&
+					imageData.data[i + 1] === paletteData.DEFAULT_ITEM[0][1] &&
+					imageData.data[i + 2] === paletteData.DEFAULT_ITEM[0][2]
 				) {
 					// change to your new rgb
 					imageData.data[i] = paletteTo[0];
@@ -114,16 +114,16 @@ function writeFontImage(fontString, locationX, locationY, paletteTo, alignment, 
 			can = null;
 		}
 	} catch (e) {
-		"Write font error: " + e.toString()
-	};
+		PrintLog('Write font error: ' + e.toString());
+	}
 }
 
 function writeSpellInfoFont(p, t, c) {
-	if (typeof t === "undefined") {
-		var t = "";
+	if (typeof t === 'undefined') {
+		t = '';
 	}
-	if (typeof c === "undefined") {
-		var c = colourData['GREEN'];
+	if (typeof c === 'undefined') {
+		c = colourData.GREEN;
 	}
 	var ch = champion[p.champion[p.championLeader]];
 	ctx.clearRect((p.ScreenX + 96) * scale, (p.ScreenY + 78) * scale, 128 * scale, 8 * scale);
@@ -153,7 +153,7 @@ function fontCharacterToIndex(c) {
 		case 44:
 			return 48; // ,
 		case 34:
-			return 38; // "
+			return 38; // '
 		case 58:
 			return 36; // :
 		case 35:
@@ -219,7 +219,7 @@ function fontCharacterToIndex(c) {
 	if (letterCode >= 65 && letterCode <= 90) {
 		return letterCode - 65;
 	} else {
-		return -1
+		return -1;
 	}
 
 
@@ -227,24 +227,24 @@ function fontCharacterToIndex(c) {
 
 function writeSpellFont(fontString, locationX, locationY, paletteTo, alignment, myContent) {
 	try {
-		if (typeof(font[0]) !== 'undefined') {
-			if (typeof alignment === "undefined") {
+		if (typeof (font[0]) !== 'undefined') {
+			if (typeof alignment === 'undefined') {
 				alignment = FONT_ALIGNMENT_LEFT;
 			}
 			if (typeof myContent === 'undefined') {
 				myContent = ctx;
 			}
 
-			fontString = ("" + fontString).toUpperCase();
+			fontString = ('' + fontString).toUpperCase();
 
 			var chars = fontString.split('');
 
 			var can = document.createElement('canvas');
 			can.width = chars.length * 8;
 			can.height = 8;
-			var fontContent = can.getContext("2d");
+			var fontContent = can.getContext('2d');
 
-			for (var x = 0; x < chars.length; x++) {
+			for (let x = 0; x < chars.length; x++) {
 				var letterCode = chars[x].charCodeAt(0);
 				if (letterCode >= 65 && letterCode <= 90) {
 					letterCode = letterCode - 7;
@@ -259,11 +259,11 @@ function writeSpellFont(fontString, locationX, locationY, paletteTo, alignment, 
 			// pull the entire image into an array of pixel data
 			var imageData = fontContent.getImageData(0, 0, can.width, can.height);
 
-			for (var i = 0; i < imageData.data.length; i += 4) {
+			for (let i = 0; i < imageData.data.length; i += 4) {
 				// is this pixel the old rgb?
-				if (imageData.data[i] === paletteData['DEFAULT_ITEM'][0][0] &&
-					imageData.data[i + 1] === paletteData['DEFAULT_ITEM'][0][1] &&
-					imageData.data[i + 2] === paletteData['DEFAULT_ITEM'][0][2]
+				if (imageData.data[i] === paletteData.DEFAULT_ITEM[0][0] &&
+					imageData.data[i + 1] === paletteData.DEFAULT_ITEM[0][1] &&
+					imageData.data[i + 2] === paletteData.DEFAULT_ITEM[0][2]
 				) {
 					// change to your new rgb
 					imageData.data[i] = paletteTo[0];
@@ -288,6 +288,6 @@ function writeSpellFont(fontString, locationX, locationY, paletteTo, alignment, 
 			can = null;
 		}
 	} catch (e) {
-		"Write font error: " + e.toString();
-	};
+		PrintLog('Write font error: ' + e.toString());
+	}
 }

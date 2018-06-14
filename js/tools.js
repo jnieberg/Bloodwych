@@ -353,7 +353,7 @@ function isCyclic(obj) {
 				return true;
 			}
 			seenObjects.push(obj);
-			for (var key in obj) {
+			for (let key in obj) {
 				if (obj.hasOwnProperty(key) && detect(obj[key])) {
 					PrintLog(obj, 'cycle at ' + key);
 					return true;
@@ -366,7 +366,7 @@ function isCyclic(obj) {
 }
 
 function dropClasses(o) {
-	for (var p in o) {
+	for (let p in o) {
 		if (o[p] instanceof jQuery || o[p] instanceof HTMLElement) {
 			o[p] = null;
 		} else if (typeof o[p] === 'object') dropClasses(o[p]);
@@ -390,7 +390,7 @@ function hexToRgb(hex) {
 
 function getObjectByKey(obj, key, val) {
 	var ret = [];
-	for (var i in obj) {
+	for (let i in obj) {
 		if (obj.hasOwnProperty(i)) {
 			if (i == key && (typeof val === "undefined" || obj[key] == val)) {
 				ret.push(obj[i]);
@@ -404,7 +404,7 @@ function getObjectByKey(obj, key, val) {
 
 function getObjectRootByKey(obj, key, val) {
 	var ret = [];
-	for (var i in obj) {
+	for (let i in obj) {
 		if (obj.hasOwnProperty(i)) {
 			if (i == key && (typeof val === "undefined" || obj[key] == val)) {
 				ret.push(obj);

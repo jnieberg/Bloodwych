@@ -18,7 +18,7 @@ http.createServer(function (request, response) {
 		fileStream.on('open', function () {
 			response.writeHead(200);
 		});
-		fileStream.on('error', function (e) {
+		fileStream.on('error', function () {
 			response.writeHead(404); // assume the file doesn't exist
 			response.end();
 		});
@@ -29,4 +29,4 @@ http.createServer(function (request, response) {
 	}
 }).listen(port);
 
-console.log("listening on port " + port);
+console.log('listening on port ' + port);

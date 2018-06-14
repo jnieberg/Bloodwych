@@ -9,7 +9,7 @@ function getCharacterSprite(length, graphicsFolder, graphic, spriteWidth, sprite
 
 		var graphicArray = [];
 
-		for (var x = 0; x < length; x++) {
+		for (let x = 0; x < length; x++) {
 
 			var MID = [],
 				FAR = [],
@@ -321,23 +321,24 @@ function getCharacterSprite(length, graphicsFolder, graphic, spriteWidth, sprite
 }
 
 function grabCharacter(form, part, dir, dist) {
+	var d;
 	if (dist >= 4 && part === IMAGE_CHA_MINI) {
-		if (typeof monsterPalette[form] !== "undefined") {
+		if (typeof monsterPalette[form] !== 'undefined') {
 			var miniId = monsterPalette[form].mini;
 			var tmpPalette = monsterPalette[form].miniPalette;
-			var d = [0, 2, 3, 1];
-			var mini = recolourSprite(characterGfx[IMAGE_CHA_MINI][miniId][dist - 4][d[dir]], paletteData['DEFAULT_MON'], tmpPalette);
+			d = [0, 2, 3, 1];
+			var mini = recolourSprite(characterGfx[IMAGE_CHA_MINI][miniId][dist - 4][d[dir]], paletteData.DEFAULT_MON, tmpPalette);
 			return mini;
 		}
 	} else if (dist < 4 && part !== IMAGE_CHA_MINI) {
-		if (typeof monsterPalette[form] !== "undefined") {
+		if (typeof monsterPalette[form] !== 'undefined') {
 			/*var LEG;
 			var ARM;
 			var TORSO;
 			var HEAD;*/
 			var paletteType;
 			var palette;
-			var d = [0, 2, 3, 1];
+			d = [0, 2, 3, 1];
 			dir2 = dir % 2;
 			switch (part) {
 				case IMAGE_CHA_LEG:
@@ -366,7 +367,7 @@ function grabCharacter(form, part, dir, dist) {
 			var torso = characterGfx[IMAGE_CHA_TORSO][monsterPalette[form].torso][dist][d[dir2]];
 			var arm = characterGfx[IMAGE_CHA_ARM][monsterPalette[form].arm][dist][d[dir]];
 			var leg = characterGfx[IMAGE_CHA_LEG][monsterPalette[form].leg][dist][d[dir2]];
-			var partSprite = recolourSprite(characterGfx[part][paletteType][dist][d[dir6]], paletteData['DEFAULT_MON'], palette);
+			var partSprite = recolourSprite(characterGfx[part][paletteType][dist][d[dir6]], paletteData.DEFAULT_MON, palette);
 
 			var height = Math.floor(head.height * 0.65) + torso.height + leg.height,
 				width = 65; //arm.width + torso.width + arm.width;
@@ -374,65 +375,66 @@ function grabCharacter(form, part, dir, dist) {
 			var can = document.createElement('canvas');
 			can.width = width;
 			can.height = height;
-			var charContext = can.getContext("2d");
+			var charContext = can.getContext('2d');
+			var coord;
 
 			switch (part) {
 				case IMAGE_CHA_LEG:
-					var coord = {
+					coord = {
 						x: Math.floor((width - leg.width) * 0.5),
 						y: height - leg.height
 					};
 					break;
 				case IMAGE_CHA_TORSO:
-					var coord = {
+					coord = {
 						x: Math.floor((width - torso.width) * 0.5),
 						y: height - leg.height - torso.height
 					};
 					break;
 				case IMAGE_CHA_HEAD:
-					var coord = {
+					coord = {
 						x: Math.floor((width - head.width) * 0.5),
 						y: height - leg.height - torso.height - Math.floor(head.height * 0.65)
 					};
 					break;
 				case IMAGE_CHA_ARM:
 					if (dir === 0) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) - arm.width + 5,
 							y: height - leg.height - torso.height + 1
 						};
 					} else if (dir === 2) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - 5,
 							y: height - leg.height - torso.height + 1
-						}
+						};
 					} else if (dir === 1) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) - arm.width + 9,
 							y: height - leg.height - torso.height + 1
 						};
 					} else if (dir === 3) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - 9,
 							y: height - leg.height - torso.height + 1
 						};
 					} else if (dir === 4) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) - arm.width + 5,
 							y: height - leg.height - torso.height * 1.5
 						};
 					} else if (dir === 5) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - 5,
 							y: height - leg.height - torso.height * 1.5
 						};
 					} else if (dir === 6) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) + 1,
 							y: height - leg.height - torso.height * 1.5
 						};
 					} else if (dir === 7) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - arm.width - 1,
 							y: height - leg.height - torso.height * 1.5
 						};
@@ -451,17 +453,20 @@ function grabCharacter(form, part, dir, dist) {
 
 function grabCharacterArmour(id, gen, part, dir, dist) {
 	if (part !== IMAGE_CHA_HEAD) {
+		var d;
+		var amr;
+		var type;
 		if (dist >= 4 && part === IMAGE_CHA_MINI) {
-			var amr = getItemArmourType(id);
-			var type = armourData[gen + amr * 3][3];
-			var d = [0, 2, 3, 1];
+			amr = getItemArmourType(id);
+			type = armourData[gen + amr * 3][3];
+			d = [0, 2, 3, 1];
 			var mini = characterGfx[IMAGE_CHA_MINI][type][dist - 4][d[dir]];
 			return mini;
-			/*if (typeof monsterPalette[form] !== "undefined") {
+			/*if (typeof monsterPalette[form] !== 'undefined') {
 					var miniId = monsterPalette[form].mini;
 					var tmpPalette = monsterPalette[form].miniPalette;
 					var d = [0, 2, 3, 1];
-					var mini = recolourSprite(characterGfx[IMAGE_CHA_MINI][miniId][dist - 4][d[dir]], paletteData['DEFAULT_MON'], tmpPalette);
+					var mini = recolourSprite(characterGfx[IMAGE_CHA_MINI][miniId][dist - 4][d[dir]], paletteData.DEFAULT_MON, tmpPalette);
 					return mini;
 			}*/
 		} else if (dist < 4 && part !== IMAGE_CHA_MINI) {
@@ -471,7 +476,7 @@ function grabCharacterArmour(id, gen, part, dir, dist) {
 					var HEAD;*/
 			var paletteType;
 			var palette;
-			var d = [0, 2, 3, 1];
+			d = [0, 2, 3, 1];
 			dir2 = dir % 2;
 			switch (part) {
 				case IMAGE_CHA_LEG:
@@ -485,8 +490,8 @@ function grabCharacterArmour(id, gen, part, dir, dist) {
 					dir6 = dir;
 					break;
 			}
-			var amr = getItemArmourType(id);
-			var type = [armourData[gen + amr * 3][0], armourData[gen + amr * 3][1], null, armourData[gen + amr * 3][2]];
+			amr = getItemArmourType(id);
+			type = [armourData[gen + amr * 3][0], armourData[gen + amr * 3][1], null, armourData[gen + amr * 3][2]];
 			var leg = characterGfx[IMAGE_CHA_LEG][type[0]][dist][d[dir2]];
 			var torso = characterGfx[IMAGE_CHA_TORSO][type[1]][dist][d[dir2]];
 			var arm = characterGfx[IMAGE_CHA_ARM][type[3]][dist][d[dir]];
@@ -498,59 +503,60 @@ function grabCharacterArmour(id, gen, part, dir, dist) {
 			var can = document.createElement('canvas');
 			can.width = width;
 			can.height = height;
-			var charContext = can.getContext("2d");
+			var charContext = can.getContext('2d');
+			var coord;
 
 			switch (part) {
 				case IMAGE_CHA_LEG:
-					var coord = {
+					coord = {
 						x: Math.floor((width - leg.width) * 0.5),
 						y: height - leg.height
 					};
 					break;
 				case IMAGE_CHA_TORSO:
-					var coord = {
+					coord = {
 						x: Math.floor((width - torso.width) * 0.5),
 						y: height - leg.height - torso.height
 					};
 					break;
 				case IMAGE_CHA_ARM:
 					if (dir === 0) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) - arm.width + 5,
 							y: height - leg.height - torso.height + 1
 						};
 					} else if (dir === 2) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - 5,
 							y: height - leg.height - torso.height + 1
-						}
+						};
 					} else if (dir === 1) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) - arm.width + 9,
 							y: height - leg.height - torso.height + 1
 						};
 					} else if (dir === 3) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - 9,
 							y: height - leg.height - torso.height + 1
 						};
 					} else if (dir === 4) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) - arm.width + 5,
 							y: height - leg.height - torso.height * 1.5
 						};
 					} else if (dir === 5) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - 5,
 							y: height - leg.height - torso.height * 1.5
 						};
 					} else if (dir === 6) {
-						var coord = {
+						coord = {
 							x: Math.floor((width - torso.width) * 0.5) + 1,
 							y: height - leg.height - torso.height * 1.5
 						};
 					} else if (dir === 7) {
-						var coord = {
+						coord = {
 							x: Math.floor((width + torso.width) * 0.5) - arm.width - 1,
 							y: height - leg.height - torso.height * 1.5
 						};
@@ -572,7 +578,7 @@ function clipCharacter(img, percentClipped) {
 	var can = document.createElement('canvas');
 	can.width = img.width;
 	can.height = img.height - percentClipped;
-	var charContext = can.getContext("2d");
+	var charContext = can.getContext('2d');
 
 	charContext.drawImage(img, 0, 0);
 	charContext.save();
@@ -587,23 +593,23 @@ function drawCharacter(m, dir, dist, player, offset, returnImg, doBlur, doClip, 
 		charContext;
 
 	if (returnImg) {
-		var can = document.createElement('canvas');
+		can = document.createElement('canvas');
 		can.width = canvas.width;
 		can.height = canvas.height;
-		charContext = can.getContext("2d");
+		charContext = can.getContext('2d');
 	}
 
-	if (typeof returnImg === "undefined") {
+	if (typeof returnImg === 'undefined') {
 		returnImg = false;
 	}
 
-	if (typeof doClip === "undefined") {
+	if (typeof doClip === 'undefined') {
 		doClip = false;
 	}
 
 	if (dist > -1) {
-		for (var part = 0; part < 5; part++) {
-			if (typeof m.ref.gfx[part] !== "undefined" && typeof m.ref.gfx[part][dist] !== "undefined" && typeof m.ref.gfx[part][dist][dir] !== "undefined") {
+		for (let part = 0; part < 5; part++) {
+			if (typeof m.ref.gfx[part] !== 'undefined' && typeof m.ref.gfx[part][dist] !== 'undefined' && typeof m.ref.gfx[part][dist][dir] !== 'undefined') {
 				if (typeof doBlur === 'undefined') {
 					doBlur = true;
 				}
@@ -694,7 +700,7 @@ function drawCharacter(m, dir, dist, player, offset, returnImg, doBlur, doClip, 
 					var amr = ch.pocket[POCKET_ARMOUR];
 					var gen = ch.getGender();
 					var id = amr.id - 'ITEM_LEATHER_ARMOUR';
-					var palette = new Array();
+					var palette = [];
 					if (part !== IMAGE_CHA_HEAD && amr.id >= 'ITEM_LEATHER_ARMOUR' && amr.id <= 'ITEM_CRYSTAL_PLATE' && typeof armourRef[id][gen] !== 'undefined') {
 						switch (part) {
 							case IMAGE_CHA_LEG:
@@ -718,38 +724,52 @@ function drawCharacter(m, dir, dist, player, offset, returnImg, doBlur, doClip, 
 						if (prt >= IMAGE_CHA_ARM) { //exlude head part
 							prt--;
 						}
+						var car;
 						if (typeof CHA_ARMOUR[id] === 'undefined' || typeof CHA_ARMOUR[id][gen] === 'undefined' || typeof CHA_ARMOUR[id][gen][prt] === 'undefined') {
-							var car = CHA_ARMOUR[0][0][0];
+							car = CHA_ARMOUR[0][0][0];
 						} else {
-							var car = CHA_ARMOUR[id][gen][prt];
+							car = CHA_ARMOUR[id][gen][prt];
 						}
 						if (part === IMAGE_CHA_TORSO) {
 							gfx1 = armourRef[id][gen].gfx[IMAGE_CHA_TORSO][dist][dir1];
-							if (dir2 > -1) gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_TORSO][dist][dir2];
+							if (dir2 > -1) {
+								gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_TORSO][dist][dir2];
+							}
 						} else if (part === IMAGE_CHA_ARM) {
 							gfx1 = armourRef[id][gen].gfx[IMAGE_CHA_ARM][dist][dir1];
-							if (dir2 > -1) gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_ARM][dist][dir2];
+							if (dir2 > -1) {
+								gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_ARM][dist][dir2];
+							}
 						} else if (part === IMAGE_CHA_LEG) {
 							gfx1 = armourRef[id][gen].gfx[IMAGE_CHA_LEG][dist][dir1];
-							if (dir2 > -1) gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_LEG][dist][dir2];
+							if (dir2 > -1) {
+								gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_LEG][dist][dir2];
+							}
 						} else if (part === IMAGE_CHA_LEG) {
 							gfx1 = armourRef[id][gen].gfx[IMAGE_CHA_LEG][dist][dir1];
-							if (dir2 > -1) gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_LEG][dist][dir2];
+							if (dir2 > -1) {
+								gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_LEG][dist][dir2];
+							}
 						} else if (part === IMAGE_CHA_MINI) {
 							gfx1 = armourRef[id][gen].gfx[IMAGE_CHA_MINI][dist][dir1];
-							if (dir2 > -1) gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_MINI][dist][dir2];
+							if (dir2 > -1) {
+								gfx2 = armourRef[id][gen].gfx[IMAGE_CHA_MINI][dist][dir2];
+							}
 						}
-						for (var pl = 0; pl < 4; pl++) {
+						for (let pl = 0; pl < 4; pl++) {
 							if (car[pl] !== null) {
 								palette[pl] = car[pl];
 							}
 						}
-						gfx1 = recolourSprite(gfx1, paletteData['DEFAULT_MON'], palette);
-						if (dir2 > -1) gfx2 = recolourSprite(gfx2, paletteData['DEFAULT_MON'], palette);
+						gfx1 = recolourSprite(gfx1, paletteData.DEFAULT_MON, palette);
+						if (dir2 > -1) {
+							gfx2 = recolourSprite(gfx2, paletteData.DEFAULT_MON, palette);
+						}
 					}
 				}
 				var offx = 64 - Math.floor(gfx1.width * 0.5) + offset.x;
 				var offy = 76 - Math.floor(gfx1.height) - offset.y;
+				var t;
 
 				if (dist >= 4 || part !== IMAGE_CHA_MINI) {
 					var blur = 0;
@@ -758,7 +778,7 @@ function drawCharacter(m, dir, dist, player, offset, returnImg, doBlur, doClip, 
 					}
 					if (!returnImg) {
 						if ((doClip && part === IMAGE_CHA_LEG) || (doClip && part === IMAGE_CHA_MINI)) {
-							var t = clipCharacter(gfx1, pixToClip);
+							t = clipCharacter(gfx1, pixToClip);
 							myDIx(player.Portal, t, { sx: (offx + blur), sy: offy, w: t.width, h: t.height, x: 0, y: 0 });
 						} else {
 							myDIx(player.Portal, gfx1, { sx: (offx + blur), sy: offy, w: gfx1.width, h: gfx1.height, x: 0, y: 0 });
@@ -771,7 +791,7 @@ function drawCharacter(m, dir, dist, player, offset, returnImg, doBlur, doClip, 
 						offy = 76 - Math.floor(gfx2.height) - offset.y;
 						if (!returnImg) {
 							if (doClip && part === IMAGE_CHA_LEG) {
-								var t = clipCharacter(gfx2, pixToClip);
+								t = clipCharacter(gfx2, pixToClip);
 								myDIx(player.Portal, t, { sx: (offx + blur), sy: offy, w: t.width, h: t.height, x: 0, y: 0 });
 							} else {
 								myDIx(player.Portal, gfx2, { sx: (offx + blur), sy: offy, w: gfx2.width, h: gfx2.height, x: 0, y: 0 });
@@ -792,16 +812,17 @@ function drawCharacter(m, dir, dist, player, offset, returnImg, doBlur, doClip, 
 
 function drawMonster(m, dir, dist, player, offset, returnImg) {
 	//m.doGesture(CHA_GESTURE_SPELLCASTING);
-	var charContext
-	if (typeof returnImg === "undefined") {
+	var charContext;
+	var can;
+	if (typeof returnImg === 'undefined') {
 		returnImg = false;
 	}
 
 	if (returnImg) {
-		var can = document.createElement('canvas');
+		can = document.createElement('canvas');
 		can.width = player.Portal.canvas.width;
 		can.height = player.Portal.canvas.height;
-		charContext = can.getContext("2d");
+		charContext = can.getContext('2d');
 		charContext.imageSmoothingEnabled = false;
 		charContext.webkitImageSmoothingEnabled = false;
 		charContext.mozImageSmoothingEnabled = false;
@@ -810,9 +831,9 @@ function drawMonster(m, dir, dist, player, offset, returnImg) {
 	}
 
 	if (dist > -1) {
-		for (var part1 = 0; part1 < 3; part1++) {
+		for (let part1 = 0; part1 < 3; part1++) {
+			var part = part1;
 			try {
-				var part = part1;
 				var armoffx = 0;
 				var armoffy = 0;
 				if (dir === 2) { // reverse drawing for back view
@@ -822,7 +843,7 @@ function drawMonster(m, dir, dist, player, offset, returnImg) {
 						armoffy = Math.ceil(7.0 / (dist + 1.0));
 					}
 				}
-				//if (typeof m.ref.gfx[part] !== "undefined" && typeof m.ref.gfx[part][dist] !== "undefined" && typeof m.ref.gfx[part][dist][dir] !== "undefined") {
+				//if (typeof m.ref.gfx[part] !== 'undefined' && typeof m.ref.gfx[part][dist] !== 'undefined' && typeof m.ref.gfx[part][dist][dir] !== 'undefined') {
 				var dir1 = dir;
 				var dir2 = -1;
 
@@ -896,7 +917,7 @@ function drawMonster(m, dir, dist, player, offset, returnImg) {
 				if (typeof gfx1 !== 'undefined') {
 
 					if (dir2 > -1) {
-						var gfx2 = getSprite(part, dist, dir2, null, m, player);
+						gfx2 = getSprite(part, dist, dir2, null, m, player);
 					}
 
 					var offx = 64 - Math.floor(gfx1.width * 0.5) + offset.x;
@@ -910,7 +931,7 @@ function drawMonster(m, dir, dist, player, offset, returnImg) {
 						if (returnImg) {
 							charContext.drawImage(gfx1, (offx - armoffx + blur) * scale, (offy - armoffy) * scale, gfx1.width * scale, gfx1.height * scale);
 						} else {
-							myDIx(player.Portal, gfx1, { sx: (offx - armoffx + blur), sy: (offy - armoffy), w: gfx1.width, h: gfx1.height, x: 0, y: 0 })
+							myDIx(player.Portal, gfx1, { sx: (offx - armoffx + blur), sy: (offy - armoffy), w: gfx1.width, h: gfx1.height, x: 0, y: 0 });
 						}
 						if (dir2 > -1) {
 							offx = 64 - Math.floor(gfx2.width * 0.5) + offset.x;
@@ -918,14 +939,14 @@ function drawMonster(m, dir, dist, player, offset, returnImg) {
 							if (returnImg) {
 								charContext.drawImage(gfx2, (offx + armoffx + blur) * scale, (offy - armoffy) * scale, gfx2.width * scale, gfx2.height * scale);
 							} else {
-								myDIx(player.Portal, gfx2, { sx: (offx - armoffx + blur), sy: (offy - armoffy), w: gfx2.width, h: gfx2.height, x: 0, y: 0 })
+								myDIx(player.Portal, gfx2, { sx: (offx - armoffx + blur), sy: (offy - armoffy), w: gfx2.width, h: gfx2.height, x: 0, y: 0 });
 							}
 						}
 					}
 				}
 				//}
 			} catch (e) {
-				PrintLog("JORG - DRAW MONSTER ISSUE! - PT" + part + ' DS' + dist + ' DR' + dir + ' - ' + e.toString());
+				PrintLog('JORG - DRAW MONSTER ISSUE! - PT' + part + ' DS' + dist + ' DR' + dir + ' - ' + e.toString());
 			}
 		}
 	}
@@ -946,59 +967,61 @@ function grabMonster(form, level) {
 		case MON_FORM_ILLUSION:
 		case MON_FORM_SUMMON:
 			{ //SUMMON
-				spriteSheetIMG = gfx['character']['summon'];
-				spriteLocations = getSpriteLocations("Summon");
+				spriteSheetIMG = gfx.character.summon;
+				spriteLocations = getSpriteLocations('Summon');
 				break;
 			}
 		case MON_FORM_BEHOLDER:
 			{ //FLOATER
-				spriteSheetIMG = gfx['character']['floater'];
-				spriteLocations = getSpriteLocations("Floater");
+				spriteSheetIMG = gfx.character.floater;
+				spriteLocations = getSpriteLocations('Floater');
 				break;
 			}
 		case MON_FORM_ENTITY:
 			{ //NASTY FLOATER
-				spriteSheetIMG = gfx['character']['nastyfloater'];
-				spriteLocations = getSpriteLocations("NastyFloater");
+				spriteSheetIMG = gfx.character.nastyfloater;
+				spriteLocations = getSpriteLocations('NastyFloater');
 				break;
 			}
 		case MON_FORM_CRAB:
 			{ //CRAB
-				spriteSheetIMG = gfx['character']['crab'];
-				spriteLocations = getSpriteLocations("Crab");
+				spriteSheetIMG = gfx.character.crab;
+				spriteLocations = getSpriteLocations('Crab');
 				break;
 			}
 		case MON_FORM_DRAGON:
 		case MON_FORM_DRAGON_SMALL:
 			{ //DRAGON
-				spriteSheetIMG = gfx['character']['dragon'];
-				spriteLocations = getSpriteLocations("Dragon");
+				spriteSheetIMG = gfx.character.dragon;
+				spriteLocations = getSpriteLocations('Dragon');
 				break;
 			}
 		case MON_FORM_BEHEMOTH:
 			{ //BEHEMOTH
-				spriteSheetIMG = gfx['character']['behemoth'];
-				spriteLocations = getSpriteLocations("Behemoth");
+				spriteSheetIMG = gfx.character.behemoth;
+				spriteLocations = getSpriteLocations('Behemoth');
 				break;
 			}
 		default:
 			return null;
 	}
 
-	for (var i in spriteLocations) {
-		ImageArray.push({ name: spriteLocations[i].name, img: grabImageAt(spriteSheetIMG, spriteLocations[i].x, spriteLocations[i].y, spriteLocations[i].w, spriteLocations[i].h, spriteLocations[i].mirror, spriteLocations[i].ox, spriteLocations[i].oy) })
+	for (let i in spriteLocations) {
+		ImageArray.push({ name: spriteLocations[i].name, img: grabImageAt(spriteSheetIMG, spriteLocations[i].x, spriteLocations[i].y, spriteLocations[i].w, spriteLocations[i].h, spriteLocations[i].mirror, spriteLocations[i].ox, spriteLocations[i].oy) });
 	}
 
-	for (var i = 0; i < ImageArray.length; i++) {
+	for (let i = 0; i < ImageArray.length; i++) {
+		var pal;
+		var lvl;
 		if (form < MON_FORM_BEHEMOTH) {
 			if (form === MON_FORM_ILLUSION) {
-				var pal = 0;
-				var lvl = 8;
+				pal = 0;
+				lvl = 8;
 			} else {
-				var pal = form - MON_FORM_SUMMON;
-				var lvl = level;
+				pal = form - MON_FORM_SUMMON;
+				lvl = level;
 			}
-			ImageArray[i].img = recolourSprite(ImageArray[i].img, paletteData['DEFAULT_MON'], monsterBigPalette[pal][lvl]);
+			ImageArray[i].img = recolourSprite(ImageArray[i].img, paletteData.DEFAULT_MON, monsterBigPalette[pal][lvl]);
 		}
 	}
 
@@ -1008,19 +1031,19 @@ function grabMonster(form, level) {
 function getSprite(part, dist, dir, action, monster, player) {
 
 	Sprite = monster.ref.gfx;
-	//console.log("Part:" + part + " Dist: " + dist+ " Dir:" + dir + " Action: " + action);
+	//console.log('Part:' + part + ' Dist: ' + dist+ ' Dir:' + dir + ' Action: ' + action);
 	var partName = ['Body', 'Arm', 'Mini'];
 	var distName = ['Distance 1', 'Distance 2', 'Distance 3', 'Distance 4', 'Distance 5', 'Distance 6'];
 	var dirName = ['Front', 'Right', 'Back', 'Left'];
 	var strGestures = ['CHA_GESTURE_NONE', 'CHA_GESTURE_ATTACKING', 'CHA_GESTURE_SPELLCASTING', 'CHA_GESTURE_GREETING'];
 	var strMonsterForm = ['MON_FORM_ILLUSION', 'MON_FORM_SUMMON', 'MON_FORM_BEHOLDER', 'MON_FORM_ENTITY', 'MON_FORM_CRAB', 'MON_FORM_DRAGON', 'MON_FORM_DRAGON_SMALL', 'MON_FORM_BEHEMOTH'];
 
-	if (part == 1) {
-		dirName = ['Front Left Arm', 'Side Right Arm', 'Front Right Arm', 'Side Left Arm', "Left Attack Arm", "Right Attack Arm", "Side Left Attack Arm", "Side Right Attack Arm"];
+	if (part === 1) {
+		dirName = ['Front Left Arm', 'Side Right Arm', 'Front Right Arm', 'Side Left Arm', 'Left Attack Arm', 'Right Attack Arm', 'Side Left Attack Arm', 'Side Right Attack Arm'];
 	}
 
 
-	for (var i in Sprite) {
+	for (let i in Sprite) {
 		if (Sprite[i].name.indexOf(partName[part]) > -1) {
 			if (Sprite[i].name.indexOf(distName[dist]) > -1) {
 				if (Sprite[i].name.indexOf(dirName[dir]) > -1) {
@@ -1030,5 +1053,5 @@ function getSprite(part, dist, dir, action, monster, player) {
 		}
 	}
 
-	// PrintLog(strMonsterForm[monster.form - 100] + " - Part: " + partName[part] + " " + distName[dist] + " " + dirName[dir] + " " + strGestures[monster.gesture]);
+	// PrintLog(strMonsterForm[monster.form - 100] + ' - Part: ' + partName[part] + ' ' + distName[dist] + ' ' + dirName[dir] + ' ' + strGestures[monster.gesture]);
 }

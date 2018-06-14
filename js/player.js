@@ -1,6 +1,6 @@
 function Player(id, ScreenX, ScreenY) {
 	this.id = id;
-	this.champion = new Array();
+	this.champion = [];
 	this.championLeader = 0;
 	this.championHighlite = -1;
 	this.x = 0; //posX;
@@ -20,7 +20,7 @@ function Player(id, ScreenX, ScreenY) {
 	this.lastTower = towerThis;
 	this.moving = 0; //0 = Forward,1 = Right, 2 = Backwards, 3 = Left
 	this.attacking = false;
-	this.towerSwitches = new Array();
+	this.towerSwitches = [];
 	this.messageTimeout = 0;
 	//this.timerAttack = timerMaster;
 	this.timerChampionStats = timerMaster;
@@ -74,13 +74,13 @@ function Player(id, ScreenX, ScreenY) {
 	this.PlayerCanvas = document.createElement('canvas');
 	this.PlayerCanvas.width = 128 * scale;
 	this.PlayerCanvas.height = 76 * scale;
-	this.PlayerCanvas.getContext("2d").imageSmoothingEnabled = false;
-	this.PlayerCanvas.getContext("2d").webkitImageSmoothingEnabled = false;
-	this.PlayerCanvas.getContext("2d").mozImageSmoothingEnabled = false;
-	this.PlayerCanvas.getContext("2d").oImageSmoothingEnabled = false;
-	this.PlayerCanvas.getContext("2d").msImageSmoothingEnabled = false;
-	this.PlayerCanvas.getContext("2d").font = "bold 20px Calibri";
-	this.Portal = this.PlayerCanvas.getContext("2d");
+	this.PlayerCanvas.getContext('2d').imageSmoothingEnabled = false;
+	this.PlayerCanvas.getContext('2d').webkitImageSmoothingEnabled = false;
+	this.PlayerCanvas.getContext('2d').mozImageSmoothingEnabled = false;
+	this.PlayerCanvas.getContext('2d').oImageSmoothingEnabled = false;
+	this.PlayerCanvas.getContext('2d').msImageSmoothingEnabled = false;
+	this.PlayerCanvas.getContext('2d').font = 'bold 20px Calibri';
+	this.Portal = this.PlayerCanvas.getContext('2d');
 	this.spellBookCanvas = document.createElement('canvas');
 	this.redrawSpellBook = true;
 }
@@ -124,8 +124,8 @@ Player.prototype.toJSON = function () {
 		uiCenterPanel: this.uiCenterPanel,
 		communication: this.communication,
 		frozen: this.frozen
-	}
-}
+	};
+};
 Player.revive = function (data) {
 	var p = new Player(data.id, data.ScreenX, data.ScreenY);
 	p.champion = data.champion;
@@ -162,17 +162,17 @@ Player.revive = function (data) {
 	p.communication = data.communication;
 	p.frozen = data.frozen;
 	return p;
-}
+};
 Player.prototype.getViewPortal = function () {
-	this.Portal = this.PlayerCanvas.getContext("2d");
-}
+	this.Portal = this.PlayerCanvas.getContext('2d');
+};
 Player.prototype.canMove = function (d) {
 	var mv = canMove(this.floor, this.x, this.y, this.d, d);
 	return mv === OBJECT_NONE || mv === OBJECT_STAIRS;
-}
+};
 Player.prototype.canMoveByWood = function (d) {
 	return canMoveByWood(this.floor, this.x, this.y, this.d, d);
-}
+};
 Player.prototype.changeUpFloor = function () {
 	//In bloodwych when the player moves floors they also moved 2 places forward
 	//This function changes the players floor and moves the player forward 2x spaces
@@ -184,7 +184,7 @@ Player.prototype.changeUpFloor = function () {
 		this.move(DIRECTION_NORTH);
 	}
 	this.redrawViewPort = true;
-}
+};
 Player.prototype.changeDownFloor = function () {
 	//In bloodwych when the player moves floors they also moved 2 places forward
 	//This function changes the players floor and moves the player forward 2x spaces
@@ -196,7 +196,7 @@ Player.prototype.changeDownFloor = function () {
 		this.move(DIRECTION_NORTH);
 	}
 	this.redrawViewPort = true;
-}
+};
 //Take the map code which is in front of the player and see if the player can interact with it.
 Player.prototype.action = function () {
 	if (!this.dead && !this.sleeping) {
@@ -224,7 +224,7 @@ Player.prototype.action = function () {
 			if (this.getBinaryView(15, 13, 3) === '5' && this.getBinaryView(15, 4) === '0') {
 				var lck = parseInt(this.getBinaryView(15, 1, 3));
 				var key = getObjectByKeys(itemJson[this.pocket.id], 'onUse', 'unlock');
-				if (typeof key !== "undefined") {
+				if (typeof key !== 'undefined') {
 					if (lck > 0) {
 						if (key.getVar() === lck) { //Use key
 							this.consumeItemInHand();
@@ -241,7 +241,7 @@ Player.prototype.action = function () {
 					playSound('SOUND_DOOR');
 					//this.setBinaryView(15, 1, 3, '000'); //Will set the door to 'normal'
 				} else { //If locked, give lock message
-					this.message(TEXT_DOOR_LOCKED, colourData['GREEN']);
+					this.message(TEXT_DOOR_LOCKED, colourData.GREEN);
 				}
 			}
 			this.redrawViewPort = true;
@@ -249,7 +249,7 @@ Player.prototype.action = function () {
 		}
 	}
 	return false;
-}
+};
 Player.prototype.alterObject = function (a, b, c) {
 	if (debug) {
 		var a1 = (parseInt(this.getBinaryView(15, 13, 3)) + a + 8) % 8;
@@ -263,7 +263,7 @@ Player.prototype.alterObject = function (a, b, c) {
 			this.setBinaryView(15, 0, 8, '' + c1);
 		}
 	}
-}
+};
 Player.prototype.checkWoodenDoor = function (pos18) {
 	if (pos18 === 18) {
 		d = 2;
@@ -272,7 +272,7 @@ Player.prototype.checkWoodenDoor = function (pos18) {
 	}
 	if (this.getBinaryView(pos18, 13, 3) === '2' && this.getBinaryView(pos18, ((5 + d - this.d) % 4) * 2) === '1') {
 		var key = getObjectByKeys(itemJson[this.pocket.id], 'onUse', 'unlock');
-		if (typeof key !== "undefined" && key === 'DOOR_COMMON') { //Use common key
+		if (typeof key !== 'undefined' && key === 'DOOR_COMMON') { //Use common key
 			this.consumeItemInHand();
 			this.setBinaryView(pos18, 11, 1);
 		}
@@ -280,13 +280,13 @@ Player.prototype.checkWoodenDoor = function (pos18) {
 			this.setBinaryView(pos18, ((5 + d - this.d) % 4) * 2 + 1, 1);
 			playSound('SOUND_DOOR');
 		} else if (this.getBinaryView(pos18, 11, 1) === '1') { //If locked, give lock message
-			this.message(TEXT_DOOR_LOCKED, colourData['GREEN']);
+			this.message(TEXT_DOOR_LOCKED, colourData.GREEN);
 		}
 		this.redrawViewPort = true;
 		return true;
 	}
 	return false;
-}
+};
 //Sets a binary index on a hexadecimal string to a certain binary flag
 //'to' will be a binary string, e.g. '1010'
 Player.prototype.setBinaryView = function (pos18, index, length, to) {
@@ -295,7 +295,7 @@ Player.prototype.setBinaryView = function (pos18, index, length, to) {
 		tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = setHexToBinaryPosition(tower[towerThis].floor[this.floor].Map[xy.y][xy.x], index, length, to);
 	}
 	//this.updateView();
-}
+};
 Player.prototype.getBinaryView = function (pos18, index, length) {
 	var xy = posToCoordinates(pos18, this.x, this.y, this.d);
 	try {
@@ -303,7 +303,7 @@ Player.prototype.getBinaryView = function (pos18, index, length) {
 	} catch (e) {
 		return '0001';
 	}
-}
+};
 Player.prototype.setMovementData = function () {
 	//tower[this.lastTower].floor[this.lastFloor].Map[this.lastY][this.lastX] = setHexToBinaryPosition(tower[this.lastTower].floor[this.lastFloor].Map[this.lastY][this.lastX], 8, 1, '0');
 	if (!this.dead && !this.sleeping) {
@@ -313,7 +313,7 @@ Player.prototype.setMovementData = function () {
 		this.lastFloor = this.floor;
 		this.lastTower = towerThis;
 	}
-}
+};
 Player.prototype.rotate = function (r) {
 	if (!this.dead && !this.sleeping && this.getCurseTimers() > 0) {
 		if (r === -1) {
@@ -331,22 +331,22 @@ Player.prototype.rotate = function (r) {
 		redrawUI(this.id, UI_REDRAW_ACTIVESPELL);
 		this.redrawViewPort = true;
 	}
-}
+};
 Player.prototype.rotateTo = function (d) {
 	this.d = (d + 4) % 4;
 	redrawUI(this.id, UI_REDRAW_ACTIVESPELL);
-}
+};
 Player.prototype.getCurseTimers = function () {
 	var sp = 20;
 	var chs = this.getOrderedChampions();
-	for (var c in chs) {
+	for (let c in chs) {
 		var tm = chs[c].getMonster().getCurseTimers();
 		if (sp > tm) {
 			sp = tm;
 		}
 	}
 	return sp;
-}
+};
 Player.prototype.move = function (d) {
 	if (!this.dead && !this.sleeping && this.getCurseTimers() > 0) {
 		m = [1, 5, 4, 3];
@@ -366,7 +366,7 @@ Player.prototype.move = function (d) {
 		}
 		this.redrawViewPort = true;
 	}
-}
+};
 Player.prototype.tryAttack = function (ch) {
 	if (!this.dead && !this.sleeping && this.canMoveByWood(0)) {
 		xy = getOffsetByRotation(this.d);
@@ -397,13 +397,13 @@ Player.prototype.tryAttack = function (ch) {
 	}
 	//pl.attack(null, false);
 	return 0;
-}
+};
 Player.prototype.attack = function (ch, attack, target) {
 	if (attack) {
 		this.doneCommunication();
 		var self = this;
 		var combat = calculateAttack(ch, target);
-		for (var com = 0; com < combat.length; com++) {
+		for (let com = 0; com < combat.length; com++) {
 			//(function(combat, com) {
 			var att = combat[com].attacker;
 			//att.recruitment.attackTimer = setTimeout(function() {
@@ -442,30 +442,31 @@ Player.prototype.attack = function (ch, attack, target) {
 			//})(combat, com);
 		}
 	} else {
-		for (var c = 0; c < this.champion.length; c++) {
-			var ch = this.getChampion(c);
-			if (ch !== null) {
-				var m = ch.getMonster();
-				//if (ch.recruitment.attackTimer !== 0) {
-				//clearTimeout(ch.recruitment.attackTimer);
-				//ch.recruitment.attackTimer = 0;
+		for (let c = 0; c < this.champion.length; c++) {
+			chp = this.getChampion(c);
+			if (chp !== null) {
+				var m = chp.getMonster();
+				//if (chp.recruitment.attackTimer !== 0) {
+				//clearTimeout(chp.recruitment.attackTimer);
+				//chp.recruitment.attackTimer = 0;
 				//}
 				m.attacking = false;
 			}
 		}
 		this.attacking = false;
 	}
-}
+};
 Player.prototype.getView = function () {
 	//This function takes the map file and stores the 20 positions required
 	//to either draw the players view or objects which the player are likely to interact with
 	//like standing on a presure pad or stairs or if there is a door infront of the player etc..
 	view = [];
-	for (var pos = 0; pos < 20; pos++) {
+	var newView;
+	for (let pos = 0; pos < 20; pos++) {
 		try {
 			var xy = posToCoordinates(pos, this.x, this.y, this.d);
-			var newView = tower[towerThis].floor[this.floor].Map[xy.y][xy.x];
-			if (typeof newView === "undefined") {
+			newView = tower[towerThis].floor[this.floor].Map[xy.y][xy.x];
+			if (typeof newView === 'undefined') {
 				newView = '0001';
 			}
 		} catch (e) {
@@ -474,7 +475,7 @@ Player.prototype.getView = function () {
 		view.push(newView);
 	}
 	return view;
-}
+};
 //mr = true : player moves
 //mr = false: player rotates
 Player.prototype.doEvent = function (mr) {
@@ -513,11 +514,11 @@ Player.prototype.doEvent = function (mr) {
 		default:
 			break;
 	}
-}
+};
 Player.prototype.doPit = function () {
 	var self = this;
 	if (this.getBinaryView(18, 6, 2) === '1') {
-		if (typeof this.getActiveSpellActionValue('levitateFactor') !== "undefined" || this.getActiveSpellById(SPELL_LEVITATE).timer > 0) {
+		if (typeof this.getActiveSpellActionValue('levitateFactor') !== 'undefined' || this.getActiveSpellById(SPELL_LEVITATE).timer > 0) {
 			return true;
 		}
 		floor = this.floor - 1;
@@ -528,14 +529,14 @@ Player.prototype.doPit = function () {
 		setTimeout(function () {
 			self.doEvent(true);
 		}, 300);
-		newProjectile('NONE', paletteData['PIT_FLASH'], null, -1, 0, floor, x, y, 0, null);
+		newProjectile('NONE', paletteData.PIT_FLASH, null, -1, 0, floor, x, y, 0, null);
 		return true;
 	}
 	return false;
-}
+};
 Player.prototype.doFizzle = function () {
 	if (this.getBinaryView(18, 13, 3) === '6' && this.getBinaryView(18, 6, 2) === '0') {
-		for (var c = 0; c < this.champion.length; c++) {
+		for (let c = 0; c < this.champion.length; c++) {
 			var ch = this.getChampion(c);
 			if (ch.activeSpell.id > -1) {
 				ch.expireSpell();
@@ -545,7 +546,7 @@ Player.prototype.doFizzle = function () {
 		return true;
 	}
 	return false;
-}
+};
 Player.prototype.doStairs = function () {
 	var ud = parseInt(this.getBinaryView(18, 7), 10);
 	var d = (parseInt(this.getBinaryView(18, 5, 2), 10) + 2) % 4;
@@ -555,13 +556,13 @@ Player.prototype.doStairs = function () {
 	var x = this.x + fOff.x + off.x * 2;
 	var y = this.y + fOff.y + off.y * 2;
 	this.setPlayerPosition(floor, x, y, d);
-}
+};
 Player.prototype.setPlayerPosition = function (floor, x, y, d) {
-	if (typeof floor !== "undefined" && floor >= 0 && floor < tower[towerThis].floor.length) {
+	if (typeof floor !== 'undefined' && floor >= 0 && floor < tower[towerThis].floor.length) {
 		this.lastFloor = this.floor;
 		this.floor = floor;
 	}
-	if (typeof x !== "undefined") {
+	if (typeof x !== 'undefined') {
 		if (x >= tower[towerThis].floor[this.floor].Height) {
 			x = tower[towerThis].floor[this.floor].Height - 1;
 		} else if (x < 0) {
@@ -570,7 +571,7 @@ Player.prototype.setPlayerPosition = function (floor, x, y, d) {
 		this.lastX = this.x;
 		this.x = x;
 	}
-	if (typeof y !== "undefined") {
+	if (typeof y !== 'undefined') {
 		if (y >= tower[towerThis].floor[this.floor].Width) {
 			y = tower[towerThis].floor[this.floor].Width - 1;
 		} else if (y < 0) {
@@ -579,19 +580,19 @@ Player.prototype.setPlayerPosition = function (floor, x, y, d) {
 		this.lastY = this.y;
 		this.y = y;
 	}
-	if (typeof d !== "undefined") {
+	if (typeof d !== 'undefined') {
 		this.d = d % 4;
 	}
 	this.setMovementData();
 	this.updateChampions();
-	for (var p in player) {
+	for (let p in player) {
 		player[p].redrawViewPort = true;
 	}
 	//this.doEvent(true);
-}
+};
 Player.prototype.getAliveChampionCount = function () {
 	var cnt = 0;
-	for (var c = 0; c < this.champion.length; c++) {
+	for (let c = 0; c < this.champion.length; c++) {
 		var ch = this.getChampion(c);
 		if (ch !== null) {
 			var dd = ch.getMonster().dead;
@@ -601,10 +602,10 @@ Player.prototype.getAliveChampionCount = function () {
 		}
 	}
 	return cnt;
-}
+};
 Player.prototype.updateChampions = function () {
 	var cnt = this.getAliveChampionCount();
-	for (var c = 0; c < this.champion.length; c++) {
+	for (let c = 0; c < this.champion.length; c++) {
 		var ch = this.getChampion(c);
 		if (ch !== null && ch.recruitment.attached) {
 			var m = ch.getMonster();
@@ -620,7 +621,7 @@ Player.prototype.updateChampions = function () {
 			}
 		}
 	}
-}
+};
 Player.prototype.exchangeChampionPosition = function (ct, c) {
 	var ch = this.getChampion(c);
 	if (ct === c) {
@@ -651,11 +652,11 @@ Player.prototype.exchangeChampionPosition = function (ct, c) {
 		this.championHighlite = -1;
 		this.updateChampions();
 	}
-}
+};
 Player.prototype.getChampionsForUp = function () {
-	var chs = new Array();
+	var chs = [];
 	var c1 = this.getOrderedChampionIds();
-	for (var c = 0; c < this.champion.length; c++) {
+	for (let c = 0; c < this.champion.length; c++) {
 		var ch = this.getChampion(c1[c]);
 		if (ch !== null && !ch.getMonster().dead && ch.recruitment.attached && ch.recruitment.playerId > -1) {
 			if (ch.levelUp > 0) {
@@ -673,12 +674,12 @@ Player.prototype.getChampionsForUp = function () {
 		}
 	}
 	return chs;
-}
+};
 Player.prototype.checkChampionUp = function () {
 	if (this.nextChampionUp > -1 && this.fairyDetails.champ === null) {
 		var nc = 0;
 		cs = this.getChampionsForUp();
-		for (var c in cs) {
+		for (let c in cs) {
 			if (this.nextChampionUp <= nc) {
 				var ch = cs[c].champ;
 				var up = cs[c].up;
@@ -699,7 +700,7 @@ Player.prototype.checkChampionUp = function () {
 		}
 	}
 	return false;
-}
+};
 Player.prototype.sleep = function () {
 	if (!this.dead) {
 		this.sleeping = true;
@@ -711,25 +712,27 @@ Player.prototype.sleep = function () {
 		this.doneCommunication();
 		this.attack(null, false);
 		coverViewPort(this);
-		writeFontImage(TEXT_THOU_ART, 64, 21, colourData['BROWN'], FONT_ALIGNMENT_CENTER, this.Portal);
-		writeFontImage(TEXT_ASLEEP, 64, 37, colourData['BROWN'], FONT_ALIGNMENT_CENTER, this.Portal);
+		writeFontImage(TEXT_THOU_ART, 64, 21, colourData.BROWN, FONT_ALIGNMENT_CENTER, this.Portal);
+		writeFontImage(TEXT_ASLEEP, 64, 37, colourData.BROWN, FONT_ALIGNMENT_CENTER, this.Portal);
 		redrawUI(this.id);
 	}
-}
+};
 Player.prototype.wakeUp = function () {
 	this.sleeping = false;
 	this.message();
 	this.fairyDetails.champ = null;
 	redrawUI(this.id);
-}
+};
 //check if all champions are dead
 //also assign a new champion as leader. used when the leader dies
 Player.prototype.checkDead = function () {
 	var leader = this.getChampion(this.championLeader).getMonster();
 	var deadNum = 0;
+	var c;
+	var ch;
 	if (leader.dead) {
-		for (var c = 0; c < this.champion.length; c++) {
-			var ch = this.getChampion(c);
+		for (c = 0; c < this.champion.length; c++) {
+			ch = this.getChampion(c);
 			if (ch !== null) {
 				var m = ch.getMonster();
 				if (m !== null && !m.dead && ch.recruitment.attached) {
@@ -741,12 +744,12 @@ Player.prototype.checkDead = function () {
 				deadNum++;
 			}
 		}
-		if (deadNum == 4) {
+		if (deadNum === 4) {
 			this.dead = true;
 			this.doneCommunication();
 			this.attack(null, false);
-			for (var c = 0; c < this.champion.length; c++) {
-				var ch = this.getChampion(c);
+			for (c = 0; c < this.champion.length; c++) {
+				ch = this.getChampion(c);
 				if (ch !== null && ch.recruitment.attached) {
 					ch.recruitment.attached = false;
 					dropItem(ch.pocket[POCKET_HIDDEN].id, 1, this.floor, this.x, this.y, 0);
@@ -755,19 +758,19 @@ Player.prototype.checkDead = function () {
 			this.setMovementData();
 			this.uiCenterPanel.mode = UI_CENTER_PANEL_DEAD;
 			coverViewPort(this);
-			writeFontImage(TEXT_THOU, 64, 21, colourData['GREY_LIGHT'], FONT_ALIGNMENT_CENTER, this.Portal);
-			writeFontImage(TEXT_ART_DEAD, 64, 37, colourData['GREY_LIGHT'], FONT_ALIGNMENT_CENTER, this.Portal);
+			writeFontImage(TEXT_THOU, 64, 21, colourData.GREY_LIGHT, FONT_ALIGNMENT_CENTER, this.Portal);
+			writeFontImage(TEXT_ART_DEAD, 64, 37, colourData.GREY_LIGHT, FONT_ALIGNMENT_CENTER, this.Portal);
 		}
 	}
-}
+};
 Player.prototype.recruitChampion = function (id) {
 	var pos = 0;
-	for (var c = 0; c < 4; c++) {
+	for (let c = 0; c < 4; c++) {
 		var ch = this.getChampion(c);
 		if (ch !== null && pos === ch.recruitment.position) {
 			pos++;
 		}
-		if (typeof id === "undefined") {
+		if (typeof id === 'undefined') {
 			if (typeof this.champion[c] === 'undefined') {
 				this.champion[c] = -1;
 				return true;
@@ -781,14 +784,14 @@ Player.prototype.recruitChampion = function (id) {
 				attackTimer: 20 - pos * 5,
 				called: false
 			};
-			if (typeof monsterRef[champion[id].getMonster().form] === "undefined") {
+			if (typeof monsterRef[champion[id].getMonster().form] === 'undefined') {
 				initMonsterGfxNew(champion[id].getMonster());
 			}
 			return true;
 		}
 	}
 	return false;
-}
+};
 Player.prototype.waitChampion = function (c) {
 	if (typeof this.champion[c] !== 'undefined' && this.champion[c] !== -1) {
 		var xy = getOffsetByRotation(this.d);
@@ -796,7 +799,6 @@ Player.prototype.waitChampion = function (c) {
 		var y1 = this.y + xy.y;
 		if (canMove(this.floor, this.x, this.y, this.d) === OBJECT_NONE && getMonsterAt(this.floor, x1, y1) === null) {
 			var ch = this.getChampion(c);
-			var s = [3, 0, 1, 2];
 			ch.getMonster().x = x1;
 			ch.getMonster().y = y1;
 			ch.getMonster().square = this.d; //(s[this.d] + ch.getMonster().square) % 4;
@@ -806,7 +808,7 @@ Player.prototype.waitChampion = function (c) {
 		}
 	}
 	return false;
-}
+};
 Player.prototype.dismissChampion = function (c) {
 	if (typeof this.champion[c] !== 'undefined' && this.champion[c] !== -1) {
 		var xy = getOffsetByRotation(this.d);
@@ -814,7 +816,6 @@ Player.prototype.dismissChampion = function (c) {
 		var y1 = this.y + xy.y;
 		if (canMove(this.floor, this.x, this.y, this.d) === OBJECT_NONE && getMonsterAt(this.floor, x1, y1) === null) {
 			var ch = this.getChampion(c);
-			var s = [3, 0, 1, 2];
 			ch.getMonster().x = x1;
 			ch.getMonster().y = y1;
 			ch.getMonster().square = (this.d + 3) % 4; //(s[this.d] + ch.getMonster().square) % 4;
@@ -829,41 +830,41 @@ Player.prototype.dismissChampion = function (c) {
 		}
 	}
 	return false;
-}
+};
 Player.prototype.getChampionLength = function () {
 	var l = 0;
-	for (var c = 0; c < 4; c++) {
+	for (let c = 0; c < 4; c++) {
 		if (typeof this.champion[c] !== 'undefined' && this.champion[c] !== -1) {
 			l++;
 		}
 	}
 	return l;
-}
+};
 //loc = location number (0-3)
 Player.prototype.getChampion = function (loc) {
-	if (loc > -1 && typeof this.champion[loc] !== "undefined" && this.champion[loc] !== null && this.champion[loc] > -1) {
+	if (loc > -1 && typeof this.champion[loc] !== 'undefined' && this.champion[loc] !== null && this.champion[loc] > -1) {
 		return champion[this.champion[loc]];
 	}
 	return null;
-}
+};
 Player.prototype.getChampionPosition = function (id) {
-	for (var c = 0; c < this.champion.length; c++) {
+	for (let c = 0; c < this.champion.length; c++) {
 		var ch = this.getChampion(c);
 		if (ch.id === id) {
 			return c;
 		}
 	}
 	return -1;
-}
+};
 //gets champions. champion 0 is the leader
 //all === true means also getting the 'unattached' champions
 Player.prototype.getOrderedChampionIds = function (all) {
 	if (typeof all === 'undefined') {
-		var all = false;
+		all = false;
 	}
-	var c1 = new Array();
+	var c1 = [];
 	c1.push(this.championLeader);
-	for (var c = 0; c < this.champion.length; c++) {
+	for (let c = 0; c < this.champion.length; c++) {
 		if (c !== this.championLeader) {
 			var ch = this.getChampion(c);
 			if (ch !== null && (all || ch.recruitment.attached)) {
@@ -872,25 +873,26 @@ Player.prototype.getOrderedChampionIds = function (all) {
 		}
 	}
 	return c1;
-}
+};
 Player.prototype.getOrderedChampions = function (all) {
-	var ch1 = new Array();
+	var ch1 = [];
 	var c1 = this.getOrderedChampionIds();
-	for (var c = 0; c < this.champion.length; c++) {
+	var ch;
+	for (let c = 0; c < this.champion.length; c++) {
 		var cid = c1[c];
-		var ch = this.getChampion(cid);
+		ch = this.getChampion(cid);
 		if (ch !== null && (all || ch.recruitment.attached)) {
 			ch1.push(ch);
 		}
 	}
 	return ch1;
-}
+};
 Player.prototype.gainChampionXp = function (xp, ch) {
-	if (typeof ch !== "undefined") {
+	if (typeof ch !== 'undefined') {
 		gainChampionXp1();
 	} else {
-		for (var c = 0; c < this.champion.length; c++) {
-			var ch = this.getChampion(c);
+		for (let c = 0; c < this.champion.length; c++) {
+			ch = this.getChampion(c);
 			gainChampionXp1();
 		}
 	}
@@ -911,10 +913,10 @@ Player.prototype.gainChampionXp = function (xp, ch) {
 			}
 		}
 	}
-}
+};
 Player.prototype.alertDamagedPlayer = function () {
 	this.uiLeftPanel.mode = UI_LEFT_PANEL_MODE_STATS;
-	for (var ch = 0; ch < this.champion.length; ch++) {
+	for (let ch = 0; ch < this.champion.length; ch++) {
 		if (this.getChampion(ch) !== null && this.getChampion(ch).getMonster().dead && ch > 0) {
 			toggleChampUI(ch, this, false);
 		} else {
@@ -924,15 +926,15 @@ Player.prototype.alertDamagedPlayer = function () {
 	if (this.sleeping) {
 		this.wakeUp();
 	}
-}
+};
 Player.prototype.resetChampUI = function () {
-	for (var ch = 0; ch < this.champion.length; ch++) {
+	for (let ch = 0; ch < this.champion.length; ch++) {
 		if (this.uiLeftPanel.champs[ch].opened === true) {
 			toggleChampUI(ch, this, false);
 			redrawUI(this.id);
 		}
 	}
-}
+};
 //Returns a list of monsters and their distance pos relative to the player
 //pos2 : when defined it only lists the monsters on this square
 Player.prototype.getMonstersInRange = function (pos2) {
@@ -940,7 +942,7 @@ Player.prototype.getMonstersInRange = function (pos2) {
 	var monstersInRange = [];
 	var pos = -1;
 	mon = getMonstersInTower(towerThis, true);
-	for (var m in mon) {
+	for (let m in mon) {
 		if (p.floor === mon[m].floor && !mon[m].dead) {
 			pos = coordinatesToPos(mon[m].x, mon[m].y, p.x, p.y, p.d);
 			var sq = CHAR_FRONT_SOLO;
@@ -949,8 +951,8 @@ Player.prototype.getMonstersInRange = function (pos2) {
 				sq = (6 + mon[m].square - p.d) % 4;
 				sq2 = (sq === CHAR_FRONT_LEFT || sq === CHAR_FRONT_RIGHT) ? 0 : 1; //extra check for really close-by monsters
 			}
-			if (mon[m].floor == p.floor && pos > -1 && (typeof pos2 === "undefined" || pos2 === pos)) {
-				if (sq2 == 1) {
+			if (mon[m].floor === p.floor && pos > -1 && (typeof pos2 === 'undefined' || pos2 === pos)) {
+				if (sq2 === 1) {
 					monstersInRange.unshift({
 						monster: mon[m],
 						position: pos,
@@ -971,22 +973,23 @@ Player.prototype.getMonstersInRange = function (pos2) {
 		}
 	}
 	return monstersInRange;
-}
+};
 Player.prototype.drawMonster = function (m, distance, offset) {
 	var form = m.form;
 	//var loc = characterSpriteLocation();
 	var p = this;
+	var dis;
 	if (form >= MON_FORM_ILLUSION) {
 		if (form <= MON_FORM_BEHOLDER) {
-			var dis = [0, 1, 2, 3, 4, 5];
+			dis = [0, 1, 2, 3, 4, 5];
 		} else if (form === MON_FORM_DRAGON_SMALL) {
-			var dis = [1, 1, 2, 2, 3, 4];
+			dis = [1, 1, 2, 2, 3, 4];
 		} else {
-			var dis = [0, 0, 1, 1, 2, 3];
+			dis = [0, 0, 1, 1, 2, 3];
 		}
 		drawMonster(m, (6 + p.d - m.d) % 4, dis[distance], this, offset);
 	} else {
-		if (typeof monsterPalette[form] !== "undefined") {
+		if (typeof monsterPalette[form] !== 'undefined') {
 			var ofy = 0;
 			if (distance === DISTANCE_CLOSE) {
 				ofy = 8;
@@ -1012,93 +1015,100 @@ Player.prototype.drawMonster = function (m, distance, offset) {
 			}
 		}
 	}
-}
+};
 Player.prototype.drawItem = function (it, distance, offset) {
 	try {
 		var iGfx = it.getGfx(true)[distance];//itemJson[it.id].gfxD[distance];
-		if (typeof iGfx !== "undefined") {
+		if (typeof iGfx !== 'undefined') {
+			var offx;
+			var offy;
 			if (getObject(this.floor, it.location.x, it.location.y, this.d, 2) === OBJECT_SHELF) {
-				var offx = 64 - Math.floor(iGfx.width * 0.5) + offset.x;
-				var offy = 60 - Math.floor(iGfx.height) - offset.y;
+				offx = 64 - Math.floor(iGfx.width * 0.5) + offset.x;
+				offy = 60 - Math.floor(iGfx.height) - offset.y;
 			} else {
-				var offx = 64 - Math.floor(iGfx.width * 0.5) + offset.x;
-				var offy = 77 - Math.floor(iGfx.height) - offset.y;
+				offx = 64 - Math.floor(iGfx.width * 0.5) + offset.x;
+				offy = 77 - Math.floor(iGfx.height) - offset.y;
 			}
-			myDIx(this.Portal, iGfx, { sx: offx, sy: offy, w: iGfx.width, h: iGfx.height, x: 0, y: 0 })
+			myDIx(this.Portal, iGfx, { sx: offx, sy: offy, w: iGfx.width, h: iGfx.height, x: 0, y: 0 });
 		}
 	} catch (e) {
-		"DRAW ITEM ERROR: " + e.toString()
-	};
-}
+		PrintLog('DRAW ITEM ERROR: ' + e.toString());
+	}
+};
 Player.prototype.drawProjectile = function (pr, distance, offset) {
 	var sp = pr.spell;
-	if (typeof pr !== "undefined" && sp !== null && typeof sp === 'number') { //item projectiles
-		var typ = getObjectByKeys(itemJson[sp], 'projectile', 'id');
-		if (typeof typ === "undefined") {
+	var typ;
+	var pGfx;
+	var exp;
+	var from;
+	var to;
+	if (typeof pr !== 'undefined' && sp !== null && typeof sp === 'number') { //item projectiles
+		typ = getObjectByKeys(itemJson[sp], 'projectile', 'id');
+		if (typeof typ === 'undefined') {
 			typ = getObjectByKeys(itemJson[sp], 'dungeon', 'id');
 		}
-		var pGfx = itemGfxD[typ][distance];
-		var from = getObjectByKeys(itemJson[sp], 'projectile', 'recolour', 'from');
-		var to = getObjectByKeys(itemJson[sp], 'projectile', 'recolour', 'to');
-		if (typeof from === "undefined") {
+		pGfx = itemGfxD[typ][distance];
+		from = getObjectByKeys(itemJson[sp], 'projectile', 'recolour', 'from');
+		to = getObjectByKeys(itemJson[sp], 'projectile', 'recolour', 'to');
+		if (typeof from === 'undefined') {
 			from = getObjectByKeys(itemJson[sp], 'dungeon', 'recolour', 'from');
 		}
-		if (typeof to === "undefined") {
+		if (typeof to === 'undefined') {
 			to = getObjectByKeys(itemJson[sp], 'dungeon', 'recolour', 'to');
 		}
 		if (pr.dead > 0) {
-			if (typeof getObjectByKeys(itemJson[sp], 'death', 'id') !== "undefined") {
+			if (typeof getObjectByKeys(itemJson[sp], 'death', 'id') !== 'undefined') {
 				exp = getObjectByKeys(itemJson[sp], 'death', 'id');
 				pGfx = itemGfxD[exp][distance];
 			}
-			if (typeof getObjectByKeys(itemJson[sp], 'death', 'recolour', 'from') !== "undefined") {
+			if (typeof getObjectByKeys(itemJson[sp], 'death', 'recolour', 'from') !== 'undefined') {
 				from = getObjectByKeys(itemJson[sp], 'death', 'recolour', 'from');
 			}
-			if (typeof getObjectByKeys(itemJson[sp], 'death', 'recolour', 'to') !== "undefined") {
+			if (typeof getObjectByKeys(itemJson[sp], 'death', 'recolour', 'to') !== 'undefined') {
 				to = getObjectByKeys(itemJson[sp], 'death', 'recolour', 'to');
 			}
 		}
 	} else { //spell projectiles
-		var typ = pr.type;
+		typ = pr.type;
 		if (sp === null) {
 			if (pr.dead > 0) {
 				typ = 'PROJECTILE_EXPLODE';
 			}
-			var pGfx = itemGfxD[typ][distance];
+			pGfx = itemGfxD[typ][distance];
 		} else {
-			var pGfx = itemGfxD[typ][distance];
+			pGfx = itemGfxD[typ][distance];
 			if (pr.dead > 0) {
-				var exp = getObjectByKeys(spellJson[sp.id], 'projectile', 'death');
-				if (typeof exp !== "undefined") {
+				exp = getObjectByKeys(spellJson[sp.id], 'projectile', 'death');
+				if (typeof exp !== 'undefined') {
 					pGfx = itemGfxD[exp][distance];
 				} else {
 					pGfx = undefined;
 				}
 			}
-			var from = getObjectByKeys(spellJson[sp.id], 'projectile', 'recolour', 'from');
+			from = getObjectByKeys(spellJson[sp.id], 'projectile', 'recolour', 'from');
 		}
-		if (typeof from === "undefined") {
-			var from = paletteData['DEFAULT_ITEM_DUN'];
+		if (typeof from === 'undefined') {
+			from = paletteData.DEFAULT_ITEM_DUN;
 		}
-		var to = pr.palette;
+		to = pr.palette;
 	}
-	if (typeof pGfx !== "undefined") {
+	if (typeof pGfx !== 'undefined') {
 		pGfx = recolourSprite(pGfx, from, to);
 		var offx = 64 - Math.floor(pGfx.width * 0.5) + offset.x;
 		var offy = 77 - Math.floor(pGfx.height * 0.5) - offset.y;
 		myDIx(this.Portal, pGfx, { sx: offx, sy: offy, w: pGfx.width, h: pGfx.height, x: 0, y: 0 });
 	}
-}
+};
 Player.prototype.getActivePocketChampion = function () {
 	var ch = this.getOrderedChampionIds();
 	if (this.getChampion(ch[this.uiRightPanel.activePocket]) !== null) {
 		return this.getChampion(ch[this.uiRightPanel.activePocket]);
 	}
 	return null;
-}
+};
 Player.prototype.consumeItemInHand = function () {
 	this.pocket.setQuantity(this.pocket.quantity - 1);
-}
+};
 Player.prototype.useItemActivePocket = function () {
 	var ch = this.getActivePocketChampion();
 	if (ch !== null && !ch.dead) {
@@ -1107,7 +1117,7 @@ Player.prototype.useItemActivePocket = function () {
 			ch.useItem(itH, 'onUse');
 		}
 	}
-}
+};
 Player.prototype.exchangeItemWithHand = function (s, q) {
 	var ch = this.getActivePocketChampion();
 	if (typeof q === 'undefined') {
@@ -1117,9 +1127,10 @@ Player.prototype.exchangeItemWithHand = function (s, q) {
 		var it = ch.pocket[s];
 		var itH = this.pocket;
 		if (itH.id === 0 || ch.itemAllowedOnSlot(itH, s)) { //((s !== POCKET_ARMOUR || itH.type === 'ITEM_TYPE_ARMOUR') && (s !== POCKET_SHIELD || ch.itemAllowedOnSlot(itH, s)))) {
+			var temp;
 			if (it.type === 'ITEM_TYPE_STACKABLE' && (itH.id === 0 || it.id === itH.id)) {
 				if (itH.id === 0) {
-					for (var q1 = 0; q1 < q; q1++) {
+					for (let q1 = 0; q1 < q; q1++) {
 						itH.setPocketItem(it.id, itH.quantity + 1);
 						if (!it.setQuantity(it.quantity - 1)) {
 							break;
@@ -1141,7 +1152,7 @@ Player.prototype.exchangeItemWithHand = function (s, q) {
 			} else if (itH.type === 'ITEM_TYPE_STACKABLE' && this.findPocketItem(itH.id) > -1) {
 				var i = this.findPocketItem(itH.id);
 				var qty = itH.quantity + ch.pocket[i].quantity;
-				var temp = newPocketItem(it.id, it.quantity);
+				temp = newPocketItem(it.id, it.quantity);
 				it.setPocketItem(itH.id, itH.quantity);
 				itH.setPocketItem(temp.id, temp.quantity);
 				this.exchangeItemWithHand(i, 99);
@@ -1156,33 +1167,33 @@ Player.prototype.exchangeItemWithHand = function (s, q) {
 					if (itH.type === 'ITEM_TYPE_GLOVES') {
 						this.exchangeItemWithHand(POCKET_GLOVES);
 					} else if (itH.id === 0) {
-						var it = ch.pocket[POCKET_GLOVES];
+						it = ch.pocket[POCKET_GLOVES];
 					}
 				}
-				var temp = newPocketItem(it.id, it.quantity);
+				temp = newPocketItem(it.id, it.quantity);
 				it.setPocketItem(itH.id, itH.quantity);
 				itH.setPocketItem(temp.id, temp.quantity);
 			}
 			this.showSpellText = false;
 		}
 	}
-}
+};
 Player.prototype.findPocketItem = function (i) {
 	var ch = this.getActivePocketChampion();
 	if (ch !== null) {
-		for (var ip = 0; ip < ch.pocket.length; ip++) {
+		for (let ip = 0; ip < ch.pocket.length; ip++) {
 			if (ch.pocket[ip].id === i) {
 				return ip;
 			}
 		}
 	}
 	return -1;
-}
+};
 Player.prototype.actionItem = function (s) {
 	this.redrawViewPort = true;
 	var itH = this.pocket;
 	xy = getOffsetByRotation(this.d);
-	xyi = new Array();
+	xyi = [];
 	switch (s) {
 		case 0:
 			xyi = {
@@ -1215,17 +1226,18 @@ Player.prototype.actionItem = function (s) {
 		if (tower[towerThis].floor[this.floor].Map[xyi.y].length >= xyi.x) {
 			setDungeonHex(this.floor, xyi.x, xyi.y, 12, 1, '0');
 			if (itH.id === 0) { //take item
-				for (var i = item[towerThis].length - 1; i >= 0; i--) {
+				var it;
+				for (let i = item[towerThis].length - 1; i >= 0; i--) {
 					if (item[towerThis][i].location.tower === towerThis && item[towerThis][i].location.floor === this.floor && item[towerThis][i].location.x === xyi.x && item[towerThis][i].location.y === xyi.y && item[towerThis][i].location.square === (this.d + s) % 4) {
-						var it = item[towerThis].splice(i, 1);
+						it = item[towerThis].splice(i, 1);
 						break;
 					}
 				}
-				if (typeof it !== "undefined") {
-					for (var c = 0; c < this.champion.length; c++) { //take a RIP that is part of the group. This will make the item disappear.
+				if (typeof it !== 'undefined') {
+					for (let c = 0; c < this.champion.length; c++) { //take a RIP that is part of the group. This will make the item disappear.
 						var ch = this.getChampion(c);
 						var rip = getObjectByKeys(itemJson[it[0].id], 'revive');
-						if (ch !== null && typeof rip !== "undefined" && rip === CHAMPION_ID[ch.id] && !ch.recruitment.attached) {
+						if (ch !== null && typeof rip !== 'undefined' && rip === CHAMPION_ID[ch.id] && !ch.recruitment.attached) {
 							ch.recruitment.attached = true;
 							return true;
 						}
@@ -1244,17 +1256,17 @@ Player.prototype.actionItem = function (s) {
 		}
 	}
 	return false;
-}
+};
 Player.prototype.getItemsInRange = function (pos2) {
 	var itemsInRange = [];
 	var pos = -1;
-	for (var i = item[towerThis].length - 1; i >= 0; i--) {
+	for (let i = item[towerThis].length - 1; i >= 0; i--) {
 		var it = item[towerThis][i];
 		if (this.floor === it.location.floor) {
 			pos = coordinatesToPos(it.location.x, it.location.y, this.x, this.y, this.d);
 			sq = (6 + it.location.square - this.d) % 4;
 			sq2 = (sq === CHAR_FRONT_LEFT || sq === CHAR_FRONT_RIGHT) ? 0 : 1;
-			if (pos > -1 && (typeof pos2 === "undefined" || pos2 === pos)) {
+			if (pos > -1 && (typeof pos2 === 'undefined' || pos2 === pos)) {
 				//check shelf
 				var sh = false;
 				if (getObject(it.location.floor, it.location.x, it.location.y, this.d, 2) === OBJECT_SHELF) {
@@ -1271,29 +1283,29 @@ Player.prototype.getItemsInRange = function (pos2) {
 		}
 	}
 	return itemsInRange;
-}
+};
 
 Player.prototype.castSpell = function (sb, ch, s) {
 	if (!this.dead && !this.sleeping && ch.getMonster().getCurseTimers() > 0) {
-		if (typeof s === "undefined") {
-			var s = false;
+		if (typeof s === 'undefined') {
+			s = false;
 		}
 		this.doneCommunication();
 		var pow = ch.getSpellPower();
 		var cost = sb.cost;
 		var it = ch.getEquippedItems();
-		for (var i = 0; i < it.length; i++) { //wands
+		for (let i = 0; i < it.length; i++) { //wands
 			var res = ch.useItem(it[i], 'onCastSpell', { spell: ch.selectedSpell });
 			var pw = res.power;
 			var pf = res.powerFactor;
 			var cf = res.costFactor;
-			if (typeof pw === "undefined") {
+			if (typeof pw === 'undefined') {
 				pw = 0;
 			}
-			if (typeof pf === "undefined") {
+			if (typeof pf === 'undefined') {
 				pf = 1.0;
 			}
-			if (typeof cf === "undefined") {
+			if (typeof cf === 'undefined') {
 				cf = 1.0;
 			}
 			pow = (pow + pw) * pf;
@@ -1303,7 +1315,7 @@ Player.prototype.castSpell = function (sb, ch, s) {
 		cost = Math.round(cost);
 		if (ch.stat.sp - cost >= 0) {
 			if (this.doFizzle()) {
-				writeSpellInfoFont(this, TEXT_SPELL_FIZZLES, colourData['BLUE_DARK']); //spell fizzles
+				writeSpellInfoFont(this, TEXT_SPELL_FIZZLES, colourData.BLUE_DARK); //spell fizzles
 			} else if (Math.random() < ch.getSpellCastChance()) {
 				castSpell(sb.id, ch.getMonster(), pow);
 				sb.castSuccessful++;
@@ -1316,7 +1328,7 @@ Player.prototype.castSpell = function (sb, ch, s) {
 				this.uiRightPanel.mode = UI_RIGHT_PANEL_MAIN;
 				this.redrawLeftRightUiFlag = UI_REDRAW_RIGHT;
 			} else if (!s) { //spell failed
-				writeSpellInfoFont(this, TEXT_SPELL_FAILED, colourData['GREY_LIGHT']);
+				writeSpellInfoFont(this, TEXT_SPELL_FAILED, colourData.GREY_LIGHT);
 			} else {
 				ch.writeAttackPoints('spell');
 			}
@@ -1326,13 +1338,13 @@ Player.prototype.castSpell = function (sb, ch, s) {
 			ch.selectedSpell = null;
 			ch.getMonster().doGesture(CHA_GESTURE_SPELLCASTING);
 		} else if (!s) {
-			writeSpellInfoFont(this, TEXT_COST_TOO_HIGH, colourData['RED']);
+			writeSpellInfoFont(this, TEXT_COST_TOO_HIGH, colourData.RED);
 		}
-		for (var p in player) {
+		for (let p in player) {
 			player[p].redrawViewPort = true;
 		}
 	}
-}
+};
 /*Player.prototype.shootArrow = function (ch) {
     this.doneCommunication();
     var pow = ch.getBowPower();
@@ -1342,9 +1354,9 @@ Player.prototype.castSpell = function (sb, ch, s) {
         } else if (ch.pocket[POCKET_RIGHT_HAND].id === 'ITEM_ARROWS' || ch.pocket[POCKET_RIGHT_HAND].id === 'ITEM_ELF_ARROWS') {
             var arr = ch.pocket[POCKET_RIGHT_HAND];
         }
-        var col = paletteData['BRONZE_ARROW'];
+        var col = paletteData.BRONZE_ARROW;
         if (arr.id === 'ITEM_ELF_ARROWS') {
-            col = paletteData['GREEN_ARROW'];
+            col = paletteData.GREEN_ARROW;
         }
         arr.setPocketItem(arr.id, arr.quantity - 1);
         newProjectile('PROJECTILE_ARROW', col, 'SOUND_ATTACK', arr.id + 100, pow * (1.0 + ch.stat.str / 4.0 + ch.stat.agi / 2.0), this.floor, this.x, this.y, this.d, ch.getMonster());
@@ -1359,34 +1371,34 @@ Player.prototype.getActiveSpellById = function (id) {
 		power: 0,
 		timer: 0
 	};
-	for (var c = 0; c < this.champion.length; c++) {
+	for (let c = 0; c < this.champion.length; c++) {
 		var ch = this.getChampion(c);
-		if (ch !== null && (typeof id === "undefined" || id === ch.activeSpell.id) && ret.timer < ch.activeSpell.timer) {
+		if (ch !== null && (typeof id === 'undefined' || id === ch.activeSpell.id) && ret.timer < ch.activeSpell.timer) {
 			ret = ch.activeSpell;
 		}
 	}
 	return ret;
-}
+};
 
 Player.prototype.getActiveSpellActionValue = function (ac) {
-	for (var c = 0; c < this.champion.length; c++) {
+	for (let c = 0; c < this.champion.length; c++) {
 		var ch = this.getChampion(c);
 		var as = ch.getActiveSpellActionValue(ac);
-		if (typeof as !== "undefined") {
+		if (typeof as !== 'undefined') {
 			return as;
 		}
 	}
 	return undefined;
-}
+};
 
 Player.prototype.getProjectilesInRange = function (pos2) {
 	var projectilesInRange = [];
 	var pos = -1;
-	for (var i = 0; i < projectile[towerThis].length; i++) {
+	for (let i = 0; i < projectile[towerThis].length; i++) {
 		var pr = projectile[towerThis][i];
 		if (this.floor === pr.floor && pr.dead <= 1) {
 			pos = coordinatesToPos(pr.x, pr.y, this.x, this.y, this.d);
-			if (pos > -1 && (typeof pos2 === "undefined" || pos2 === pos)) {
+			if (pos > -1 && (typeof pos2 === 'undefined' || pos2 === pos)) {
 				projectilesInRange.push({
 					projectile: pr,
 					position: pos,
@@ -1397,26 +1409,26 @@ Player.prototype.getProjectilesInRange = function (pos2) {
 		}
 	}
 	return projectilesInRange;
-}
+};
 Player.prototype.getObjectOnPos = function (pos, d) {
-	if (typeof d === "undefined") {
+	if (typeof d === 'undefined') {
 		d = 2;
 	}
 	var xy = posToCoordinates(pos, this.x, this.y, this.d);
 	return getObject(this.floor, xy.x, xy.y, this.d, d);
-}
+};
 Player.prototype.message = function (txt, col, wait, delay) {
-	if (typeof txt === "undefined") {
+	if (typeof txt === 'undefined') {
 		txt = '';
 	}
-	if (typeof col === "undefined") {
-		col = colourData['GREEN'];
+	if (typeof col === 'undefined') {
+		col = colourData.GREEN;
 	}
-	if (typeof delay === "undefined") {
+	if (typeof delay === 'undefined') {
 		delay = 3000;
 	}
 	var self = this;
-	if (typeof wait === "undefined") {
+	if (typeof wait === 'undefined') {
 		wait = false;
 	}
 	if (txt === '') {
@@ -1432,16 +1444,16 @@ Player.prototype.message = function (txt, col, wait, delay) {
 			self.message(txt, col, wait);
 		}, 500);
 	}
-}
+};
 Player.prototype.checkForMonsterInFront = function () {
 	xy = getOffsetByRotation(this.d);
 	mon = getMonsterAt(this.floor, this.x + xy.x, this.y + xy.y);
 	return mon;
-}
+};
 Player.prototype.startDrawHitDamage = function (cid, dmg) {
 	if (dmg > 0) {
 		var c1 = this.getOrderedChampionIds();
-		for (var c = 0; c < this.champion.length; c++) {
+		for (let c = 0; c < this.champion.length; c++) {
 			var c2 = c1[c];
 			var ch = this.getChampion(c2);
 			if (ch !== null && ch.id === cid && this.uiLeftPanel.champs[c].opened) {
@@ -1450,29 +1462,29 @@ Player.prototype.startDrawHitDamage = function (cid, dmg) {
 			}
 		}
 	}
-}
-Player.prototype.testMode = function (id) {
-	if (debug) {
-		var xy = posToCoordinates(15, this.x, this.y, this.d);
-		var hex = tower[towerThis].floor[this.floor].Map[xy.y][xy.x];
-		//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = setHexToBinaryPosition(hex, 8, 8, '0'); //REMOVE OBJECT
-		//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = toggleObject(hex, '3'); //TOGGLE PILLAR
-		//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = setHexToBinaryPosition(hex, 10, 2, '' + ((parseInt(getHexToBinaryPosition(hex, 10, 2)) + 1) % 4)); //ROTATE WALL
-		//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = bin2hex(hex2bin(hex).substring(2, 8) +  hex2bin(hex).substring(0, 2) + hex2bin(hex).substring(8, 16)); //ROTATE WOODEN WALL
-		/*try {
-				var view = this.getView();
-				for(var i = 0; i < 17; i++) {
-						var t = view[i].substring(2, 4);
-						if (view[i].substring(2, 4) === "80") {
-								window.alert("Distance: " + getMonsterDistanceByPos(i) + " Code: " + view[i]);
-						}
-				}
-		} catch (e) {
-				PrintLog(e.toString());
-		};*/
-		//this.castSpell(SPELL_MINDROCK, this.getChampion(0));
-	}
-}
+};
+Player.prototype.testMode = function () {
+	//if (debug) {
+	//var xy = posToCoordinates(15, this.x, this.y, this.d);
+	//var hex = tower[towerThis].floor[this.floor].Map[xy.y][xy.x];
+	//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = setHexToBinaryPosition(hex, 8, 8, '0'); //REMOVE OBJECT
+	//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = toggleObject(hex, '3'); //TOGGLE PILLAR
+	//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = setHexToBinaryPosition(hex, 10, 2, '' + ((parseInt(getHexToBinaryPosition(hex, 10, 2)) + 1) % 4)); //ROTATE WALL
+	//tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = bin2hex(hex2bin(hex).substring(2, 8) +  hex2bin(hex).substring(0, 2) + hex2bin(hex).substring(8, 16)); //ROTATE WOODEN WALL
+	/*try {
+			var view = this.getView();
+			for(var i = 0; i < 17; i++) {
+					var t = view[i].substring(2, 4);
+					if (view[i].substring(2, 4) === '80') {
+							window.alert('Distance: ' + getMonsterDistanceByPos(i) + ' Code: ' + view[i]);
+					}
+			}
+	} catch (e) {
+			PrintLog(e.toString());
+	};*/
+	//this.castSpell(SPELL_MINDROCK, this.getChampion(0));
+	//}
+};
 Player.prototype.doCommunication = function (text) {
 	if (!this.dead) {
 		switch (this.communication.mode) {
@@ -1496,7 +1508,7 @@ Player.prototype.doCommunication = function (text) {
 						}
 						break;
 					case COMMUNICATION_CALL:
-						for (var c = 0; c < 4; c++) {
+						for (let c = 0; c < 4; c++) {
 							var ch = this.getChampion(c);
 							if (ch !== null && !ch.recruitment.attached && !ch.dead) {
 								ch.recruitment.called = true;
@@ -1513,22 +1525,24 @@ Player.prototype.doCommunication = function (text) {
 				}
 				break;
 			case COMMUNICATION_PAGE_NAMES:
+				var c1;
+				var c2;
 				switch (this.communication.text) {
 					case COMMUNICATION_WAIT:
 						if (text < this.getChampionLength() - 1) {
-							var c1 = this.getOrderedChampionIds();
-							var c2 = c1[text + 1];
+							c1 = this.getOrderedChampionIds();
+							c2 = c1[text + 1];
 							this.waitChampion(c2);
 							this.communication.mode = COMMUNICATION_PAGE_MAIN;
 							this.communication.text = null;
 							redrawUI(this.id);
-							this.message(this.getChampion(c2).firstName + TEXT_WAITS, colourData['GREEN']);
+							this.message(this.getChampion(c2).firstName + TEXT_WAITS, colourData.GREEN);
 						}
 						break;
 					case COMMUNICATION_DISMISS:
 						if (text < this.getChampionLength() - 1) {
-							var c1 = this.getOrderedChampionIds();
-							var c2 = c1[text + 1];
+							c1 = this.getOrderedChampionIds();
+							c2 = c1[text + 1];
 							this.dismissChampion(c2);
 							this.communication.mode = COMMUNICATION_PAGE_MAIN;
 							this.communication.text = null;
@@ -1550,7 +1564,7 @@ Player.prototype.doCommunication = function (text) {
 };
 Player.prototype.doCommunicationAnswer = function () {
 	var ans = this.communication.answer;
-	this.message(ans, colourData['RED']);
+	this.message(ans, colourData.RED);
 	var mon = this.communication.monster;
 	if (this.communication.mode === COMMUNICATION_PAGE_COMMUNICATE_0) {
 		if (this.communication.text === COMMUNICATION_RECRUIT && ans === 'YES') {
@@ -1562,13 +1576,13 @@ Player.prototype.doCommunicationAnswer = function () {
 	}
 	this.communication.answerTimer = 0;
 	this.communication.answer = null;
-}
+};
 Player.prototype.determineCommunicationQuestionAnswer = function (mode, text) {
 	var c = this.getCommunication(mode, text);
 	if (typeof c !== 'undefined') {
-		var myColour = colourData['GREEN'];
+		var myColour = colourData.GREEN;
 		if (this.id === 1) {
-			myColour = colourData['PINK'];
+			myColour = colourData.PINK;
 		}
 		var q = Math.floor(Math.random() * c.question.length);
 		this.message(c.question[q], myColour);
@@ -1583,15 +1597,15 @@ Player.prototype.determineCommunicationQuestionAnswer = function (mode, text) {
 				}
 			} else if (typeof player[1] !== 'undefined' && mon.isRecruitedBy() === player[1 - this.id]) { //other player
 				p1 = player[1 - this.id];
-				p1.message(c.question[q], colourData['RED']);
+				p1.message(c.question[q], colourData.RED);
 			}
 			this.communication.charisma += 5;
 		}
 	}
-}
+};
 Player.prototype.filterCommunicationAnswer = function (answer, mode, text) {
-	var ans = new Array();
-	for (var a = 0; a < answer.length; a++) {
+	var ans = [];
+	for (let a = 0; a < answer.length; a++) {
 		ans.push(a);
 	}
 	var mon = this.communication.monster;
@@ -1631,7 +1645,7 @@ Player.prototype.filterCommunicationAnswer = function (answer, mode, text) {
 		}
 	}
 	return ans;
-}
+};
 Player.prototype.doneCommunication = function () {
 	if (this.communication.mode > COMMUNICATION_PAGE_MAIN) {
 		if (this.communication.monster !== null) {
@@ -1644,9 +1658,9 @@ Player.prototype.doneCommunication = function () {
 		this.uiLeftPanel.mode = UI_LEFT_PANEL_MODE_COMMAND;
 		redrawUI(this.id, UI_REDRAW_LEFT);
 	}
-}
+};
 Player.prototype.getCommunication = function (mode, text) {
-	for (var q = 0; q < TEXT_COMMUNICATION.length; q++) {
+	for (let q = 0; q < TEXT_COMMUNICATION.length; q++) {
 		if ((typeof TEXT_COMMUNICATION[q][1] !== 'undefined' && TEXT_COMMUNICATION[q][1] !== null) || typeof text !== 'number') {
 			if ((typeof text === 'number' && TEXT_COMMUNICATION[q][1] === mode && TEXT_COMMUNICATION[q][2] === text) || (typeof text !== 'number' && q === mode)) {
 				var qa = {
@@ -1661,13 +1675,13 @@ Player.prototype.getCommunication = function (mode, text) {
 				if (typeof TEXT_COMMUNICATION[q][4] !== 'undefined' && TEXT_COMMUNICATION[q][4] !== null) {
 					ql = TEXT_COMMUNICATION[q][4];
 				}
-				for (var q1 = 0; q1 < ql; q1++) {
+				for (let q1 = 0; q1 < ql; q1++) {
 					var que = '';
 					if (typeof TEXT_COMMUNICATION[q + q1 + qs][0] === 'string') {
 						que = TEXT_COMMUNICATION[q + q1 + qs][0];
 					} else {
-						for (var w = 0; w < TEXT_COMMUNICATION[q + q1 + qs][0].length; w++) {
-							var w1 = Math.floor(Math.random() * TEXT_COMMUNICATION[q + q1 + qs][0][w].length);
+						for (let w = 0; w < TEXT_COMMUNICATION[q + q1 + qs][0].length; w++) {
+							let w1 = Math.floor(Math.random() * TEXT_COMMUNICATION[q + q1 + qs][0][w].length);
 							que += TEXT_COMMUNICATION[q + q1 + qs][0][w][w1];
 						}
 					}
@@ -1700,13 +1714,13 @@ Player.prototype.getCommunication = function (mode, text) {
 				if (typeof TEXT_COMMUNICATION[q][6] !== 'undefined' && TEXT_COMMUNICATION[q][6] !== null) {
 					al = TEXT_COMMUNICATION[q][6];
 				}
-				for (var a1 = 0; a1 < al; a1++) {
+				for (let a1 = 0; a1 < al; a1++) {
 					var ans = '';
 					if (typeof TEXT_COMMUNICATION[q + a1 + as][0] === 'string') {
 						ans = TEXT_COMMUNICATION[q + a1 + as][0];
 					} else {
-						for (var w = 0; w < TEXT_COMMUNICATION[q + a1 + as][0].length; w++) {
-							var w1 = Math.floor(Math.random() * TEXT_COMMUNICATION[q + a1 + as][0][w].length);
+						for (let w = 0; w < TEXT_COMMUNICATION[q + a1 + as][0].length; w++) {
+							let w1 = Math.floor(Math.random() * TEXT_COMMUNICATION[q + a1 + as][0][w].length);
 							ans += TEXT_COMMUNICATION[q + a1 + as][0][w][w1];
 						}
 					}
@@ -1733,10 +1747,10 @@ Player.prototype.getCommunication = function (mode, text) {
 			}
 		}
 	}
-}
+};
 
 function getPlayerAt(f, x, y) {
-	for (var p in player) {
+	for (let p in player) {
 		var pl = player[parseInt(p)];
 		if (!pl.dead && f === pl.floor && x === pl.x && y === pl.y) {
 			return pl;
@@ -1746,11 +1760,11 @@ function getPlayerAt(f, x, y) {
 }
 
 function initPlayersStart(ch1, ch2) {
-	if (typeof ch1 === "number") {
+	if (typeof ch1 === 'number') {
 		c1 = [ch1, ch2];
-		for (var p in player) {
+		for (let p in player) {
 			player[p].recruitChampion(c1[p]);
-			for (var i = 1; i < 4; i++) {
+			for (let i = 1; i < 4; i++) {
 				player[p].recruitChampion();
 			}
 			var ch = player[p].getChampion(0);
@@ -1762,8 +1776,8 @@ function initPlayersStart(ch1, ch2) {
 			player[p].setPlayerPosition(f, x, y, d);
 		}
 	} else {
-		for (var p in player) {
-			for (var i = 0; i < 4; i++) {
+		for (let p in player) {
+			for (let i = 0; i < 4; i++) {
 				c1 = [ch1[i], ch2[i]];
 				player[p].recruitChampion(c1[p]);
 			}

@@ -8,7 +8,7 @@ function initSounds(soundJson, path){
 
     path = path.substring(0, path.indexOf('json')) + "sounds/"
 
-    for (var s in soundJson){
+    for (let s in soundJson){
         audioFiles[soundJson[s].id] = new Audio(path+soundJson[s].filename);
     }
 

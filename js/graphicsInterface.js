@@ -1248,8 +1248,10 @@ function drawCommunicationBox(p, item, forced) {
 				ctx.fillStyle = 'rgb(' + colourData.BLUE_DARK[0] + ', ' + colourData.BLUE_DARK[1] + ', ' + colourData.BLUE_DARK[2] + ')';
 				myColour = colourData.WHITE;
 			}
-
-			var x = (p.ScreenX + 1) + (TEXT_COMMUNICATION_COMMANDS[myPage][r - 1].width + 1);
+			var x = (p.ScreenX + 1) + 1;
+			if (r > 0) {
+				x = (p.ScreenX + 1) + (TEXT_COMMUNICATION_COMMANDS[myPage][r - 1].width + 1);
+			}
 			var al = FONT_ALIGNMENT_RIGHT;
 			var t = TEXT_COMMUNICATION_COMMANDS[myPage][r].width + 2;
 			if (TEXT_COMMUNICATION_COMMANDS[myPage][r].left) {
@@ -1257,6 +1259,7 @@ function drawCommunicationBox(p, item, forced) {
 				al = FONT_ALIGNMENT_LEFT;
 				t = 1;
 			}
+
 			var y = (p.ScreenY + 47) + (TEXT_COMMUNICATION_COMMANDS[myPage][r].row * 8);
 			ctx.fillRect(x * scale, y * scale, TEXT_COMMUNICATION_COMMANDS[myPage][r].width * scale, 7 * scale);
 			if (myPage === COMMUNICATION_PAGE_NAMES) {

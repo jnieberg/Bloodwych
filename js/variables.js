@@ -17,8 +17,8 @@ var defaultManifest;
 //Declare Arrays for the Graphics
 var gfxPos;
 var gfx = [];
-window.player = new Array();
-window.tower = new Array();
+window.player = [];
+window.tower = [];
 var cursorType = 0;
 var champSelectGrid = [];
 var gameStateSelectGrid = [];
@@ -52,10 +52,10 @@ var timerMaster = 0;
 var timerMonsterMove = 0;
 var timerChampionStats = 0;
 var cutpurseTrueview = 0;
-var towerSwitchesData = new Array();
-var gemSwitchesData = new Array();
-var crystalSwitchesData = new Array();
-var armourData = new Array();
+var towerSwitchesData = [];
+var gemSwitchesData = [];
+var crystalSwitchesData = [];
+var armourData = [];
 var monsterItemData = [];
 var loadingInterval = 0;
 var gfxUI = [];
@@ -80,7 +80,7 @@ var GAME_ID = ['BW', 'EXT', 'BOS', 'CUSTOM'];
 var soundEnabled = true;
 
 
-//Flags for determining whether some asycnhronous file calls were succesfully loaded (see fileloader.js "getFileData")
+//Flags for determining whether some asycnhronous file calls were succesfully loaded (see fileloader.js 'getFileData')
 //When a file is called, we increase 'count'
 //When a file is loaded, we increase 'max'
 //When count == max (all is loaded), we increase 'done'
@@ -102,22 +102,22 @@ var cursorBlue = 0,
 var jsonDataLoaded = 0;
 
 var colourData = [];
-colourData['BLACK'] = [0, 0, 0, 255];
-colourData['GREY_DARKEST'] = [64, 64, 64, 255];
-colourData['GREY_DARK'] = [96, 96, 96, 255];
-colourData['GREY_MEDIUM'] = [128, 128, 128, 255];
-colourData['GREY_LIGHT'] = [160, 160, 160, 255];
-colourData['GREEN_DARK'] = [32, 144, 32, 255];
-colourData['GREEN'] = [16, 192, 16, 255];
-colourData['BLUE_DARK'] = [0, 0, 224, 255];
-colourData['BLUE'] = [64, 128, 224, 255];
-colourData['RED_DARK'] = [128, 32, 16, 255];
-colourData['BROWN'] = [160, 64, 32, 255];
-colourData['PINK'] = [224, 144, 96, 255];
-colourData['RED'] = [208, 0, 0, 255];
-colourData['YELLOW'] = [224, 192, 0, 255];
-colourData['WHITE'] = [224, 224, 224, 255];
-colourData['TRANSPARENT'] = [0, 0, 0, 0];
+colourData.BLACK = [0, 0, 0, 255];
+colourData.GREY_DARKEST = [64, 64, 64, 255];
+colourData.GREY_DARK = [96, 96, 96, 255];
+colourData.GREY_MEDIUM = [128, 128, 128, 255];
+colourData.GREY_LIGHT = [160, 160, 160, 255];
+colourData.GREEN_DARK = [32, 144, 32, 255];
+colourData.GREEN = [16, 192, 16, 255];
+colourData.BLUE_DARK = [0, 0, 224, 255];
+colourData.BLUE = [64, 128, 224, 255];
+colourData.RED_DARK = [128, 32, 16, 255];
+colourData.BROWN = [160, 64, 32, 255];
+colourData.PINK = [224, 144, 96, 255];
+colourData.RED = [208, 0, 0, 255];
+colourData.YELLOW = [224, 192, 0, 255];
+colourData.WHITE = [224, 224, 224, 255];
+colourData.TRANSPARENT = [0, 0, 0, 0];
 
 var COLOUR_DOOR_NORMAL = 0,
 	COLOUR_DOOR_BRONZE = 1,
@@ -184,95 +184,95 @@ var CHAR_FRONT_SOLO = -1,
 	CHAR_BACK_LEFT = 3;
 
 var paletteData = [];
-paletteData['PLAYER'] = [];
-paletteData['PLAYER'][0] = [colourData['WHITE'], colourData['BLUE'], colourData['BLUE_DARK']];
-paletteData['PLAYER'][1] = [colourData['WHITE'], colourData['RED'], colourData['RED_DARK']];
+paletteData.PLAYER = [];
+paletteData.PLAYER[0] = [colourData.WHITE, colourData.BLUE, colourData.BLUE_DARK];
+paletteData.PLAYER[1] = [colourData.WHITE, colourData.RED, colourData.RED_DARK];
 
-paletteData['CLASS'] = new Array();
-paletteData['CLASS'][CLASS_SERPENT] = colourData['GREEN'],
-	paletteData['CLASS'][CLASS_CHAOS] = colourData['YELLOW'],
-	paletteData['CLASS'][CLASS_DRAGON] = colourData['RED'],
-	paletteData['CLASS'][CLASS_MOON] = colourData['BLUE'],
-	paletteData['CLASS'][CLASS_ANCIENT] = colourData['PINK'];
+paletteData.CLASS = [];
+paletteData.CLASS[CLASS_SERPENT] = colourData.GREEN;
+paletteData.CLASS[CLASS_CHAOS] = colourData.YELLOW;
+paletteData.CLASS[CLASS_DRAGON] = colourData.RED;
+paletteData.CLASS[CLASS_MOON] = colourData.BLUE;
+paletteData.CLASS[CLASS_ANCIENT] = colourData.PINK;
 
-paletteData['SERPENT'] = new Array(colourData['GREY_LIGHT'], colourData['WHITE'], colourData['GREEN'], colourData['GREEN_DARK'], colourData['GREEN'], colourData['WHITE']),
-	paletteData['MOON'] = new Array(colourData['GREY_LIGHT'], colourData['WHITE'], colourData['BLUE'], colourData['BLUE_DARK'], colourData['BLUE'], colourData['WHITE']),
-	paletteData['DRAGON'] = new Array(colourData['GREY_LIGHT'], colourData['YELLOW'], colourData['PINK'], colourData['RED'], colourData['RED'], colourData['WHITE']),
-	paletteData['CHAOS'] = new Array(colourData['GREY_LIGHT'], colourData['WHITE'], colourData['YELLOW'], colourData['PINK'], colourData['YELLOW'], colourData['WHITE']),
-	paletteData['DEAD'] = new Array(colourData['BLACK'], colourData['GREY_MEDIUM'], colourData['GREY_DARK'], colourData['GREY_DARKEST']),
-	paletteData['SELECTED'] = new Array(colourData['BLACK'], colourData['WHITE'], colourData['GREY_LIGHT'], colourData['GREY_MEDIUM']),
-	paletteData['SERPENT_ARROW'] = new Array(colourData['YELLOW'], colourData['GREEN'], colourData['GREEN_DARK'], colourData['GREY_DARK'], colourData['YELLOW'], colourData['GREEN']),
-	paletteData['MOON_ARROW'] = new Array(colourData['WHITE'], colourData['WHITE'], colourData['BLUE'], colourData['BLUE_DARK'], colourData['BLACK'], colourData['BLUE_DARK']),
-	paletteData['DRAGON_ARROW'] = new Array(colourData['WHITE'], colourData['YELLOW'], colourData['PINK'], colourData['RED']),
-	paletteData['CHAOS_ARROW'] = new Array(colourData['WHITE'], colourData['WHITE'], colourData['YELLOW'], colourData['PINK'], colourData['PINK'], colourData['YELLOW']),
-	paletteData['BRONZE_ARROW'] = new Array(colourData['PINK'], colourData['BROWN'], colourData['BROWN'], colourData['RED_DARK']),
-	paletteData['GREEN_ARROW'] = new Array(colourData['GREEN'], colourData['GREEN_DARK'], colourData['GREY_DARK'], colourData['GREY_DARKEST']),
-	paletteData['GOLD_ARROW'] = new Array(colourData['WHITE'], colourData['YELLOW'], colourData['PINK'], colourData['BROWN'], colourData['BROWN'], colourData['YELLOW']),
-	paletteData['SERPENT_BIG'] = new Array(colourData['GREEN_DARK'], colourData['GREEN'], colourData['YELLOW'], colourData['GREY_DARK'], colourData['GREEN'], colourData['WHITE']),
-	paletteData['MOON_BIG'] = new Array(colourData['BLUE_DARK'], colourData['BLUE'], colourData['GREEN'], colourData['GREY_DARK'], colourData['BLUE'], colourData['WHITE']),
-	paletteData['DRAGON_BIG'] = new Array(colourData['RED'], colourData['PINK'], colourData['YELLOW'], colourData['RED_DARK'], colourData['RED'], colourData['WHITE']),
-	paletteData['CHAOS_BIG'] = new Array(colourData['PINK'], colourData['YELLOW'], colourData['WHITE'], colourData['BROWN'], colourData['YELLOW'], colourData['WHITE']),
-	paletteData['DISRUPT_BIG'] = new Array(colourData['BLACK'], colourData['BLACK'], colourData['BLACK'], colourData['BLACK'], colourData['YELLOW'], colourData['BLACK']),
-	paletteData['BLAZE_BIG'] = new Array(colourData['YELLOW'], colourData['PINK'], colourData['RED'], colourData['RED_DARK'], colourData['RED'], colourData['WHITE']),
-	paletteData['PIT_FLASH'] = new Array(null, null, null, null, colourData['GREY_MEDIUM'], null),
-	paletteData['TELEPORT_FLASH'] = new Array(null, null, null, null, colourData['WHITE'], colourData['BLACK']),
-	paletteData['DEFAULT_MON'] = [colourData['BLACK'], colourData['GREY_LIGHT'], colourData['BLUE'], colourData['RED']],
-	paletteData['DEFAULT_SHIELD'] = new Array([255, 0, 255, 255], colourData['RED'], colourData['GREY_LIGHT'], colourData['BLUE']),
-	paletteData['DEFAULT_ITEM'] = new Array(colourData['GREEN'], colourData['RED'], colourData['GREY_LIGHT'], colourData['BLUE']),
-	paletteData['DEFAULT_ITEM_DUN'] = new Array(colourData['RED'], colourData['BLUE'], colourData['GREY_LIGHT'], colourData['BLACK']);
+paletteData.SERPENT = new Array(colourData.GREY_LIGHT, colourData.WHITE, colourData.GREEN, colourData.GREEN_DARK, colourData.GREEN, colourData.WHITE);
+paletteData.MOON = new Array(colourData.GREY_LIGHT, colourData.WHITE, colourData.BLUE, colourData.BLUE_DARK, colourData.BLUE, colourData.WHITE);
+paletteData.DRAGON = new Array(colourData.GREY_LIGHT, colourData.YELLOW, colourData.PINK, colourData.RED, colourData.RED, colourData.WHITE);
+paletteData.CHAOS = new Array(colourData.GREY_LIGHT, colourData.WHITE, colourData.YELLOW, colourData.PINK, colourData.YELLOW, colourData.WHITE);
+paletteData.DEAD = new Array(colourData.BLACK, colourData.GREY_MEDIUM, colourData.GREY_DARK, colourData.GREY_DARKEST);
+paletteData.SELECTED = new Array(colourData.BLACK, colourData.WHITE, colourData.GREY_LIGHT, colourData.GREY_MEDIUM);
+paletteData.SERPENT_ARROW = new Array(colourData.YELLOW, colourData.GREEN, colourData.GREEN_DARK, colourData.GREY_DARK, colourData.YELLOW, colourData.GREEN);
+paletteData.MOON_ARROW = new Array(colourData.WHITE, colourData.WHITE, colourData.BLUE, colourData.BLUE_DARK, colourData.BLACK, colourData.BLUE_DARK);
+paletteData.DRAGON_ARROW = new Array(colourData.WHITE, colourData.YELLOW, colourData.PINK, colourData.RED);
+paletteData.CHAOS_ARROW = new Array(colourData.WHITE, colourData.WHITE, colourData.YELLOW, colourData.PINK, colourData.PINK, colourData.YELLOW);
+paletteData.BRONZE_ARROW = new Array(colourData.PINK, colourData.BROWN, colourData.BROWN, colourData.RED_DARK);
+paletteData.GREEN_ARROW = new Array(colourData.GREEN, colourData.GREEN_DARK, colourData.GREY_DARK, colourData.GREY_DARKEST);
+paletteData.GOLD_ARROW = new Array(colourData.WHITE, colourData.YELLOW, colourData.PINK, colourData.BROWN, colourData.BROWN, colourData.YELLOW);
+paletteData.SERPENT_BIG = new Array(colourData.GREEN_DARK, colourData.GREEN, colourData.YELLOW, colourData.GREY_DARK, colourData.GREEN, colourData.WHITE);
+paletteData.MOON_BIG = new Array(colourData.BLUE_DARK, colourData.BLUE, colourData.GREEN, colourData.GREY_DARK, colourData.BLUE, colourData.WHITE);
+paletteData.DRAGON_BIG = new Array(colourData.RED, colourData.PINK, colourData.YELLOW, colourData.RED_DARK, colourData.RED, colourData.WHITE);
+paletteData.CHAOS_BIG = new Array(colourData.PINK, colourData.YELLOW, colourData.WHITE, colourData.BROWN, colourData.YELLOW, colourData.WHITE);
+paletteData.DISRUPT_BIG = new Array(colourData.BLACK, colourData.BLACK, colourData.BLACK, colourData.BLACK, colourData.YELLOW, colourData.BLACK);
+paletteData.BLAZE_BIG = new Array(colourData.YELLOW, colourData.PINK, colourData.RED, colourData.RED_DARK, colourData.RED, colourData.WHITE);
+paletteData.PIT_FLASH = new Array(null, null, null, null, colourData.GREY_MEDIUM, null);
+paletteData.TELEPORT_FLASH = new Array(null, null, null, null, colourData.WHITE, colourData.BLACK);
+paletteData.DEFAULT_MON = [colourData.BLACK, colourData.GREY_LIGHT, colourData.BLUE, colourData.RED];
+paletteData.DEFAULT_SHIELD = new Array([255, 0, 255, 255], colourData.RED, colourData.GREY_LIGHT, colourData.BLUE);
+paletteData.DEFAULT_ITEM = new Array(colourData.GREEN, colourData.RED, colourData.GREY_LIGHT, colourData.BLUE);
+paletteData.DEFAULT_ITEM_DUN = new Array(colourData.RED, colourData.BLUE, colourData.GREY_LIGHT, colourData.BLACK);
 
-paletteData["switch"] = new Array();
-paletteData["switch"]["default"] = [colourData['RED'], colourData['BLUE'], colourData['GREY_LIGHT'], null];
-paletteData["switch"]["default-off"] = [colourData['GREY_LIGHT'], colourData['RED'], null, colourData['BLUE']];
-paletteData["switch"]["colours"] = new Array();
-paletteData["switch"]["colours"][COLOUR_SWITCH_SERPENT] = [colourData['GREEN'], colourData['GREEN_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["switch"]["colours"][COLOUR_SWITCH_CHAOS] = [colourData['YELLOW'], colourData['PINK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["switch"]["colours"][COLOUR_SWITCH_DRAGON] = [colourData['RED'], colourData['RED_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["switch"]["colours"][COLOUR_SWITCH_MOON] = [colourData['BLUE'], colourData['BLUE_DARK'], colourData['YELLOW'], colourData['BLACK']];
-paletteData["switch"]["colours"][COLOUR_SWITCH_GREY] = [colourData['GREY_MEDIUM'], colourData['GREY_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["switch"]["colours"][COLOUR_SWITCH_BROWN] = [colourData['BROWN'], colourData['RED_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["switch"]["colours"][COLOUR_SWITCH_BLACK] = [colourData['BLACK'], colourData['BLACK'], colourData['BLACK'], colourData['BLACK']];
-paletteData["gem"] = new Array();
-paletteData["gem"]["default"] = [colourData['RED'], colourData['BLUE'], null, null];
-paletteData["gem"]["default-off"] = [null, colourData['BLUE'], null, colourData['RED']];
-paletteData["gem"]["colours"] = new Array();
-paletteData["gem"]["colours"][COLOUR_GEM_SERPENT] = [colourData['GREEN'], colourData['GREEN_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["gem"]["colours"][COLOUR_GEM_CHAOS] = [colourData['YELLOW'], colourData['PINK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["gem"]["colours"][COLOUR_GEM_DRAGON] = [colourData['RED'], colourData['RED_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["gem"]["colours"][COLOUR_GEM_MOON] = [colourData['BLUE'], colourData['BLUE_DARK'], colourData['YELLOW'], colourData['BLACK']];
-paletteData["gem"]["colours"][COLOUR_GEM_GREY] = [colourData['GREY_MEDIUM'], colourData['GREY_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["gem"]["colours"][COLOUR_GEM_BLUEISH] = [colourData['GREEN'], colourData['BLUE'], colourData['WHITE'], colourData['BLACK']];
-paletteData["gem"]["colours"][COLOUR_GEM_BROWN] = [colourData['BROWN'], colourData['RED_DARK'], colourData['WHITE'], colourData['BLACK']];
-paletteData["gem"]["colours"][COLOUR_GEM_TAN] = [colourData['PINK'], colourData['BROWN'], colourData['WHITE'], colourData['BLACK']];
-paletteData["deco"] = new Array();
-paletteData["deco"]["default"] = [colourData['RED'], colourData['BLUE'], colourData['GREY_LIGHT']];
-paletteData["deco"]["colours"] = new Array();
-paletteData["deco"]["colours"][COLOUR_DECO_BRONZE] = [colourData['PINK'], colourData['BROWN'], colourData['RED_DARK']];
-paletteData["deco"]["colours"][COLOUR_DECO_SERPENT] = [colourData['YELLOW'], colourData['GREEN'], colourData['GREEN_DARK']];
-paletteData["deco"]["colours"][COLOUR_DECO_DRAGON] = [colourData['PINK'], colourData['RED'], colourData['RED_DARK']];
-paletteData["deco"]["colours"][COLOUR_DECO_MOON] = [colourData['GREY_LIGHT'], colourData['BLUE'], colourData['BLUE_DARK']];
-paletteData["deco"]["colours"][COLOUR_DECO_CHAOS] = [colourData['WHITE'], colourData['YELLOW'], colourData['PINK']];
-paletteData["deco"]["colours"][COLOUR_DECO_IRON] = [colourData['GREY_LIGHT'], colourData['GREY_MEDIUM'], colourData['GREY_DARK']];
-paletteData["deco"]["colours"][COLOUR_DECO_BROWN] = [colourData['YELLOW'], colourData['PINK'], colourData['BROWN']];
-paletteData["deco"]["colours"][COLOUR_DECO_TAN] = [colourData['YELLOW'], colourData['PINK'], colourData['RED_DARK']];
-paletteData["door"] = new Array();
-paletteData["door"]["default"] = colourData['BLUE'];
-paletteData["door"]["colours"] = new Array();
-paletteData["door"]["colours"][COLOUR_DOOR_NORMAL] = colourData['GREY_DARKEST'];
-paletteData["door"]["colours"][COLOUR_DOOR_BRONZE] = colourData['RED_DARK'];
-paletteData["door"]["colours"][COLOUR_DOOR_IRON] = colourData['GREY_LIGHT'];
-paletteData["door"]["colours"][COLOUR_DOOR_SERPENT] = colourData['GREEN'];
-paletteData["door"]["colours"][COLOUR_DOOR_CHAOS] = colourData['YELLOW'];
-paletteData["door"]["colours"][COLOUR_DOOR_DRAGON] = colourData['RED'];
-paletteData["door"]["colours"][COLOUR_DOOR_MOON] = colourData['BLUE'];
-paletteData["door"]["colours"][COLOUR_DOOR_CHROMATIC] = colourData['WHITE'];
-paletteData["door"]["colours"][COLOUR_DOOR_VOID] = colourData['BLACK'];
-paletteData["floor"] = new Array();
-paletteData["floor"]["default"] = [colourData['RED'], colourData['BLUE'], colourData['GREY_LIGHT'], colourData['BLACK']];
-paletteData["floor"]["colours"] = new Array();
-paletteData["floor"]["colours"][COLOUR_FLOOR_SWITCH] = [colourData['GREEN_DARK'], colourData['GREEN'], colourData['GREY_LIGHT'], colourData['GREY_DARKEST']];
-paletteData["floor"]["colours"][COLOUR_FLOOR_FIRE] = [colourData['RED'], colourData['YELLOW'], colourData['PINK'], colourData['RED_DARK']];
-paletteData["floor"]["colours"][COLOUR_FLOOR_FIRE_DIM] = [colourData['BROWN'], colourData['YELLOW'], colourData['PINK'], colourData['RED_DARK']];
+paletteData.switch = [];
+paletteData.switch.default = [colourData.RED, colourData.BLUE, colourData.GREY_LIGHT, null];
+paletteData.switch['default-off'] = [colourData.GREY_LIGHT, colourData.RED, null, colourData.BLUE];
+paletteData.switch.colours = [];
+paletteData.switch.colours[COLOUR_SWITCH_SERPENT] = [colourData.GREEN, colourData.GREEN_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.switch.colours[COLOUR_SWITCH_CHAOS] = [colourData.YELLOW, colourData.PINK, colourData.WHITE, colourData.BLACK];
+paletteData.switch.colours[COLOUR_SWITCH_DRAGON] = [colourData.RED, colourData.RED_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.switch.colours[COLOUR_SWITCH_MOON] = [colourData.BLUE, colourData.BLUE_DARK, colourData.YELLOW, colourData.BLACK];
+paletteData.switch.colours[COLOUR_SWITCH_GREY] = [colourData.GREY_MEDIUM, colourData.GREY_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.switch.colours[COLOUR_SWITCH_BROWN] = [colourData.BROWN, colourData.RED_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.switch.colours[COLOUR_SWITCH_BLACK] = [colourData.BLACK, colourData.BLACK, colourData.BLACK, colourData.BLACK];
+paletteData.gem = [];
+paletteData.gem.default = [colourData.RED, colourData.BLUE, null, null];
+paletteData.gem['default-off'] = [null, colourData.BLUE, null, colourData.RED];
+paletteData.gem.colours = [];
+paletteData.gem.colours[COLOUR_GEM_SERPENT] = [colourData.GREEN, colourData.GREEN_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.gem.colours[COLOUR_GEM_CHAOS] = [colourData.YELLOW, colourData.PINK, colourData.WHITE, colourData.BLACK];
+paletteData.gem.colours[COLOUR_GEM_DRAGON] = [colourData.RED, colourData.RED_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.gem.colours[COLOUR_GEM_MOON] = [colourData.BLUE, colourData.BLUE_DARK, colourData.YELLOW, colourData.BLACK];
+paletteData.gem.colours[COLOUR_GEM_GREY] = [colourData.GREY_MEDIUM, colourData.GREY_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.gem.colours[COLOUR_GEM_BLUEISH] = [colourData.GREEN, colourData.BLUE, colourData.WHITE, colourData.BLACK];
+paletteData.gem.colours[COLOUR_GEM_BROWN] = [colourData.BROWN, colourData.RED_DARK, colourData.WHITE, colourData.BLACK];
+paletteData.gem.colours[COLOUR_GEM_TAN] = [colourData.PINK, colourData.BROWN, colourData.WHITE, colourData.BLACK];
+paletteData.deco = [];
+paletteData.deco.default = [colourData.RED, colourData.BLUE, colourData.GREY_LIGHT];
+paletteData.deco.colours = [];
+paletteData.deco.colours[COLOUR_DECO_BRONZE] = [colourData.PINK, colourData.BROWN, colourData.RED_DARK];
+paletteData.deco.colours[COLOUR_DECO_SERPENT] = [colourData.YELLOW, colourData.GREEN, colourData.GREEN_DARK];
+paletteData.deco.colours[COLOUR_DECO_DRAGON] = [colourData.PINK, colourData.RED, colourData.RED_DARK];
+paletteData.deco.colours[COLOUR_DECO_MOON] = [colourData.GREY_LIGHT, colourData.BLUE, colourData.BLUE_DARK];
+paletteData.deco.colours[COLOUR_DECO_CHAOS] = [colourData.WHITE, colourData.YELLOW, colourData.PINK];
+paletteData.deco.colours[COLOUR_DECO_IRON] = [colourData.GREY_LIGHT, colourData.GREY_MEDIUM, colourData.GREY_DARK];
+paletteData.deco.colours[COLOUR_DECO_BROWN] = [colourData.YELLOW, colourData.PINK, colourData.BROWN];
+paletteData.deco.colours[COLOUR_DECO_TAN] = [colourData.YELLOW, colourData.PINK, colourData.RED_DARK];
+paletteData.door = [];
+paletteData.door.default = colourData.BLUE;
+paletteData.door.colours = [];
+paletteData.door.colours[COLOUR_DOOR_NORMAL] = colourData.GREY_DARKEST;
+paletteData.door.colours[COLOUR_DOOR_BRONZE] = colourData.RED_DARK;
+paletteData.door.colours[COLOUR_DOOR_IRON] = colourData.GREY_LIGHT;
+paletteData.door.colours[COLOUR_DOOR_SERPENT] = colourData.GREEN;
+paletteData.door.colours[COLOUR_DOOR_CHAOS] = colourData.YELLOW;
+paletteData.door.colours[COLOUR_DOOR_DRAGON] = colourData.RED;
+paletteData.door.colours[COLOUR_DOOR_MOON] = colourData.BLUE;
+paletteData.door.colours[COLOUR_DOOR_CHROMATIC] = colourData.WHITE;
+paletteData.door.colours[COLOUR_DOOR_VOID] = colourData.BLACK;
+paletteData.floor = [];
+paletteData.floor.default = [colourData.RED, colourData.BLUE, colourData.GREY_LIGHT, colourData.BLACK];
+paletteData.floor.colours = [];
+paletteData.floor.colours[COLOUR_FLOOR_SWITCH] = [colourData.GREEN_DARK, colourData.GREEN, colourData.GREY_LIGHT, colourData.GREY_DARKEST];
+paletteData.floor.colours[COLOUR_FLOOR_FIRE] = [colourData.RED, colourData.YELLOW, colourData.PINK, colourData.RED_DARK];
+paletteData.floor.colours[COLOUR_FLOOR_FIRE_DIM] = [colourData.BROWN, colourData.YELLOW, colourData.PINK, colourData.RED_DARK];
 
 var OBJECT_NONE = 0,
 	OBJECT_PATH = 1,
@@ -305,7 +305,7 @@ var TOWER_MOD0 = 0,
 var towerThis = TOWER_MOD0;
 
 //Background gfx
-var background = new Array();
+var background = [];
 background[0] = { x: 0, y: 0, w: 128, h: 76, sx: 0, sy: 0 };
 background[1] = { x: 128, y: 0, w: 128, h: 76, sx: 0, sy: 0 };
 
@@ -332,7 +332,7 @@ var CHAMPION_ID = [
 	'CHA_ULRICH',
 	'CHA_ZASTAPH',
 	'CHA_HENGIST',
-	'CHA_THAI_CHANG']
+	'CHA_THAI_CHANG'];
 
 var PROFESSION_MAX = 4,
 	PROFESSION_WARRIOR = 0,
@@ -341,9 +341,9 @@ var PROFESSION_MAX = 4,
 	PROFESSION_CUTPURSE = 3;
 var PROFESSION_ID = ['WARRIOR', 'WIZARD', 'ADVENTURER', 'CUTPURSE'];
 
-var championData = new Array();
+var championData = [];
 var chamionPocketData = [];
-var champion = new Array();
+var champion = [];
 
 //MONSTERS AND CHARACTERS
 var IMAGE_CHA_LEG = 0,
@@ -427,7 +427,7 @@ var CHA_MINI_MALE = 0,
 	CHA_MINI_FEMALE_PLATE = 6,
 	CHA_MINI_FEMALE_CHAIN = 7;
 
-var CHA_BODY = new Array();
+var CHA_BODY = [];
 
 var CHA_GENDER_MALE = 0,
 	CHA_GENDER_FEMALE = 1,
@@ -461,8 +461,8 @@ var monsterPaletteData;
 var monsterPaletteMetaData;
 var monsterHeadsData;
 var monsterBodiesData;
-var monsterPalette = new Array();
-var monsterBigPalette = new Array();
+var monsterPalette = [];
+var monsterBigPalette = [];
 
 CHA_BODY[0] = {
 	leg: CHA_LEG_FEMALE_NAKED,
@@ -551,9 +551,9 @@ CHA_BODY[13] = {
 
 var monsterTeamIdMax = 0;
 //var monsterAttackSequence = 0;
-window.monster = new Array();
-var monsterRef = new Array();
-var armourRef = new Array();
+window.monster = [];
+var monsterRef = [];
+var armourRef = [];
 
 //Switches
 var SWITCH_WALL_NONE = 0,
@@ -596,40 +596,40 @@ var SWITCH_FLOOR_NONE = 0,
 	SWITCH_FLOOR_TOGGLE_HOLE = 56, // (X/Y) *
 	SWITCH_FLOOR_GAME_COMPLETION_PAD = 58, // **
 	SWITCH_FLOOR_REMOVE_PILLAR_OTHER_EVENT = 60, // (X/Y) **
-	SWITCH_FLOOR_TELEPORT_MONSTER = 62
+	SWITCH_FLOOR_TELEPORT_MONSTER = 62;
 
-var switchName = ["SWITCH_FLOOR_NONE",
-	"SWITCH_FLOOR_SPIN_180",
-	"SWITCH_FLOOR_SPIN_RANDOM",
-	"SWITCH_FLOOR_OPEN_VOID_LOCK_DOOR",
-	"SWITCH_FLOOR_VIVIFY_MACHINE_EXTERNAL",
-	"SWITCH_FLOOR_VIVIFY_MACHINE_INTERNAL",
-	"SWITCH_FLOOR_WOOD_DOOR_CLOSER_1",
-	"SWITCH_FLOOR_WOOD_DOOR_CLOSER_2",
-	"SWITCH_FLOOR_TRADER_DOOR",
-	"SWITCH_FLOOR_TOWER_ENTRANCE_SIDE_PAD",
-	"SWITCH_FLOOR_TOWER_ENTRANCE",
-	"SWITCH_FLOOR_REMOVE",
-	"SWITCH_FLOOR_CLOSE_VOID_LOCK_DOOR",
-	"SWITCH_FLOOR_TOGGLE_PILLAR",
-	"SWITCH_FLOOR_CREATE_SPINNER",
-	"SWITCH_FLOOR_OPEN_CREATE_WALL_WITH_SWITCHES",
-	"SWITCH_FLOOR_CREATE_PAD",
-	"SWITCH_FLOOR_MOVE_PILLAR_AT_PLAYER",
-	"SWITCH_FLOOR_CREATE_PILLAR",
-	"SWITCH_FLOOR_KEEP_ENTRANCE_SIDEPAD",
-	"SWITCH_FLOOR_KEEP_ENTRANCE_CENTRAL_PAD",
-	"SWITCH_FLOOR_FLASH_TELEPORT",
-	"SWITCH_FLOOR_ROTATE_STONE_WALL",
-	"SWITCH_FLOOR_TOGGLE_WALL",
-	"SWITCH_FLOOR_SPINNER",
-	"SWITCH_FLOOR_CLICK_TELEPORT",
-	"SWITCH_FLOOR_TOGGLE_GREEN_PAD",
-	"SWITCH_FLOOR_ROTATE_WOOD_WALL_COUNTER_CLOCKWISE",
-	"SWITCH_FLOOR_TOGGLE_HOLE",
-	"SWITCH_FLOOR_GAME_COMPLETION_PAD",
-	"SWITCH_FLOOR_REMOVE_PILLAR_OTHER_EVENT",
-	"SWITCH_FLOOR_TELEPORT_MONSTER"];
+var switchName = ['SWITCH_FLOOR_NONE',
+	'SWITCH_FLOOR_SPIN_180',
+	'SWITCH_FLOOR_SPIN_RANDOM',
+	'SWITCH_FLOOR_OPEN_VOID_LOCK_DOOR',
+	'SWITCH_FLOOR_VIVIFY_MACHINE_EXTERNAL',
+	'SWITCH_FLOOR_VIVIFY_MACHINE_INTERNAL',
+	'SWITCH_FLOOR_WOOD_DOOR_CLOSER_1',
+	'SWITCH_FLOOR_WOOD_DOOR_CLOSER_2',
+	'SWITCH_FLOOR_TRADER_DOOR',
+	'SWITCH_FLOOR_TOWER_ENTRANCE_SIDE_PAD',
+	'SWITCH_FLOOR_TOWER_ENTRANCE',
+	'SWITCH_FLOOR_REMOVE',
+	'SWITCH_FLOOR_CLOSE_VOID_LOCK_DOOR',
+	'SWITCH_FLOOR_TOGGLE_PILLAR',
+	'SWITCH_FLOOR_CREATE_SPINNER',
+	'SWITCH_FLOOR_OPEN_CREATE_WALL_WITH_SWITCHES',
+	'SWITCH_FLOOR_CREATE_PAD',
+	'SWITCH_FLOOR_MOVE_PILLAR_AT_PLAYER',
+	'SWITCH_FLOOR_CREATE_PILLAR',
+	'SWITCH_FLOOR_KEEP_ENTRANCE_SIDEPAD',
+	'SWITCH_FLOOR_KEEP_ENTRANCE_CENTRAL_PAD',
+	'SWITCH_FLOOR_FLASH_TELEPORT',
+	'SWITCH_FLOOR_ROTATE_STONE_WALL',
+	'SWITCH_FLOOR_TOGGLE_WALL',
+	'SWITCH_FLOOR_SPINNER',
+	'SWITCH_FLOOR_CLICK_TELEPORT',
+	'SWITCH_FLOOR_TOGGLE_GREEN_PAD',
+	'SWITCH_FLOOR_ROTATE_WOOD_WALL_COUNTER_CLOCKWISE',
+	'SWITCH_FLOOR_TOGGLE_HOLE',
+	'SWITCH_FLOOR_GAME_COMPLETION_PAD',
+	'SWITCH_FLOOR_REMOVE_PILLAR_OTHER_EVENT',
+	'SWITCH_FLOOR_TELEPORT_MONSTER'];
 
 var UI_LEFT_PANEL_MODE_STATS = 0,
 	UI_LEFT_PANEL_MODE_COMMAND = 1;
@@ -804,47 +804,47 @@ var KEYPAD_4 = 100,
 	KEY_ESC = 27;
 
 //messages
-var TEXT_PLAYER = "PLAYER",
-	TEXT_PLURAL = "S",
-	TEXT_READY_QUEST = "THOU ART ;NOW READY;TO BEGIN ;THY QUEST",
-	TEXT_DOOR_LOCKED = "THE DOOR IS LOCKED",
-	TEXT_ARMOUR = "ARMOUR",
-	TEXT_LEVEL = "LEVEL",
-	TEXT_ST = "ST",
-	TEXT_AG = "AG",
-	TEXT_IN = "IN",
-	TEXT_CH = "CH",
-	TEXT_HP = "HP",
-	TEXT_VI = "VI",
-	TEXT_SP_PTS = "SP.PTS",
-	TEXT_HITS_FOR = "HITS FOR ",
-	TEXT_CASTS_SPELL = "CASTS SPELL",
-	TEXT_SHOOTS = "SHOOTS",
-	TEXT_MISSES = "MISSES",
-	TEXT_DEFENDS = "DEFENDS",
-	TEXT_THOU = "THOU",
-	TEXT_ART_DEAD = "ART DEAD",
-	TEXT_GAINED_LEVEL = " GAINED A LEVEL",
-	TEXT_THOU_ART = "THOU ART",
-	TEXT_ASLEEP = "ASLEEP",
-	TEXT_PAUPER = "I FIND THEE A PAUPER",
-	TEXT_ALL_I_HAVE = "THOU HAST ALL I GIVE, ",
-	TEXT_SELECT_SPELL = "SELECT THY NEW SPELL, ",
-	TEXT_MAY_BUY_SPELL = " MAY BUY A SPELL-PICK A CLASS",
-	TEXT_SPELL_FAILED = "SPELL FAILED",
-	TEXT_SPELL_FIZZLES = "SPELL FIZZLES",
-	TEXT_COST_TOO_HIGH = "COST TOO HIGH",
-	TEXT_SELECT_CHAMPION = "PLEASE SELECT YOUR CHAMPION  ....",
-	TEXT_CHAMPION_NAME = ["BLODWYN", "MURLOCK", "ELEANOR", "ROSANNE", "ASTROTH", "ZOTHEN", "BALDRICK", "ELFRIC", "SIR EDWARD", "MEGRIM", "SETHRA", "MR. FLAY", "ULRICH", "ZASTAPH", "HENGIST", "THAI CHANG"],
-	TEXT_CHAMPION_LASTNAME = ["STONEMAIDEN", "DARKENHEART", "OF AVALON", "SWIFTHAND", "SLAEMWORT", "RUNECASTER", "THE DUNG", "FALAENDOR", "LION", "OF MOONWYCH", "BHOAGHAIL", "SEPULCRAST", "STERNAXE", "MANTRIC", "MELDANASH", "OF YINN"],
-	TEXT_TRADE = ["WARRIOR", "WIZARD", "ADVENTURER", "CUTPURSE"],
-	TEXT_GAME_LOADED = "GAME LOADED",
-	TEXT_GAME_SAVED = "GAME SAVED",
-	TEXT_INVENTORY = "INVENTORY",
-	TEXT_WAITS = " WAITS",
-	TEXT_REJOINS_THE_PARTY = " REJOINS THE PARTY",
-	TEXT_CONGRATS = "CONGRATULATIONS!",
-	TEXT_ACCURSED_BLOODWYCH = "ACCURSED BLOODWYCH! WE SHALL MEET AGAIN";
+var TEXT_PLAYER = 'PLAYER',
+	TEXT_PLURAL = 'S',
+	TEXT_READY_QUEST = 'THOU ART ;NOW READY;TO BEGIN ;THY QUEST',
+	TEXT_DOOR_LOCKED = 'THE DOOR IS LOCKED',
+	TEXT_ARMOUR = 'ARMOUR',
+	TEXT_LEVEL = 'LEVEL',
+	TEXT_ST = 'ST',
+	TEXT_AG = 'AG',
+	TEXT_IN = 'IN',
+	TEXT_CH = 'CH',
+	TEXT_HP = 'HP',
+	TEXT_VI = 'VI',
+	TEXT_SP_PTS = 'SP.PTS',
+	TEXT_HITS_FOR = 'HITS FOR ',
+	TEXT_CASTS_SPELL = 'CASTS SPELL',
+	TEXT_SHOOTS = 'SHOOTS',
+	TEXT_MISSES = 'MISSES',
+	TEXT_DEFENDS = 'DEFENDS',
+	TEXT_THOU = 'THOU',
+	TEXT_ART_DEAD = 'ART DEAD',
+	TEXT_GAINED_LEVEL = ' GAINED A LEVEL',
+	TEXT_THOU_ART = 'THOU ART',
+	TEXT_ASLEEP = 'ASLEEP',
+	TEXT_PAUPER = 'I FIND THEE A PAUPER',
+	TEXT_ALL_I_HAVE = 'THOU HAST ALL I GIVE, ',
+	TEXT_SELECT_SPELL = 'SELECT THY NEW SPELL, ',
+	TEXT_MAY_BUY_SPELL = ' MAY BUY A SPELL-PICK A CLASS',
+	TEXT_SPELL_FAILED = 'SPELL FAILED',
+	TEXT_SPELL_FIZZLES = 'SPELL FIZZLES',
+	TEXT_COST_TOO_HIGH = 'COST TOO HIGH',
+	TEXT_SELECT_CHAMPION = 'PLEASE SELECT YOUR CHAMPION  ....',
+	TEXT_CHAMPION_NAME = ['BLODWYN', 'MURLOCK', 'ELEANOR', 'ROSANNE', 'ASTROTH', 'ZOTHEN', 'BALDRICK', 'ELFRIC', 'SIR EDWARD', 'MEGRIM', 'SETHRA', 'MR. FLAY', 'ULRICH', 'ZASTAPH', 'HENGIST', 'THAI CHANG'],
+	TEXT_CHAMPION_LASTNAME = ['STONEMAIDEN', 'DARKENHEART', 'OF AVALON', 'SWIFTHAND', 'SLAEMWORT', 'RUNECASTER', 'THE DUNG', 'FALAENDOR', 'LION', 'OF MOONWYCH', 'BHOAGHAIL', 'SEPULCRAST', 'STERNAXE', 'MANTRIC', 'MELDANASH', 'OF YINN'],
+	TEXT_TRADE = ['WARRIOR', 'WIZARD', 'ADVENTURER', 'CUTPURSE'],
+	TEXT_GAME_LOADED = 'GAME LOADED',
+	TEXT_GAME_SAVED = 'GAME SAVED',
+	TEXT_INVENTORY = 'INVENTORY',
+	TEXT_WAITS = ' WAITS',
+	TEXT_REJOINS_THE_PARTY = ' REJOINS THE PARTY',
+	TEXT_CONGRATS = 'CONGRATULATIONS!',
+	TEXT_ACCURSED_BLOODWYCH = 'ACCURSED BLOODWYCH! WE SHALL MEET AGAIN';
 
 //communication
 var COMMUNICATION_PAGE_MAIN = 0,
@@ -891,491 +891,491 @@ var COMMUNICATION_RECRUIT = 0,
 	COMMUNICATION_CALL = 6;
 
 TEXT_COMMUNICATION = [
-	["WHOM DOST THOU WISH TO COMMEND", COMMUNICATION_PAGE_MAIN, COMMUNICATION_COMMEND],
-	["WHOM DOST THOU WISH TO VIEW", COMMUNICATION_PAGE_MAIN, COMMUNICATION_VIEW],
-	["WHOM DOST THOU WISH TO WAIT", COMMUNICATION_PAGE_MAIN, COMMUNICATION_WAIT],
-	["WHOM DOST THOU WISH TO CORRECT", COMMUNICATION_PAGE_MAIN, COMMUNICATION_CORRECT],
-	["WHOM DOST THOU WISH TO DISMISS", COMMUNICATION_PAGE_MAIN, COMMUNICATION_DISMISS],
-	["THOU DOST CALL OUT", COMMUNICATION_PAGE_MAIN, COMMUNICATION_CALL],
+	['WHOM DOST THOU WISH TO COMMEND', COMMUNICATION_PAGE_MAIN, COMMUNICATION_COMMEND],
+	['WHOM DOST THOU WISH TO VIEW', COMMUNICATION_PAGE_MAIN, COMMUNICATION_VIEW],
+	['WHOM DOST THOU WISH TO WAIT', COMMUNICATION_PAGE_MAIN, COMMUNICATION_WAIT],
+	['WHOM DOST THOU WISH TO CORRECT', COMMUNICATION_PAGE_MAIN, COMMUNICATION_CORRECT],
+	['WHOM DOST THOU WISH TO DISMISS', COMMUNICATION_PAGE_MAIN, COMMUNICATION_DISMISS],
+	['THOU DOST CALL OUT', COMMUNICATION_PAGE_MAIN, COMMUNICATION_CALL],
 
-	["THERE IS NOBODY THERE"],
-	["GREETINGS", null, null, 0, 1, 1, 3],
-	["WHY DOST BURDEN ME WITH THY COMPANY?"],
-	["WHO ART THOU?"],
-	["WHAT BE THY BUSINESS?"],
+	['THERE IS NOBODY THERE'],
+	['GREETINGS', null, null, 0, 1, 1, 3],
+	['WHY DOST BURDEN ME WITH THY COMPANY?'],
+	['WHO ART THOU?'],
+	['WHAT BE THY BUSINESS?'],
 
-	["COME JOIN MY MERRY BAND", COMMUNICATION_PAGE_COMMUNICATE_0, COMMUNICATION_RECRUIT, 0, 1, 1, 5],
-	["I THINK NOT MY FRIEND"],
-	["I DON'T KEEP COMPANY WITH MAGGOTS"],
-	["KEEP TALKING AND WE'LL SEE"],
-	["YES"],
-	["THY PARTY IS FULL"],
+	['COME JOIN MY MERRY BAND', COMMUNICATION_PAGE_COMMUNICATE_0, COMMUNICATION_RECRUIT, 0, 1, 1, 5],
+	['I THINK NOT MY FRIEND'],
+	['I DON\'T KEEP COMPANY WITH MAGGOTS'],
+	['KEEP TALKING AND WE\'LL SEE'],
+	['YES'],
+	['THY PARTY IS FULL'],
 
-	["WHO ART THOU?", COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_WHO_GOES, 0, 1, 1, 4],
-	["MY NAME IS ", COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_NAME_SELF, 0, 1, 0, 4, 'name'],
-	["I AM THY WORST NIGHTMARE"],
-	["MY NAME IS NOT IMPORTANT"],
-	["I AM ZENDIK THE MASTER OF CREATION"],
+	['WHO ART THOU?', COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_WHO_GOES, 0, 1, 1, 4],
+	['MY NAME IS ', COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_NAME_SELF, 0, 1, 0, 4, 'name'],
+	['I AM THY WORST NIGHTMARE'],
+	['MY NAME IS NOT IMPORTANT'],
+	['I AM ZENDIK THE MASTER OF CREATION'],
 
-	["NO", COMMUNICATION_PAGE_COMMUNICATE_1, COMMUNICATION_NO, 0, 1, 1, 1],
-	["INDEED NOT"],
+	['NO', COMMUNICATION_PAGE_COMMUNICATE_1, COMMUNICATION_NO, 0, 1, 1, 1],
+	['INDEED NOT'],
 
-	["YES", COMMUNICATION_PAGE_COMMUNICATE_1, COMMUNICATION_YES, 0, 1, 4, 4],
+	['YES', COMMUNICATION_PAGE_COMMUNICATE_1, COMMUNICATION_YES, 0, 1, 4, 4],
 
-	["WHAT BE THY BUSINESS?", COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_THY_TRADE, 0, 1, 1, 2],
-	["NONE OF THY BUSINESS I'M SURE"],
-	["I AM A NOBLE ", COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_REVEAL_SELF, 0, 1, 0, 5, 'prof'],
-	["THAT'S VERY POSSIBLE", COMMUNICATION_PAGE_SMALLTALK, COMMUNICATION_RETORT, 0, 4, 0, 4],
-	["I CANNOT BUT AGREE"],
-	["THAT SEEMS VERY LIKELY"],
-	["I'M NOT ABOUT TO ARGUE WITH THEE"],
+	['WHAT BE THY BUSINESS?', COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_THY_TRADE, 0, 1, 1, 2],
+	['NONE OF THY BUSINESS I\'M SURE'],
+	['I AM A NOBLE ', COMMUNICATION_PAGE_IDENTIFY, COMMUNICATION_REVEAL_SELF, 0, 1, 0, 5, 'prof'],
+	['THAT\'S VERY POSSIBLE', COMMUNICATION_PAGE_SMALLTALK, COMMUNICATION_RETORT, 0, 4, 0, 4],
+	['I CANNOT BUT AGREE'],
+	['THAT SEEMS VERY LIKELY'],
+	['I\'M NOT ABOUT TO ARGUE WITH THEE'],
 
-	["WHERE IS THIS OF WHICH THOU HAST SPOKEN?", COMMUNICATION_PAGE_COMMUNICATE_0, COMMUNICATION_WHEREABOUTS, 0, 1, 1, 1],
-	["LOOK TO THE TOWERS MY FRIEND"],
+	['WHERE IS THIS OF WHICH THOU HAST SPOKEN?', COMMUNICATION_PAGE_COMMUNICATE_0, COMMUNICATION_WHEREABOUTS, 0, 1, 1, 1],
+	['LOOK TO THE TOWERS MY FRIEND'],
 
-	["HAST HEARD OF ANY POWERFUL BEINGS?", COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_PERSONS, 0, 1, 1, 1],
-	["NEWS IS SCARCE IN THESE PARTS"],
+	['HAST HEARD OF ANY POWERFUL BEINGS?', COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_PERSONS, 0, 1, 1, 1],
+	['NEWS IS SCARCE IN THESE PARTS'],
 
-	["KNOWEST THOU OF ANY WEAPONS OF NOTE?", COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_OBJECTS, 0, 1, 1, 1],
-	["WHO CAN SAY WHAT IS OF NOTE?"],
+	['KNOWEST THOU OF ANY WEAPONS OF NOTE?', COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_OBJECTS, 0, 1, 1, 1],
+	['WHO CAN SAY WHAT IS OF NOTE?'],
 
-	["KNOWEST THOU OF ANY ENCHANTED ITEMS?", COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_MAGIC_ITEMS, 0, 1, 1, 1],
-	["I HEAR CRYSTALS ARE WORTH SEEKING"],
+	['KNOWEST THOU OF ANY ENCHANTED ITEMS?', COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_MAGIC_ITEMS, 0, 1, 1, 1],
+	['I HEAR CRYSTALS ARE WORTH SEEKING'],
 
-	["HAST THOU HEARD ANY LEGENDS?", COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_FOLK_LORE, 0, 1, 1, 1],
-	["I HEAR ZENDIK IS NOT WHOLLY A WORM"],
+	['HAST THOU HEARD ANY LEGENDS?', COMMUNICATION_PAGE_INQUIRY, COMMUNICATION_FOLK_LORE, 0, 1, 1, 1],
+	['I HEAR ZENDIK IS NOT WHOLLY A WORM'],
 
 	[
 		[
-			["STEP ASIDE ", "DEPART ", "GO AWAY ", "BEGONE "],
-			["", "OR FIGHT ", "OR BE SORRY ", "OR SUFFER ", "OR DIE "],
-			["THOU BUMBLEFOOT", "THOU OAF", "THOU CLOD", "THOU TOAD", "THOU MAGGOT", "THOU SLUG", "THOU ZOMBIE", "THOU COWARD", "NOBLE ONE"]
+			['STEP ASIDE ', 'DEPART ', 'GO AWAY ', 'BEGONE '],
+			['', 'OR FIGHT ', 'OR BE SORRY ', 'OR SUFFER ', 'OR DIE '],
+			['THOU BUMBLEFOOT', 'THOU OAF', 'THOU CLOD', 'THOU TOAD', 'THOU MAGGOT', 'THOU SLUG', 'THOU ZOMBIE', 'THOU COWARD', 'NOBLE ONE']
 		], COMMUNICATION_PAGE_COMMUNICATE_1, COMMUNICATION_THREAT, 0, 1, 0, 1
 	],
 
 	[
 		[
-			["THOU "],
-			["FIGHTS ", "TALKS ", "SOUNDS ", "BEHAVES ", "LOOKS ", "APPEARS ", "SEEMS ", "ART "],
-			["LIKE ", ""],
-			["A STRONG ", "A BRAVE ", "A POWERFUL ", "A NOBLE ", "A WISE ", "A FINE ", "A SPLENDID ", "AN AWESOME ", ""],
-			["WARRIOR", "SAGE", "HERO", "LEADER", "MASTER", "FRIEND", "SCHOLAR", "EXPERT"]
+			['THOU '],
+			['FIGHTS ', 'TALKS ', 'SOUNDS ', 'BEHAVES ', 'LOOKS ', 'APPEARS ', 'SEEMS ', 'ART '],
+			['LIKE ', ''],
+			['A STRONG ', 'A BRAVE ', 'A POWERFUL ', 'A NOBLE ', 'A WISE ', 'A FINE ', 'A SPLENDID ', 'AN AWESOME ', ''],
+			['WARRIOR', 'SAGE', 'HERO', 'LEADER', 'MASTER', 'FRIEND', 'SCHOLAR', 'EXPERT']
 		], COMMUNICATION_PAGE_SMALLTALK, COMMUNICATION_PRAISE, 0, 2, 0, 2
 	],
 	[
 		[
-			["THOU "],
-			["FIGHTS ", "TALKS ", "SOUNDS ", "BEHAVES ", "LOOKS ", "APPEARS ", "SEEMS ", "ART "],
-			["STRANGELY ", "MIGHTILY ", "HUGELY ", "INCREDIBLY ", "ESPECIALLY ", "IMMENSELY ", "ODDLY ", ""],
-			["STRONG", "BRAVE", "POWERFUL", "NOBLE", "WISE", "FINE", "SPLENDID", "AWESOME"]
+			['THOU '],
+			['FIGHTS ', 'TALKS ', 'SOUNDS ', 'BEHAVES ', 'LOOKS ', 'APPEARS ', 'SEEMS ', 'ART '],
+			['STRANGELY ', 'MIGHTILY ', 'HUGELY ', 'INCREDIBLY ', 'ESPECIALLY ', 'IMMENSELY ', 'ODDLY ', ''],
+			['STRONG', 'BRAVE', 'POWERFUL', 'NOBLE', 'WISE', 'FINE', 'SPLENDID', 'AWESOME']
 		]
 	],
 
-	["WILT THOU ACCEPT SOME SMALL TOKEN?", COMMUNICATION_PAGE_COMMUNICATE_1, COMMUNICATION_BRIBE, 0, 1, 1, 4],
-	["WOULDST THOU RIP ME OFF"],
-	["METHINKS THOU ART TOO GREEDY"],
-	["I NEVER TRUST THE UNNATURAL"],
-	["MAKE ME THY OFFER"],
+	['WILT THOU ACCEPT SOME SMALL TOKEN?', COMMUNICATION_PAGE_COMMUNICATE_1, COMMUNICATION_BRIBE, 0, 1, 1, 4],
+	['WOULDST THOU RIP ME OFF'],
+	['METHINKS THOU ART TOO GREEDY'],
+	['I NEVER TRUST THE UNNATURAL'],
+	['MAKE ME THY OFFER'],
 
-	["*** OFFER FOR ", COMMUNICATION_PAGE_TRADING, COMMUNICATION_OFFER, 0, 1, 1, 4, 'item'], //TEST THIS ONE!!
-	["THY COINAGE IS WORTHLESS TO ME"],
-	["I DO NOT TRADE IN TRINKETS"],
-	["I NEED NOT THY TRASH"],
-	["I TRUST THIS PLEASES THEE"],
+	['*** OFFER FOR ', COMMUNICATION_PAGE_TRADING, COMMUNICATION_OFFER, 0, 1, 1, 4, 'item'], //TEST THIS ONE!!
+	['THY COINAGE IS WORTHLESS TO ME'],
+	['I DO NOT TRADE IN TRINKETS'],
+	['I NEED NOT THY TRASH'],
+	['I TRUST THIS PLEASES THEE'],
 
-	["*** PURCHASE", COMMUNICATION_PAGE_TRADING, COMMUNICATION_PURCHASE, 0, 1, 1, 4], //TEST THIS ONE!!
-	["THY COINAGE IS WORTHLESS TO ME"],
-	["I DO NOT TRADE IN TRINKETS"],
-	["I NEED NOT THY TRASH"],
-	["I TRUST THIS PLEASES THEE"],
+	['*** PURCHASE', COMMUNICATION_PAGE_TRADING, COMMUNICATION_PURCHASE, 0, 1, 1, 4], //TEST THIS ONE!!
+	['THY COINAGE IS WORTHLESS TO ME'],
+	['I DO NOT TRADE IN TRINKETS'],
+	['I NEED NOT THY TRASH'],
+	['I TRUST THIS PLEASES THEE'],
 
-	["*** EXCHANGE", COMMUNICATION_PAGE_TRADING, COMMUNICATION_EXCHANGE, 0, 1, 1, 4], //TEST THIS ONE!!
-	["THY COINAGE IS WORTHLESS TO ME"],
-	["I DO NOT TRADE IN TRINKETS"],
-	["I NEED NOT THY TRASH"],
-	["I TRUST THIS PLEASES THEE"],
+	['*** EXCHANGE', COMMUNICATION_PAGE_TRADING, COMMUNICATION_EXCHANGE, 0, 1, 1, 4], //TEST THIS ONE!!
+	['THY COINAGE IS WORTHLESS TO ME'],
+	['I DO NOT TRADE IN TRINKETS'],
+	['I NEED NOT THY TRASH'],
+	['I TRUST THIS PLEASES THEE'],
 
-	["*** SELL", COMMUNICATION_PAGE_TRADING, COMMUNICATION_SELL, 0, 1, 1, 4, 'item'], //TEST THIS ONE!!
-	["THY COINAGE IS WORTHLESS TO ME"],
-	["I DO NOT TRADE IN TRINKETS"],
-	["I NEED NOT THY TRASH"],
-	["I TRUST THIS PLEASES THEE"],
+	['*** SELL', COMMUNICATION_PAGE_TRADING, COMMUNICATION_SELL, 0, 1, 1, 4, 'item'], //TEST THIS ONE!!
+	['THY COINAGE IS WORTHLESS TO ME'],
+	['I DO NOT TRADE IN TRINKETS'],
+	['I NEED NOT THY TRASH'],
+	['I TRUST THIS PLEASES THEE'],
 
 	//Uncategorized
-	["MAYBE TRUE BUT THOU SHOULD BE SO LUCKY"],
-	["I AM THY WORST NIGHTMARE"],
-	["PICK ON SOMEONE THY OWN SIZE THOU SLUG"],
-	["GIVE ME A BREAK"]
-],
+	['MAYBE TRUE BUT THOU SHOULD BE SO LUCKY'],
+	['I AM THY WORST NIGHTMARE'],
+	['PICK ON SOMEONE THY OWN SIZE THOU SLUG'],
+	['GIVE ME A BREAK']
+];
 
-	TEXT_SPELL_NAME = [
-		"ARMOUR",
-		"PARALYZE",
-		"COMPASS",
-		"LEVITATE",
-		"WARPOWER",
-		"RENEW",
-		"ARC BOLT",
-		"FORMWALL",
+TEXT_SPELL_NAME = [
+	'ARMOUR',
+	'PARALYZE',
+	'COMPASS',
+	'LEVITATE',
+	'WARPOWER',
+	'RENEW',
+	'ARC BOLT',
+	'FORMWALL',
 
-		"DEFLECT",
-		"TERROR",
-		"ANTIMAGE",
-		"SPELLTAP",
-		"ALCHEMY",
-		"SUMMON",
-		"VIVIFY",
-		"DISRUPT",
+	'DEFLECT',
+	'TERROR',
+	'ANTIMAGE',
+	'SPELLTAP',
+	'ALCHEMY',
+	'SUMMON',
+	'VIVIFY',
+	'DISRUPT',
 
-		"MISSILE",
-		"MAGELOCK",
-		"VITALISE",
-		"DISPELL",
-		"FIREBALL",
-		"FIREPATH",
-		"RECHARGE",
-		"BLAZE",
+	'MISSILE',
+	'MAGELOCK',
+	'VITALISE',
+	'DISPELL',
+	'FIREBALL',
+	'FIREPATH',
+	'RECHARGE',
+	'BLAZE',
 
-		"BEGUILE",
-		"CONFUSE",
-		"CONCEAL",
-		"TRUEVIEW",
-		"VANISH",
-		"ILLUSION",
-		"MINDROCK",
-		"WYCHWIND",
+	'BEGUILE',
+	'CONFUSE',
+	'CONCEAL',
+	'TRUEVIEW',
+	'VANISH',
+	'ILLUSION',
+	'MINDROCK',
+	'WYCHWIND',
 
-		"PROTECT",
-		"PHASE",
-		"ENHANCE",
-		"INFERNO",
-		"NULLIFY",
-		"SPRAY",
-		"VORTEX",
-		"RESTORE"
-	],
-	TEXT_SPELL_BOOK = [
-		"MARY",
-		"ZEDN",
-		"ISCR",
-		"ITWE",
-		"UDDU",
-		"MIST",
-		"NISH",
-		"ACOU",
+	'PROTECT',
+	'PHASE',
+	'ENHANCE',
+	'INFERNO',
+	'NULLIFY',
+	'SPRAY',
+	'VORTEX',
+	'RESTORE'
+];
+TEXT_SPELL_BOOK = [
+	'MARY',
+	'ZEDN',
+	'ISCR',
+	'ITWE',
+	'UDDU',
+	'MIST',
+	'NISH',
+	'ACOU',
 
-		"ANEE",
-		"HADA",
-		"RAWU",
-		"APWH",
-		"OWTE",
-		"PLEO",
-		"ILLH",
-		"ITHO",
+	'ANEE',
+	'HADA',
+	'RAWU',
+	'APWH',
+	'OWTE',
+	'PLEO',
+	'ILLH',
+	'ITHO',
 
-		"TNER",
-		"ITWE",
-		"LITT",
-		"AVIN",
-		"UGHT",
-		"TOTY",
-		"DDUN",
-		"FLIN",
+	'TNER',
+	'ITWE',
+	'LITT',
+	'AVIN',
+	'UGHT',
+	'TOTY',
+	'DDUN',
+	'FLIN',
 
-		"LELA",
-		"COZZ",
-		"RRAG",
-		"WHYA",
-		"EWAN",
-		"PETH",
-		"ESQX",
-		"IDFI",
+	'LELA',
+	'COZZ',
+	'RRAG',
+	'WHYA',
+	'EWAN',
+	'PETH',
+	'ESQX',
+	'IDFI',
 
-		"WISH",
-		"BONE",
-		"RULE",
-		"THEW",
-		"ORLD",
-		"ANDT",
-		"HATS",
-		"TRUE"
-	],
-	TEXT_SPELL_DESCRIPTION = [
-		"WEAR THIS SPELL WITH PRIDE",
-		"A FROZEN LIFE MAY WELL BE A SHORT ONE",
-		"NEVER GET LOST AGAIN",
-		"A GENUINELY LIGHT SPELL",
-		"YOU TOO CAN HAVE THE STRENGTH OF TEN",
-		"CURES EVERYTHING EXCEPT CRAMP",
-		"AN ELECTRIFYING EXPERIENCE",
-		"FOR THOSE WHO LOVE WALLS",
+	'WISH',
+	'BONE',
+	'RULE',
+	'THEW',
+	'ORLD',
+	'ANDT',
+	'HATS',
+	'TRUE'
+];
+TEXT_SPELL_DESCRIPTION = [
+	'WEAR THIS SPELL WITH PRIDE',
+	'A FROZEN LIFE MAY WELL BE A SHORT ONE',
+	'NEVER GET LOST AGAIN',
+	'A GENUINELY LIGHT SPELL',
+	'YOU TOO CAN HAVE THE STRENGTH OF TEN',
+	'CURES EVERYTHING EXCEPT CRAMP',
+	'AN ELECTRIFYING EXPERIENCE',
+	'FOR THOSE WHO LOVE WALLS',
 
-		"A SPELL A DAY KEEPS AN ARROW AWAY",
-		"BOO!",
-		"NEVERMORE WORRY ABOUT SPELLCASTERS",
-		"THE BANE OF ALL MAGIC USERS",
-		"THE HAND OF MIDAS",
-		"YOU'LL NEVER WALK ALONE",
-		"MAKES DEATH BUT A MINOR INCONVENIENCE",
-		"KNOWN TO SOME AS DEATHSTRIKE",
+	'A SPELL A DAY KEEPS AN ARROW AWAY',
+	'BOO!',
+	'NEVERMORE WORRY ABOUT SPELLCASTERS',
+	'THE BANE OF ALL MAGIC USERS',
+	'THE HAND OF MIDAS',
+	'YOU\'LL NEVER WALK ALONE',
+	'MAKES DEATH BUT A MINOR INCONVENIENCE',
+	'KNOWN TO SOME AS DEATHSTRIKE',
 
-		"ONE IN THE EYE FOR ARCHERS",
-		"WHY BOTHER WITH ALL THOSE SILLY KEYS?",
-		"YOU'LL NEVER FEEL SO GOOD",
-		"WHAT MAGIC MAKES, MAGIC CAN DESTROY",
-		"A BLAST AT PARTIES",
-		"LAY DOWN THE RED CARPET",
-		"BOOSTS THE FLATTEST OF RINGS!",
-		"NONE SHALL PASS THIS FIERY BLAST",
+	'ONE IN THE EYE FOR ARCHERS',
+	'WHY BOTHER WITH ALL THOSE SILLY KEYS?',
+	'YOU\'LL NEVER FEEL SO GOOD',
+	'WHAT MAGIC MAKES, MAGIC CAN DESTROY',
+	'A BLAST AT PARTIES',
+	'LAY DOWN THE RED CARPET',
+	'BOOSTS THE FLATTEST OF RINGS!',
+	'NONE SHALL PASS THIS FIERY BLAST',
 
-		"COAT THY TONGUE WITH SILVER!",
-		"THEY WON'T KNOW WHAT HIT THEM",
-		"WHAT CANNOT BE SEEN CANNOT BE STOLEN",
-		"NEVER AGAIN LOSE AT HIDE AND SEEK",
-		"NOW YOU SEE ME...NOW YOU DON'T",
-		"REAL ENOUGH TO HURT!",
-		"FOR THOSE WHO THINK THEY LOVE WALLS",
-		"JUST BLOW THEM AWAY",
+	'COAT THY TONGUE WITH SILVER!',
+	'THEY WON\'T KNOW WHAT HIT THEM',
+	'WHAT CANNOT BE SEEN CANNOT BE STOLEN',
+	'NEVER AGAIN LOSE AT HIDE AND SEEK',
+	'NOW YOU SEE ME...NOW YOU DON\'T',
+	'REAL ENOUGH TO HURT!',
+	'FOR THOSE WHO THINK THEY LOVE WALLS',
+	'JUST BLOW THEM AWAY',
 
-		//Extended Level SPELLS
-		"A GUARANTEED ALL-IN-ONE INSURANCE",
-		"TELEPORT YOUR WAY INTO TROUBLE",
-		"THE INSTANT SUPER-HERO",
-		"A BALL OF FRIENDLY FIERY FUN",
-		"DISPELL AT A DISTANCE",
-		"UNLEASH THE FULL FURY OF CHAOS",
-		"A MAELSTROM OF TOTAL DISASTER",
-		"A SECOND CHANCE FOR THE WEALTHY"
-	];
+	//Extended Level SPELLS
+	'A GUARANTEED ALL-IN-ONE INSURANCE',
+	'TELEPORT YOUR WAY INTO TROUBLE',
+	'THE INSTANT SUPER-HERO',
+	'A BALL OF FRIENDLY FIERY FUN',
+	'DISPELL AT A DISTANCE',
+	'UNLEASH THE FULL FURY OF CHAOS',
+	'A MAELSTROM OF TOTAL DISASTER',
+	'A SECOND CHANCE FOR THE WEALTHY'
+];
 var scrollData = null;
 
 var TEXT_COMMUNICATION_COMMANDS = [
 	[{
-		text: "COMMUNICATE",
+		text: 'COMMUNICATE',
 		row: 0,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_COMMUNICATE_0
 	}, {
-		text: "COMMEND",
+		text: 'COMMEND',
 		row: 1,
 		width: 59,
 		left: true,
 		to: COMMUNICATION_PAGE_NAMES
 	}, {
-		text: "VIEW",
+		text: 'VIEW',
 		row: 1,
 		width: 33,
 		left: false,
 		to: COMMUNICATION_PAGE_NAMES
 	}, {
-		text: "WAIT",
+		text: 'WAIT',
 		row: 2,
 		width: 35,
 		left: true,
 		to: COMMUNICATION_PAGE_NAMES
 	}, {
-		text: "CORRECT",
+		text: 'CORRECT',
 		row: 2,
 		width: 57,
 		left: false,
 		to: COMMUNICATION_PAGE_NAMES,
 		back: null
 	}, {
-		text: "DISMISS",
+		text: 'DISMISS',
 		row: 3,
 		width: 59,
 		left: true,
 		to: COMMUNICATION_PAGE_NAMES
 	}, {
-		text: "CALL",
+		text: 'CALL',
 		row: 3,
 		width: 33,
 		left: false,
 		to: COMMUNICATION_PAGE_NAMES
 	}],
 	[{
-		text: "RECRUIT",
+		text: 'RECRUIT',
 		row: 0,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "IDENTIFY",
+		text: 'IDENTIFY',
 		row: 1,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_IDENTIFY
 	}, {
-		text: "INQUIRY",
+		text: 'INQUIRY',
 		row: 2,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_INQUIRY
 	}, {
-		text: "WHEREABOUTS",
+		text: 'WHEREABOUTS',
 		row: 3,
 		width: 93,
 		left: true,
 		to: null
 	}],
 	[{
-		text: "TRADING",
+		text: 'TRADING',
 		row: 0,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_TRADING
 	}, {
-		text: "SMALLTALK",
+		text: 'SMALLTALK',
 		row: 1,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_SMALLTALK
 	}, {
-		text: "YES",
+		text: 'YES',
 		row: 2,
 		width: 43,
 		left: true,
 		to: null
 	}, {
-		text: "NO",
+		text: 'NO',
 		row: 2,
 		width: 49,
 		left: false,
 		to: null
 	}, {
-		text: "BRIBE",
+		text: 'BRIBE',
 		row: 3,
 		width: 43,
 		left: true,
 		to: null
 	}, {
-		text: "THREAT",
+		text: 'THREAT',
 		row: 3,
 		width: 49,
 		left: false,
 		to: null
 	}],
 	[{
-		text: "WHO GOES?",
+		text: 'WHO GOES?',
 		row: 0,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_COMMUNICATE_0
 	}, {
-		text: "THY TRADE?",
+		text: 'THY TRADE?',
 		row: 1,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_COMMUNICATE_0
 	}, {
-		text: "NAME SELF",
+		text: 'NAME SELF',
 		row: 2,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_COMMUNICATE_0
 	}, {
-		text: "REVEAL SELF",
+		text: 'REVEAL SELF',
 		row: 3,
 		width: 93,
 		left: true,
 		to: COMMUNICATION_PAGE_COMMUNICATE_0
 	}],
 	[{
-		text: "FOLK LORE",
+		text: 'FOLK LORE',
 		row: 0,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "MAGIC ITEMS",
+		text: 'MAGIC ITEMS',
 		row: 1,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "OBJECTS",
+		text: 'OBJECTS',
 		row: 2,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "PERSONS",
+		text: 'PERSONS',
 		row: 3,
 		width: 93,
 		left: true,
 		to: null
 	}],
 	[{
-		text: "OFFER",
+		text: 'OFFER',
 		row: 0,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "PURCHASE",
+		text: 'PURCHASE',
 		row: 1,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "EXCHANGE",
+		text: 'EXCHANGE',
 		row: 2,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "SELL",
+		text: 'SELL',
 		row: 3,
 		width: 93,
 		left: true,
 		to: null
 	}],
 	[{
-		text: "PRAISE",
+		text: 'PRAISE',
 		row: 0,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "CURSE",
+		text: 'CURSE',
 		row: 1,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "BOAST",
+		text: 'BOAST',
 		row: 2,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "RETORT",
+		text: 'RETORT',
 		row: 3,
 		width: 93,
 		left: true,
 		to: null
 	}],
 	[{
-		text: "",
+		text: '',
 		row: 0,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "",
+		text: '',
 		row: 1,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "",
+		text: '',
 		row: 2,
 		width: 93,
 		left: true,
 		to: null
 	}, {
-		text: "",
+		text: '',
 		row: 3,
 		width: 93,
 		left: true,
@@ -1416,12 +1416,12 @@ var DUNGEON_GFX_ID = [
 	'PROJECTILE_EXPLODE',
 	'PROJECTILE_ARROW',
 	'PROJECTILE_SPHERE'
-]
+];
 
 //items
 var itemJson = [];
 var itemDropsJson = [];
-var item = new Array();
+var item = [];
 var itemGfxD = [];
 
 var POCKET_MAX = 13,
@@ -1452,9 +1452,9 @@ var DOOR_COMMON = 0,
 //spells
 var spellJson = [];
 var spellPartJson = [];
-var spell = new Array();
+var spell = [];
 var dungeonSpellTimer = 0;
-var dungeonSpellList = new Array();
+var dungeonSpellList = [];
 //var activeSpellTimer = 0;
 var SPELL_LEVEL_MAX = 8,
 	SPELL_COLOUR_MAX = 4,
@@ -1521,7 +1521,7 @@ var SPELL_DUNGEON = {
 SPELL_BLAZE_BALL = 40;
 
 //projectiles
-var projectile = new Array();
+var projectile = [];
 /*var DUNGEON_PROJECTILE_BIG = 27,
     DUNGEON_PROJECTILE_EXPLODE = 28,
     DUNGEON_PROJECTILE_ARROW = 29,
@@ -1539,12 +1539,12 @@ var championSelect = [{
 }];
 
 //armour palettes
-//var paletteData['DEFAULT_MON'] = [colourData['BLACK'], colourData['GREY_LIGHT'], colourData['BLUE'], colourData['RED']],
+//var paletteData.DEFAULT_MON = [colourData.BLACK, colourData.GREY_LIGHT, colourData.BLUE, colourData.RED],
 var CLASS_ARMOUR = [
-	[colourData['GREEN_DARK'], colourData['GREEN'], null, colourData['GREEN']],
-	[colourData['PINK'], colourData['YELLOW'], null, colourData['YELLOW']],
-	[colourData['RED_DARK'], colourData['RED'], colourData['RED'], colourData['RED']],
-	[colourData['BLUE_DARK'], colourData['BLUE'], null, colourData['BLUE']]
+	[colourData.GREEN_DARK, colourData.GREEN, null, colourData.GREEN],
+	[colourData.PINK, colourData.YELLOW, null, colourData.YELLOW],
+	[colourData.RED_DARK, colourData.RED, colourData.RED, colourData.RED],
+	[colourData.BLUE_DARK, colourData.BLUE, null, colourData.BLUE]
 ];
 
 var CHA_ARMOUR = [
@@ -1553,203 +1553,203 @@ var CHA_ARMOUR = [
 		//Male
 		[
 			//Legs
-			[colourData['RED_DARK'], colourData['BROWN'], colourData['PINK'], colourData['PINK']],
+			[colourData.RED_DARK, colourData.BROWN, colourData.PINK, colourData.PINK],
 			//Torso
-			[colourData['RED_DARK'], colourData['BROWN'], colourData['PINK'], null],
+			[colourData.RED_DARK, colourData.BROWN, colourData.PINK, null],
 			//Arms
-			[null, colourData['RED_DARK'], colourData['BROWN'], colourData['PINK']],
+			[null, colourData.RED_DARK, colourData.BROWN, colourData.PINK],
 			//Minis
-			[null, colourData['RED_DARK'], colourData['BROWN'], colourData['RED_DARK']]
+			[null, colourData.RED_DARK, colourData.BROWN, colourData.RED_DARK]
 		],
 		//Female
 		[
 			[null, null, null, null],
-			[colourData['RED_DARK'], colourData['BROWN'], colourData['PINK'], null],
+			[colourData.RED_DARK, colourData.BROWN, colourData.PINK, null],
 			[null, null, null, null],
-			[colourData['RED_DARK'], colourData['RED_DARK'], null, colourData['BROWN']]
+			[colourData.RED_DARK, colourData.RED_DARK, null, colourData.BROWN]
 		],
 		//Blodwyn
 		[
-			[colourData['PINK'], colourData['BROWN'], colourData['RED_DARK'], colourData['PINK']],
-			[colourData['PINK'], colourData['BROWN'], colourData['RED_DARK'], colourData['PINK']],
-			[null, colourData['RED_DARK'], colourData['BROWN'], colourData['PINK']],
-			[null, colourData['BROWN'], colourData['RED_DARK'], colourData['RED_DARK']]
+			[colourData.PINK, colourData.BROWN, colourData.RED_DARK, colourData.PINK],
+			[colourData.PINK, colourData.BROWN, colourData.RED_DARK, colourData.PINK],
+			[null, colourData.RED_DARK, colourData.BROWN, colourData.PINK],
+			[null, colourData.BROWN, colourData.RED_DARK, colourData.RED_DARK]
 		]
 	],
 
 	//Chain Mail
 	[
 		[
-			[null, colourData['GREY_LIGHT'], colourData['GREY_DARK'], null],
-			[null, colourData['GREY_LIGHT'], colourData['GREY_DARK'], null],
-			[null, colourData['GREY_DARK'], colourData['GREY_LIGHT'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['GREY_LIGHT'], colourData['GREY_LIGHT']]
+			[null, colourData.GREY_LIGHT, colourData.GREY_DARK, null],
+			[null, colourData.GREY_LIGHT, colourData.GREY_DARK, null],
+			[null, colourData.GREY_DARK, colourData.GREY_LIGHT, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.GREY_LIGHT, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['GREY_LIGHT'], null, null],
-			[colourData['GREY_DARK'], colourData['GREY_LIGHT'], colourData['WHITE'], null],
+			[null, colourData.GREY_LIGHT, null, null],
+			[colourData.GREY_DARK, colourData.GREY_LIGHT, colourData.WHITE, null],
 			[null, null, null, null],
-			[null, colourData['GREY_LIGHT'], null, colourData['WHITE']]
+			[null, colourData.GREY_LIGHT, null, colourData.WHITE]
 		],
 		[
-			[colourData['WHITE'], colourData['GREY_LIGHT'], colourData['GREY_DARK'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['GREY_LIGHT'], colourData['GREY_DARK'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['GREY_LIGHT'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['GREY_LIGHT'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.GREY_LIGHT, colourData.GREY_DARK, colourData.WHITE],
+			[colourData.WHITE, colourData.GREY_LIGHT, colourData.GREY_DARK, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.GREY_LIGHT, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.GREY_LIGHT, colourData.GREY_LIGHT]
 		]
 	],
 
 	//Plate Mail
 	[
 		[
-			[null, colourData['GREY_LIGHT'], colourData['GREY_LIGHT'], null],
-			[null, colourData['GREY_LIGHT'], colourData['GREY_LIGHT'], null],
-			[null, colourData['GREY_MEDIUM'], colourData['GREY_LIGHT'], colourData['WHITE']],
-			[null, colourData['GREY_MEDIUM'], colourData['GREY_LIGHT'], colourData['GREY_LIGHT']]
+			[null, colourData.GREY_LIGHT, colourData.GREY_LIGHT, null],
+			[null, colourData.GREY_LIGHT, colourData.GREY_LIGHT, null],
+			[null, colourData.GREY_MEDIUM, colourData.GREY_LIGHT, colourData.WHITE],
+			[null, colourData.GREY_MEDIUM, colourData.GREY_LIGHT, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['GREY_LIGHT'], null, colourData['RED']],
-			[colourData['GREY_MEDIUM'], colourData['GREY_LIGHT'], colourData['WHITE'], null],
-			[null, colourData['GREY_MEDIUM'], colourData['GREY_MEDIUM'], colourData['GREY_LIGHT']],
-			[null, colourData['GREY_LIGHT'], null, null]
+			[null, colourData.GREY_LIGHT, null, colourData.RED],
+			[colourData.GREY_MEDIUM, colourData.GREY_LIGHT, colourData.WHITE, null],
+			[null, colourData.GREY_MEDIUM, colourData.GREY_MEDIUM, colourData.GREY_LIGHT],
+			[null, colourData.GREY_LIGHT, null, null]
 		],
 		[
-			[colourData['WHITE'], colourData['GREY_LIGHT'], colourData['GREY_MEDIUM'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['GREY_LIGHT'], colourData['GREY_MEDIUM'], colourData['WHITE']],
-			[null, colourData['GREY_MEDIUM'], colourData['GREY_LIGHT'], colourData['WHITE']],
-			[null, colourData['GREY_MEDIUM'], colourData['GREY_LIGHT'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.GREY_LIGHT, colourData.GREY_MEDIUM, colourData.WHITE],
+			[colourData.WHITE, colourData.GREY_LIGHT, colourData.GREY_MEDIUM, colourData.WHITE],
+			[null, colourData.GREY_MEDIUM, colourData.GREY_LIGHT, colourData.WHITE],
+			[null, colourData.GREY_MEDIUM, colourData.GREY_LIGHT, colourData.GREY_LIGHT]
 		]
 	],
 
 	//Mithril Chain
 	[
 		[
-			[null, colourData['BLUE'], colourData['GREY_DARK'], null],
-			[null, colourData['BLUE'], colourData['GREY_DARK'], null],
-			[null, colourData['BLUE_DARK'], colourData['BLUE'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['BLUE'], colourData['GREY_LIGHT']]
+			[null, colourData.BLUE, colourData.GREY_DARK, null],
+			[null, colourData.BLUE, colourData.GREY_DARK, null],
+			[null, colourData.BLUE_DARK, colourData.BLUE, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.BLUE, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['BLUE'], null, null],
-			[colourData['BLUE_DARK'], colourData['BLUE'], colourData['WHITE'], null],
+			[null, colourData.BLUE, null, null],
+			[colourData.BLUE_DARK, colourData.BLUE, colourData.WHITE, null],
 			[null, null, null, null],
-			[null, colourData['BLUE'], null, colourData['WHITE']]
+			[null, colourData.BLUE, null, colourData.WHITE]
 		],
 		[
-			[colourData['WHITE'], colourData['BLUE'], colourData['GREY_DARK'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['BLUE'], colourData['GREY_DARK'], colourData['BLUE_DARK']],
-			[null, colourData['GREY_DARK'], colourData['BLUE'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['BLUE'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.BLUE, colourData.GREY_DARK, colourData.WHITE],
+			[colourData.WHITE, colourData.BLUE, colourData.GREY_DARK, colourData.BLUE_DARK],
+			[null, colourData.GREY_DARK, colourData.BLUE, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.BLUE, colourData.GREY_LIGHT]
 		]
 	],
 
 	//Mithril Plate
 	[
 		[
-			[null, colourData['BLUE'], colourData['BLUE'], null],
-			[null, colourData['BLUE'], colourData['BLUE'], null],
-			[null, colourData['BLUE'], colourData['BLUE'], colourData['WHITE']],
-			[null, colourData['BLUE_DARK'], colourData['BLUE'], colourData['GREY_LIGHT']]
+			[null, colourData.BLUE, colourData.BLUE, null],
+			[null, colourData.BLUE, colourData.BLUE, null],
+			[null, colourData.BLUE, colourData.BLUE, colourData.WHITE],
+			[null, colourData.BLUE_DARK, colourData.BLUE, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['BLUE'], null, colourData['RED']],
-			[colourData['BLUE_DARK'], colourData['BLUE'], colourData['WHITE'], null],
-			[null, colourData['BLUE_DARK'], colourData['BLUE_DARK'], colourData['BLUE']],
-			[null, colourData['BLUE'], null, null]
+			[null, colourData.BLUE, null, colourData.RED],
+			[colourData.BLUE_DARK, colourData.BLUE, colourData.WHITE, null],
+			[null, colourData.BLUE_DARK, colourData.BLUE_DARK, colourData.BLUE],
+			[null, colourData.BLUE, null, null]
 		],
 		[
-			[colourData['WHITE'], colourData['BLUE'], colourData['BLUE_DARK'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['BLUE'], colourData['BLUE_DARK'], colourData['BLUE_DARK']],
-			[null, colourData['BLUE_DARK'], colourData['BLUE'], colourData['WHITE']],
-			[null, colourData['BLUE_DARK'], colourData['BLUE'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.BLUE, colourData.BLUE_DARK, colourData.WHITE],
+			[colourData.WHITE, colourData.BLUE, colourData.BLUE_DARK, colourData.BLUE_DARK],
+			[null, colourData.BLUE_DARK, colourData.BLUE, colourData.WHITE],
+			[null, colourData.BLUE_DARK, colourData.BLUE, colourData.GREY_LIGHT]
 		]
 	],
 
 	//Adamant Chain
 	[
 		[
-			[null, colourData['GREEN'], colourData['GREY_DARK'], null],
-			[null, colourData['GREEN'], colourData['GREY_DARK'], null],
-			[null, colourData['GREEN_DARK'], colourData['GREEN'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['GREEN'], colourData['GREY_LIGHT']]
+			[null, colourData.GREEN, colourData.GREY_DARK, null],
+			[null, colourData.GREEN, colourData.GREY_DARK, null],
+			[null, colourData.GREEN_DARK, colourData.GREEN, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.GREEN, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['GREEN'], null, null],
-			[colourData['GREEN_DARK'], colourData['GREEN'], colourData['WHITE'], null],
+			[null, colourData.GREEN, null, null],
+			[colourData.GREEN_DARK, colourData.GREEN, colourData.WHITE, null],
 			[null, null, null, null],
-			[null, colourData['GREEN'], null, colourData['WHITE']]
+			[null, colourData.GREEN, null, colourData.WHITE]
 		],
 		[
-			[colourData['WHITE'], colourData['GREEN'], colourData['GREY_DARK'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['GREEN'], colourData['GREY_DARK'], colourData['GREEN_DARK']],
-			[null, colourData['GREY_DARK'], colourData['GREEN'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['GREEN'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.GREEN, colourData.GREY_DARK, colourData.WHITE],
+			[colourData.WHITE, colourData.GREEN, colourData.GREY_DARK, colourData.GREEN_DARK],
+			[null, colourData.GREY_DARK, colourData.GREEN, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.GREEN, colourData.GREY_LIGHT]
 		]
 	],
 
 	//Adamant Plate
 	[
 		[
-			[null, colourData['GREEN'], colourData['GREEN'], null],
-			[null, colourData['GREEN'], colourData['GREEN'], null],
-			[null, colourData['GREEN'], colourData['GREEN'], colourData['WHITE']],
-			[null, colourData['GREEN_DARK'], colourData['GREEN'], colourData['GREY_LIGHT']]
+			[null, colourData.GREEN, colourData.GREEN, null],
+			[null, colourData.GREEN, colourData.GREEN, null],
+			[null, colourData.GREEN, colourData.GREEN, colourData.WHITE],
+			[null, colourData.GREEN_DARK, colourData.GREEN, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['GREEN'], null, colourData['RED']],
-			[colourData['GREEN_DARK'], colourData['GREEN'], colourData['WHITE'], null],
-			[null, colourData['GREEN_DARK'], colourData['GREEN_DARK'], colourData['GREEN']],
-			[null, colourData['GREEN'], null, null]
+			[null, colourData.GREEN, null, colourData.RED],
+			[colourData.GREEN_DARK, colourData.GREEN, colourData.WHITE, null],
+			[null, colourData.GREEN_DARK, colourData.GREEN_DARK, colourData.GREEN],
+			[null, colourData.GREEN, null, null]
 		],
 		[
-			[colourData['WHITE'], colourData['GREEN'], colourData['GREEN_DARK'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['GREEN'], colourData['GREEN_DARK'], colourData['GREEN_DARK']],
-			[null, colourData['GREEN_DARK'], colourData['GREEN'], colourData['WHITE']],
-			[null, colourData['GREEN_DARK'], colourData['GREEN'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.GREEN, colourData.GREEN_DARK, colourData.WHITE],
+			[colourData.WHITE, colourData.GREEN, colourData.GREEN_DARK, colourData.GREEN_DARK],
+			[null, colourData.GREEN_DARK, colourData.GREEN, colourData.WHITE],
+			[null, colourData.GREEN_DARK, colourData.GREEN, colourData.GREY_LIGHT]
 		]
 	],
 
 	//Crystal Chain
 	[
 		[
-			[null, colourData['PINK'], colourData['GREY_DARK'], null],
-			[null, colourData['PINK'], colourData['GREY_DARK'], null],
-			[null, colourData['BROWN'], colourData['PINK'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['PINK'], colourData['GREY_LIGHT']]
+			[null, colourData.PINK, colourData.GREY_DARK, null],
+			[null, colourData.PINK, colourData.GREY_DARK, null],
+			[null, colourData.BROWN, colourData.PINK, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.PINK, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['PINK'], null, null],
-			[colourData['BROWN'], colourData['PINK'], colourData['WHITE'], null],
+			[null, colourData.PINK, null, null],
+			[colourData.BROWN, colourData.PINK, colourData.WHITE, null],
 			[null, null, null, null],
-			[null, colourData['PINK'], null, colourData['WHITE']]
+			[null, colourData.PINK, null, colourData.WHITE]
 		],
 		[
-			[colourData['WHITE'], colourData['PINK'], colourData['GREY_DARK'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['PINK'], colourData['GREY_DARK'], colourData['BROWN']],
-			[null, colourData['GREY_DARK'], colourData['PINK'], colourData['WHITE']],
-			[null, colourData['GREY_DARK'], colourData['PINK'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.PINK, colourData.GREY_DARK, colourData.WHITE],
+			[colourData.WHITE, colourData.PINK, colourData.GREY_DARK, colourData.BROWN],
+			[null, colourData.GREY_DARK, colourData.PINK, colourData.WHITE],
+			[null, colourData.GREY_DARK, colourData.PINK, colourData.GREY_LIGHT]
 		]
 	],
 
 	//Crystal Plate
 	[
 		[
-			[null, colourData['PINK'], colourData['PINK'], null],
-			[null, colourData['PINK'], colourData['PINK'], null],
-			[null, colourData['PINK'], colourData['PINK'], colourData['WHITE']],
-			[null, colourData['BROWN'], colourData['PINK'], colourData['GREY_LIGHT']]
+			[null, colourData.PINK, colourData.PINK, null],
+			[null, colourData.PINK, colourData.PINK, null],
+			[null, colourData.PINK, colourData.PINK, colourData.WHITE],
+			[null, colourData.BROWN, colourData.PINK, colourData.GREY_LIGHT]
 		],
 		[
-			[null, colourData['PINK'], null, colourData['RED']],
-			[colourData['BROWN'], colourData['PINK'], colourData['WHITE'], null],
-			[null, colourData['BROWN'], colourData['BROWN'], colourData['PINK']],
-			[null, colourData['PINK'], null, null]
+			[null, colourData.PINK, null, colourData.RED],
+			[colourData.BROWN, colourData.PINK, colourData.WHITE, null],
+			[null, colourData.BROWN, colourData.BROWN, colourData.PINK],
+			[null, colourData.PINK, null, null]
 		],
 		[
-			[colourData['WHITE'], colourData['PINK'], colourData['BROWN'], colourData['WHITE']],
-			[colourData['WHITE'], colourData['PINK'], colourData['BROWN'], colourData['BROWN']],
-			[null, colourData['BROWN'], colourData['PINK'], colourData['WHITE']],
-			[null, colourData['BROWN'], colourData['PINK'], colourData['GREY_LIGHT']]
+			[colourData.WHITE, colourData.PINK, colourData.BROWN, colourData.WHITE],
+			[colourData.WHITE, colourData.PINK, colourData.BROWN, colourData.BROWN],
+			[null, colourData.BROWN, colourData.PINK, colourData.WHITE],
+			[null, colourData.BROWN, colourData.PINK, colourData.GREY_LIGHT]
 		]
 	]
 ];

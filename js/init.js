@@ -6,10 +6,11 @@ function initGame() {
 }
 
 function loadGFXData() {
+	progressScreen('LOADING');
 	preload.loadFile({
 		src: 'data/' + GAME_ID[GAME_BLOODWYCH] + '/json/graphics.json',
-		callback: "loadJSONData",
-		type: "manifest",
+		callback: 'loadJSONData',
+		type: 'manifest',
 		loadTimeout: 1000
 	}, true);
 }
@@ -20,8 +21,8 @@ function loadDefaultGfx(event) {
 		preload = new createjs.LoadQueue(false);
 		preload.loadFile({
 			src: 'data/' + GAME_ID[gameType] + '/json/graphics.json',
-			callback: "loadJSONData1",
-			type: "manifest",
+			callback: 'loadJSONData1',
+			type: 'manifest',
 			loadTimeout: 1000
 		}, true);
 	} else {
@@ -44,10 +45,10 @@ function loadCustomGfx(event) {
 	}
 	loadDefaultJSONFiles(GAME_ID[GAME_BLOODWYCH]);
 	preload.loadManifest(defaultManifest.manifest, false, defaultManifest.path);
-	preload.on("fileprogress", handleFileProgress);
-	preload.on("error", handleError);
-	preload.on("fileload", handleFileLoad);
-	preload.on("complete", checkCompleted);
+	preload.on('fileprogress', handleFileProgress);
+	preload.on('error', handleError);
+	preload.on('fileload', handleFileLoad);
+	preload.on('complete', checkCompleted);
 	preload.load();
 }
 
@@ -61,15 +62,15 @@ function loadTowerData(event) {
 	jsonDataLoaded = 0;
 	tower = event.towers;
 	initTowers();
-	preload.on("fileprogress", handleFileProgress);
-	preload.on("error", handleError);
-	preload.on("fileload", handleFileLoad);
-	preload.on("complete", handleComplete);
+	preload.on('fileprogress', handleFileProgress);
+	preload.on('error', handleError);
+	preload.on('fileload', handleFileLoad);
+	preload.on('complete', handleComplete);
 	preload.loadManifest(event.manifest, true, event.path);
 }
 
 function stop() {
-	if (preload != null) {
+	if (preload !== null) {
 		preload.close();
 	}
 }
@@ -79,13 +80,13 @@ function handleFileProgress(event) {
 }
 
 function handleError(event) {
-	PrintLog("Preload " + event.title + ": " + event.data.id)
+	PrintLog('Preload ' + event.title + ': ' + event.data.id);
 }
 
 function handleFileLoad(event) {
 	var item = event.item;
 	if (debug) {
-		PrintLog("Loaded File: " + item.src);
+		PrintLog('Loaded File: ' + item.src);
 	}
 	switch (item.type) {
 		case createjs.AbstractLoader.IMAGE:
@@ -106,7 +107,7 @@ function handleFileLoad(event) {
 
 function handleComplete(event) {
 	loadingScreen({
-		src: "Creating Towers..."
+		src: 'Creating Towers...'
 	});
 	setTimeout(function () {
 		initMenuData();
@@ -115,19 +116,19 @@ function handleComplete(event) {
 
 function updateLoadingScreen(msg, percent) {
 	clearCanvas();
-	ctx.font = "normal 14px \"Bookman Old Style\", verdana, sans-serif";
-	ctx.fillStyle = "#FFF";
-	ctx.fillText(percent + "% - " + msg + "...", 0, 15);
+	ctx.font = 'normal 14px \'Bookman Old Style\', verdana, sans-serif';
+	ctx.fillStyle = '#FFF';
+	ctx.fillText(percent + '% - ' + msg + '...', 0, 15);
 }
 
 function loadGfxUIData() {
-	gfxLoadImage("misc", "font", "", null);
+	gfxLoadImage('misc', 'font', '', null);
 }
 
 function initMenuData() {
-	projectile[towerThis] = new Array();
+	projectile[towerThis] = [];
 	initData();
-	if (typeof game === "undefined") {
+	if (typeof game === 'undefined') {
 		startScreen();
 	}
 }
@@ -169,22 +170,22 @@ function initJSONData() {
 	preload = new createjs.LoadQueue(false);
 	preload.loadFile({
 		src: 'data/' + GAME_ID[gameType] + '/json/tower.json',
-		callback: "loadJSONData2",
-		type: "manifest",
+		callback: 'loadJSONData2',
+		type: 'manifest',
 		loadTimeout: 1000
 	}, true);
 }
 
 //finds absolute value defined in obj, from o2
 function parseJSONValues(obj, o2, from) {
-	if (typeof from === "undefined") {
-		var from = '';
+	if (typeof from === 'undefined') {
+		from = '';
 	}
 	for (let c in obj) {
 		if (typeof obj[c] === 'string') {
 			if (from === '') {
 				var val = o2[obj[c]];
-				if (typeof val !== "undefined") {
+				if (typeof val !== 'undefined') {
 					obj[c] = val;
 				}
 			}
@@ -198,17 +199,17 @@ function parseJSONValues(obj, o2, from) {
 }
 
 function startGame(singlePlayer, quickStart, p1_cid, p2_cid) {
-	progressScreen("STARTING GAME");
-	if (typeof god === "undefined") {
+	progressScreen('STARTING GAME');
+	if (typeof god === 'undefined') {
 		god = false;
 	}
-	progressScreen("INIT PLAYERS");
+	progressScreen('INIT PLAYERS');
 	initPlayers(singlePlayer, quickStart, p1_cid, p2_cid);
 	if (god && !resumeLoadGame) {
 		godMode();
 
 	}
-	progressScreen("INIT TOWER SWITCHES");
+	progressScreen('INIT TOWER SWITCHES');
 	initTowerSwitches();
 	switchTower(0);
 	//        if (isMobile){
@@ -218,7 +219,7 @@ function startGame(singlePlayer, quickStart, p1_cid, p2_cid) {
 	//            }
 	//        }
 	gameStarted = true;
-	progressScreen("PROCESSING CHAMPIONS");
+	progressScreen('PROCESSING CHAMPIONS');
 	for (let pl in championSelect) {
 		if (championSelect[pl].champID > -1) {
 			champion[championSelect[pl].champID].selectedSpell = null;
@@ -227,19 +228,18 @@ function startGame(singlePlayer, quickStart, p1_cid, p2_cid) {
 	}
 	$('canvas').attr('data-game-status', 'started');
 	//for(var p in player) {
-	//      player[p].message("WELCOME THEE TRAVELLER, TO THE REMAKE OF", colourData['YELLOW'], true);
-	//      player[p].message("   BLOODWYCH - REWRITTEN BY MAD BONE    ", colourData['YELLOW'], true);
-	//      player[p].message("          WWW.BLOODWYCH.CO.UK           ", colourData['YELLOW'], true);
+	//      player[p].message('WELCOME THEE TRAVELLER, TO THE REMAKE OF', colourData['YELLOW'], true);
+	//      player[p].message('   BLOODWYCH - REWRITTEN BY MAD BONE    ', colourData['YELLOW'], true);
+	//      player[p].message('          WWW.BLOODWYCH.CO.UK           ', colourData['YELLOW'], true);
 	//  }
 	//saveGame(99, 'autosave');
 	if (resumeLoadGame) {
 		loadGame(99);
 	}
-	progressScreen("RUN GAME");
+	progressScreen('RUN GAME');
 	Run();
 	switch (gameType) {
 		case GAME_BLOODWYCH:
-			;
 			break;
 		case GAME_EXTENDED_LEVELS:
 			startExtendedLevel();
@@ -248,7 +248,6 @@ function startGame(singlePlayer, quickStart, p1_cid, p2_cid) {
 			startBOS();
 			break;
 		case GAME_CUSTOM:
-			;
 			break;
 	}
 	if (debug && mapEnabled) {
@@ -265,7 +264,7 @@ function checkMergeJSON(objStorage, objNewData) {
 
 	if (typeof objStorage !== 'undefined') {
 		if (objStorage.length > 0) {
-			var newItems = new Array();
+			var newItems = [];
 			for (let i in objNewData) {
 				var matched = false;
 				for (let x in objStorage) {
@@ -309,7 +308,7 @@ function processJSONFiles(item, result) {
 			itemDropsJson = checkMergeJSON(itemDropsJson, result.itemDrops);
 			break;
 		case 'Sounds':
-			initSounds(result.sounds, item.id)
+			initSounds(result.sounds, item.id);
 			//soundJson = checkMergeJSON(soundJson, result.sounds);
 			break;
 		case 'Spells':
@@ -325,54 +324,54 @@ function processJSONFiles(item, result) {
 			spriteData = checkMergeJSON(spriteData, result);
 			gfxPos = spriteData.Sprites[0].locations;
 			break;
-	};
+	}
 }
 
 function loadDefaultJSONFiles(path) {
 	defaultManifest.manifest.unshift({
 		src: 'data/' + path + '/json/colours.json',
-		type: "json",
-		typeID: "Colours"
+		type: 'json',
+		typeID: 'Colours'
 	}, {
 			src: 'data/' + path + '/json/palettes.json',
-			type: "json",
-			typeID: "Palettes"
+			type: 'json',
+			typeID: 'Palettes'
 		}, {
 			src: 'data/' + path + '/json/characters.json',
-			type: "json",
-			typeID: "Characters"
+			type: 'json',
+			typeID: 'Characters'
 		}, {
 			src: 'data/' + path + '/json/communication.json',
-			type: "json",
-			typeID: "Communication"
+			type: 'json',
+			typeID: 'Communication'
 		}, {
 			src: 'data/' + path + '/json/input.json',
-			type: "json",
-			typeID: "Input"
+			type: 'json',
+			typeID: 'Input'
 		}, {
 			src: 'data/' + path + '/json/items.json',
-			type: "json",
-			typeID: "Items"
+			type: 'json',
+			typeID: 'Items'
 		}, {
 			src: 'data/' + path + '/json/sounds.json',
-			type: "json",
-			typeID: "Sounds"
+			type: 'json',
+			typeID: 'Sounds'
 		}, {
 			src: 'data/' + path + '/json/spells.json',
-			type: "json",
-			typeID: "Spells"
+			type: 'json',
+			typeID: 'Spells'
 		}, {
 			src: 'data/' + path + '/json/text.json',
-			type: "json",
-			typeID: "Text"
+			type: 'json',
+			typeID: 'Text'
 		}, {
 			src: 'data/' + path + '/json/ui.json',
-			type: "json",
-			typeID: "UI"
+			type: 'json',
+			typeID: 'UI'
 		}, {
 			src: 'data/' + path + '/json/sprites.json',
-			type: "json",
-			typeID: "Sprites"
+			type: 'json',
+			typeID: 'Sprites'
 		});
 }
 

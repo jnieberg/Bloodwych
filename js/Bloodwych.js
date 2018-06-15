@@ -32,7 +32,7 @@ function createDebugWindow() {
 $(function () {
 	initGame();
 
-	canvas.style.cursor = 'url("data / ' + GAME_ID[GAME_BLOODWYCH] + ' / images / misc / cursor0.png"),auto';
+	canvas.style.cursor = 'url("data/' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor0.png"),auto';
 
 	document.addEventListener('deviceready', onDeviceReady, false);
 	// PhoneGap is loaded and it is now safe to make calls PhoneGap methods
@@ -93,30 +93,24 @@ function updatePlayerViewScreen() {
 }
 
 function setViewportScale(sp) {
-	// if (navigator.userAgent.match(/(iPhone|iPod|Android|iPad)/g) ? true : false) {
-	// 	scaleReal = screen.width / 320 * zoom;
-	// 	if (screen.height / 600.0 > scaleReal) {
-	// 		scaleReal = screen.height / 600.0;
-	// 	}
-	//} else if (navigator.userAgent.match(/(iPhone|iPod|Android)/g) ? true : false) {
-	//scaleReal = 0.4; //iPhone 6
-	//scaleReal = 0.5;
-	//} else {
-	//scaleReal = 3;
-	if (isMobile) {
-		zoom = 2;
-		if (typeof sp !== 'undefined' && sp) {
-			scaleReal = screen.width / (320 / zoom);
-		} else {
-			scaleReal = screen.height / (200 / zoom);
-		}
+	if (navigator.userAgent.match(/(iPad)/g) ? true : false) {
+		scaleReal = 1.06;
+	} else if (navigator.userAgent.match(/(iPhone|iPod)/g) ? true : false) {
+		scaleReal = 0.7; //iPhone 6
 	} else {
-		zoom = 1;
-	}
-	scale = Math.floor(scaleReal);
-	scaleReal = scaleReal / scale / zoom;
+		var zoom = 1;
+		if (isMobile) {
+			zoom = 2;
+			if (typeof sp !== 'undefined' && sp) {
+				scaleReal = screen.width / (320 / zoom);
+			} else {
+				scaleReal = screen.height / (200 / zoom);
+			}
+		}
+		scale = Math.floor(scaleReal);
+		scaleReal = scaleReal / scale / zoom;
 
-	//}
+	}
 	$('html').css('zoom', scaleReal);
 	$('html').css('-moz-transform', 'scale(' + scaleReal + ')');
 	if (typeof player !== 'undefined') {

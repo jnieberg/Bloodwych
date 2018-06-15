@@ -1808,3 +1808,10 @@ function initPlayers(singlePlayer, quickStart, p1_cid, p2_cid) {
 	}
 }
 
+function getPlayerMax() {
+	pl = 0;
+	for (let p in player) {
+		pl++;
+	}
+	return pl;
+}

@@ -3,21 +3,21 @@ function Renderer(game) {
 
 };
 Renderer.prototype = {
-	init: function() {
+	init: function () {
 		this.fps = 30;
 		this.step = 1 / this.fps;
-        if(resumeLoadGame) {
-            resumeLoadGame = false;
+		if (resumeLoadGame) {
+			resumeLoadGame = false;
 		} else {
-            clearCanvas();
-            redrawUI(2);
-        }		
+			clearCanvas(false);
+			redrawUI(2);
+		}
 		configCanvas();
 	},
 
-	update: function() {
+	update: function () {
 		//try{
-			updatePlayerViewScreen();
+		updatePlayerViewScreen();
 		//}catch(err){
 		//	PrintLog("Drawing Error: " + err.toString());
 		//}
@@ -26,7 +26,7 @@ Renderer.prototype = {
 	invalid: {
 		value: true
 	},
-	invalidateExample: function() {
+	invalidateExample: function () {
 		this.invalid.example = true;
 	}
 };
@@ -34,7 +34,7 @@ Renderer.prototype = {
 var fps = {
 	startTime: 0,
 	frameNumber: 0,
-	getFPS: function() {
+	getFPS: function () {
 		this.frameNumber++;
 		var d = new Date().getTime(),
 			currentTime = (d - this.startTime) / 1000,

@@ -171,12 +171,12 @@ function doKeyDown(e) {
 		switch (e.keyCode) {
 			case KEY_1:
 				$('canvas').attr('data-game-status', 'menu-champions');
-				players = 1;
+				// players = 1;
 				drawQuickStartUI(1);
 				break
 			case KEY_2:
 				$('canvas').attr('data-game-status', 'menu-champions');
-				players = 2;
+				// players = 2;
 				drawQuickStartUI(2);
 				break
 			case KEY_3:
@@ -217,7 +217,6 @@ function checkClickEvents() {
 				redrawUI(p - 1);
 			}
 		} else if (t.attr('data-game-status') === 'menu') {
-			console.log(1);
 			processCanvasInputMenu(x, y);
 		} else if (t.attr('data-game-status') === 'menu-champions') {
 			uiChampSelectArea(x, y, currentPlayer);
@@ -582,11 +581,11 @@ function processCanvasInputMenu(x, y) {
 
 		if (uiClickInArea(x, y, UI_CLICK_START_ONE_PLAYER)) {
 			$('canvas').attr('data-game-status', 'menu-champions');
-			players = 1;
+			// players = 1;
 			drawQuickStartUI(0);
 		} else if (uiClickInArea(x, y, UI_CLICK_START_TWO_PLAYER)) {
 			$('canvas').attr('data-game-status', 'menu-champions');
-			players = 2;
+			// players = 2;
 			drawQuickStartUI(0);
 		} else if (uiClickInArea(x, y, UI_CLICK_START_QUICK_ONE_PLAYER)) {
 			startGame(true, true);

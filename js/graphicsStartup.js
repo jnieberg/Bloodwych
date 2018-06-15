@@ -85,7 +85,7 @@ function progressScreen(strDetails) {
 
 function drawQuickStartUI(pl) {
 
-	clearCanvas();
+	clearCanvas(false);
 	if (currentPlayer === 1) {
 		writeFontImage("PLAYER 2, " + TEXT_SELECT_CHAMPION, 2, 0, colourData['GREEN']);
 	} else {

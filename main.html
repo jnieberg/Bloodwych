@@ -126,18 +126,9 @@
 	</script>
 
 	<script>
-		var lockFunction = window.screen.orientation.lock;
-		if (lockFunction.call(window.screen.orientation, 'landscape')) {
-			console.log('Orientation locked')
-		} else {
-			console.error('There was a problem in locking the orientation')
-		}
-		document.ontouchstart = function (e) {
-			e.preventDefault();
-		}
-		$(document).ready(function () {
-			setViewportScale();
-		});
+		// document.ontouchstart = function (e) {
+		// e.preventDefault();
+		// }
 	</script>
 
 </body>

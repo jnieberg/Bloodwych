@@ -57,8 +57,8 @@ canvas {
 	-ms-interpolation-mode: nearest-neighbor;
 }
 canvas[data-game-status="loading"] {
-	background: #000 url(../images/loading.png) center center no-repeat;
-	background-size: 100%;
+	background: #000 url(../images/loading.png) top left no-repeat;
+	background-size: 320px 200px;
 }
 
 /* DEBUG */

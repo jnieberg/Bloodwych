@@ -9,6 +9,8 @@ var isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
 if (isMobile) {
 	debug = false;
 }
+var loadingImg = new Image();
+loadingImg.src = '/images/behemoth.png';
 
 //Preloader stuff
 var preload = new createjs.LoadQueue(false);

@@ -52,7 +52,7 @@ function timerAction() {
 	var m;
 	cutpurseTrueview = (Math.floor(Math.random() * 10) === 0);
 	var tmf = 1.0;
-	if (player.length === 1 && player[0].sleeping) {
+	if (players === 1 && player[0].sleeping) {
 		tmf = 0.5;
 	}
 
@@ -171,7 +171,4 @@ function timerAction() {
 			}
 		}
 	}
-	//} catch(err){
-	//	PrintLog("Game Error: " + err.toString());
-	//}
 }

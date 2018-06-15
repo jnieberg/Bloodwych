@@ -42,6 +42,11 @@ $(function () {
 		document.addEventListener('menubutton', onMenu, false);
 	}
 
+	setViewportScale();
+	window.addEventListener('orientationchange', function () {
+		setViewportScale(true);
+	});
+
 	// Handle the menu button
 	//
 	function onMenu() {
@@ -92,25 +97,26 @@ function updatePlayerViewScreen() {
 	//}
 }
 
-function setViewportScale(sp) {
-	if (navigator.userAgent.match(/(iPad)/g) ? true : false) {
-		scaleReal = 1.06;
-	} else if (navigator.userAgent.match(/(iPhone|iPod)/g) ? true : false) {
-		scaleReal = 0.7; //iPhone 6
-	} else {
-		var zoom = 1;
-		if (isMobile) {
-			zoom = 2;
-			if (typeof sp !== 'undefined' && sp) {
-				scaleReal = screen.width / (320 / zoom);
-			} else {
-				scaleReal = screen.height / (200 / zoom);
-			}
+function setViewportScale(orientation = false) {
+	//if (navigator.userAgent.match(/(iPad)/g) ? true : false) {
+	//	scaleReal = 1.06;
+	//} else if (navigator.userAgent.match(/(iPhone|iPod)/g) ? true : false) {
+	//	scaleReal = 0.7; //iPhone 6
+	//} else {
+	var grabbedImgUrl = canvas.toDataURL('image/png');
+	var grabbedImg;
+	var zoom = 1;
+	if (isMobile) {
+		scaleReal = screen.width / 320 * zoom;
+		console.log(players);
+		if (players !== 1 && screen.height / 200 * zoom < scaleReal) {
+			scaleReal = screen.height / 200 * zoom;
 		}
-		scale = Math.floor(scaleReal);
-		scaleReal = scaleReal / scale / zoom;
-
+		// zoom = 2;
 	}
+	scale = Math.floor(scaleReal);
+	scaleReal = scaleReal / scale / zoom;
+	//}
 	$('html').css('zoom', scaleReal);
 	$('html').css('-moz-transform', 'scale(' + scaleReal + ')');
 	if (typeof player !== 'undefined') {
@@ -128,6 +134,14 @@ function setViewportScale(sp) {
 
 		}
 		//redrawUI(2);
+	}
+	clearCanvas(false);
+	if (orientation) {
+		grabbedImg = new Image();
+		grabbedImg.onload = function () {
+			ctx.drawImage(grabbedImg, 0, 0, 960, 600);
+		};
+		grabbedImg.src = grabbedImgUrl;
 	}
 }
 
@@ -162,8 +176,14 @@ function configCanvas() {
 	ctx.font = 'bold 20px Calibri';
 }
 
-function clearCanvas() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+function clearCanvas(background = true) {
+	if (background) {
+		ctx.drawImage(loadingImg, 0, 0, 320 * scale, 200 * scale);
+		ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+	} else {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
 }
 
 function pauseGame(ps, colourTo) {

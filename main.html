@@ -15,8 +15,6 @@
 	<link href="css/style.css"
 	 type="text/css"
 	 rel="stylesheet">
-	<link rel="manifest"
-	 href="manifest.json">
 
 	<link rel="icon"
 	 sizes="128x128"
@@ -128,6 +126,7 @@
 	</script>
 
 	<script>
+		screen.orientation.lock('landscape');
 		document.ontouchstart = function (e) {
 			e.preventDefault();
 		}

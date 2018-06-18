@@ -108,6 +108,7 @@ function setViewportScale(orientation = false) {
 	scaleReal = 1;
 	canvas.width = 320 * scale;
 	canvas.height = 200 * scale;
+	configCanvas(ctx);
 	//}
 	//scaleReal = scaleReal / scale;
 	//$('html').css('zoom', scaleReal);
@@ -118,12 +119,13 @@ function setViewportScale(orientation = false) {
 			player[p].PortalY = (player[p].ScreenY + 2) * scale;
 			player[p].PlayerCanvas.width = 128 * scale;
 			player[p].PlayerCanvas.height = 76 * scale;
-			player[p].PlayerCanvas.getContext('2d').imageSmoothingEnabled = false;
-			player[p].PlayerCanvas.getContext('2d').webkitImageSmoothingEnabled = false;
-			player[p].PlayerCanvas.getContext('2d').mozImageSmoothingEnabled = false;
-			player[p].PlayerCanvas.getContext('2d').oImageSmoothingEnabled = false;
-			player[p].PlayerCanvas.getContext('2d').msImageSmoothingEnabled = false;
-			player[p].PlayerCanvas.getContext('2d').font = 'bold 20px Calibri';
+			configCanvas(player[p].PlayerCanvas.getContext('2d'));
+			// player[p].PlayerCanvas.getContext('2d').imageSmoothingEnabled = false;
+			// player[p].PlayerCanvas.getContext('2d').webkitImageSmoothingEnabled = false;
+			// player[p].PlayerCanvas.getContext('2d').mozImageSmoothingEnabled = false;
+			// player[p].PlayerCanvas.getContext('2d').oImageSmoothingEnabled = false;
+			// player[p].PlayerCanvas.getContext('2d').msImageSmoothingEnabled = false;
+			// player[p].PlayerCanvas.getContext('2d').font = 'bold 20px Calibri';
 
 		}
 		//redrawUI(2);
@@ -161,13 +163,13 @@ function myDIx(canvas, img, PosAry) {
 	}
 }
 
-function configCanvas() {
-	ctx.imageSmoothingEnabled = false;
-	ctx.webkitImageSmoothingEnabled = false;
-	ctx.mozImageSmoothingEnabled = false;
-	ctx.oImageSmoothingEnabled = false;
-	ctx.msImageSmoothingEnabled = false;
-	ctx.font = 'bold 20px Calibri';
+function configCanvas(context = ctx) {
+	context.imageSmoothingEnabled = false;
+	context.webkitImageSmoothingEnabled = false;
+	context.mozImageSmoothingEnabled = false;
+	context.oImageSmoothingEnabled = false;
+	context.msImageSmoothingEnabled = false;
+	context.font = 'bold 20px Calibri';
 }
 
 function clearCanvas(background = true) {

@@ -823,11 +823,12 @@ function drawMonster(m, dir, dist, player, offset, returnImg) {
 		can.width = player.Portal.canvas.width;
 		can.height = player.Portal.canvas.height;
 		charContext = can.getContext('2d');
-		charContext.imageSmoothingEnabled = false;
-		charContext.webkitImageSmoothingEnabled = false;
-		charContext.mozImageSmoothingEnabled = false;
-		charContext.oImageSmoothingEnabled = false;
-		charContext.msImageSmoothingEnabled = false;
+		configCanvas(charContext);
+		// charContext.imageSmoothingEnabled = false;
+		// charContext.webkitImageSmoothingEnabled = false;
+		// charContext.mozImageSmoothingEnabled = false;
+		// charContext.oImageSmoothingEnabled = false;
+		// charContext.msImageSmoothingEnabled = false;
 	}
 
 	if (dist > -1) {

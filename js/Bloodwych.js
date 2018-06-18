@@ -98,27 +98,20 @@ function updatePlayerViewScreen() {
 }
 
 function setViewportScale(orientation = false) {
-	//if (navigator.userAgent.match(/(iPad)/g) ? true : false) {
-	//	scaleReal = 1.06;
-	//} else if (navigator.userAgent.match(/(iPhone|iPod)/g) ? true : false) {
-	//	scaleReal = 0.7; //iPhone 6
-	//} else {
 	var grabbedImgUrl = canvas.toDataURL('image/png');
 	var grabbedImg;
-	var zoom = 1;
-	if (isMobile) {
-		scaleReal = screen.width / 320 * zoom;
-		console.log(players);
-		if (players !== 1 && screen.height / 200 * zoom < scaleReal) {
-			scaleReal = screen.height / 200 * zoom;
-		}
-		// zoom = 2;
+	//if (isMobile) {
+	scale = (screen.width / 320 < 3) ? screen.width / 320 : 3;
+	if (players !== 1 && screen.height / 200 < scale) {
+		scale = (screen.height / 200) ? screen.height / 200 : 3;
 	}
-	scale = Math.floor(scaleReal);
-	scaleReal = scaleReal / scale / zoom;
+	scaleReal = 1;
+	canvas.width = 320 * scale;
+	canvas.height = 200 * scale;
 	//}
-	$('html').css('zoom', scaleReal);
-	$('html').css('-moz-transform', 'scale(' + scaleReal + ')');
+	//scaleReal = scaleReal / scale;
+	//$('html').css('zoom', scaleReal);
+	//$('html').css('-moz-transform', 'scale(' + scaleReal + ')');
 	if (typeof player !== 'undefined') {
 		for (let p in player) {
 			player[p].PortalX = (player[p].ScreenX + 96) * scale;
@@ -139,7 +132,8 @@ function setViewportScale(orientation = false) {
 	if (orientation) {
 		grabbedImg = new Image();
 		grabbedImg.onload = function () {
-			ctx.drawImage(grabbedImg, 0, 0, 960, 600);
+			var sz = screen.width;
+			ctx.drawImage(grabbedImg, 0, 0, canvas.width, canvas.height);
 		};
 		grabbedImg.src = grabbedImgUrl;
 	}

@@ -1,18 +1,18 @@
 function initTowers() {
-	for(var i in tower){
-		projectile[i] = new Array();
+	for (var i in tower) {
+		projectile[i] = [];
 		TOWER_NAME.push(tower[i].name);
-	};
+	}
 }
 
-function getTowerByName(strName){
+function getTowerByName(strName) {
 
-	for(var t in tower){
-		if (tower[t].name === strName){
+	for (var t in tower) {
+		if (tower[t].name === strName) {
 			return tower[t];
 		}
 	}
-	
+
 	return null;
 }
 
@@ -31,7 +31,7 @@ function checkSwitchTower(p, m, id, trig) {
 			switchTower(id);
 		}
 	} else if (typeof player[1] !== 'undefined' && !m) {
-		if ((trig[0] == 18 || trig[0] == 38) && parseInt(player[0].getView()[18].substring(3, 4), 16) === 6 && parseInt(player[1].getView()[18].substring(3, 4), 16) === 6) {
+		if ((paserInt(trig[0]) === 18 || parseInt(trig[0]) === 38) && parseInt(player[0].getView()[18].substring(3, 4), 16) === 6 && parseInt(player[1].getView()[18].substring(3, 4), 16) === 6) {
 			if (player[1 - p].floor === player[p].floor && player[1 - p].x === trig[2] && player[1 - p].y === trig[3]) {
 				//var tw = Math.floor(trig[1] * 0.5);
 				switchTower(id);
@@ -47,34 +47,34 @@ function switchTower(id, po) {
 	//$('canvas').attr('data-game-status', 'loading');
 	towerLast = towerThis;
 	towerThis = id;
-	if (typeof po === "undefined") {
-		var po = 0;
+	if (typeof po === 'undefined') {
+		po = 0;
 	}
 	if (towerLast === TOWER_MOD0 && towerThis === TOWER_MOD0) { //from tower to tower (start of game)
 
 	} else if (towerThis !== TOWER_MOD0) { //from keep to tower
-		for(var p in player) {
-			var pt = Math.abs(p - po);
+		for (var p in player) {
+			let pt = Math.abs(p - po);
 			floor = player[p].towerSwitches[0][towerThis].floor;
 			x = player[p].towerSwitches[0][towerThis].x;
 			y = player[p].towerSwitches[0][towerThis].y;
 			player[pt].setPlayerPosition(floor, x, y);
 		}
 	} else if (towerThis === TOWER_MOD0) { //from tower to keep
-		for(var p in player) {
-			var pt = Math.abs(p - po);
+		for (let p in player) {
+			let pt = Math.abs(p - po);
 			floor = player[p].towerSwitches[1][towerLast].floor;
 			x = player[p].towerSwitches[1][towerLast].x;
 			y = player[p].towerSwitches[1][towerLast].y;
 			player[pt].setPlayerPosition(floor, x, y);
 		}
 	}
-        if (isMobile){
-            var mon = getMonstersInTower(towerThis, true);
-            for(var m in mon){
-                initMonsterGfxNew(monster[towerThis][m]);
-            }
-        }
+	if (isMobile) {
+		var mon = getMonstersInTower(towerThis, true);
+		for (var m in mon) {
+			initMonsterGfxNew(monster[towerThis][m]);
+		}
+	}
 	//for(var p in player) {
 	//	player[p].updateChampions();
 	//}
@@ -84,67 +84,50 @@ function switchTower(id, po) {
 function getObjectNameById(id) {
 	switch (id) {
 		case OBJECT_NONE:
-			return "Floor";
-			break;
+			return 'Floor';
 		case OBJECT_PATH:
-			return "Floor path";
-			break;
+			return 'Floor path';
 		case OBJECT_PIT:
-			return "Pit";
-			break;
+			return 'Pit';
 		case OBJECT_CHARACTER:
-			return "Character";
-			break;
+			return 'Character';
 		case OBJECT_PROJECTILE:
-			return "Projectile";
-			break;
+			return 'Projectile';
 		case OBJECT_MISC:
-			return "Misc";
-			break;
+			return 'Misc';
 		case OBJECT_WOOD:
-			return "Wood";
-			break;
+			return 'Wood';
 		case OBJECT_WALL:
-			return "Wall";
-			break;
+			return 'Wall';
 		case OBJECT_WOOD_DOOR:
-			return "Wood door";
-			break;
+			return 'Wood door';
 		case OBJECT_SHELF:
-			return "Wall shelf";
-			break;
+			return 'Wall shelf';
 		case OBJECT_SCROLL:
-			return "Wall scroll";
-			break;
+			return 'Wall scroll';
 		case OBJECT_SWITCH:
-			return "Wall switch";
-			break;
+			return 'Wall switch';
 		case OBJECT_GEM:
-			return "Wall gem";
-			break;
+			return 'Wall gem';
 		case OBJECT_STAIRS:
-			return "Stairs";
-			break;
+			return 'Stairs';
 		case OBJECT_DOOR:
-			return "Door";
-			break;
+			return 'Door';
 		case OBJECT_DOOR_OPEN:
-			return "Door open";
-			break;
+			return 'Door open';
 		case OBJECT_WOOD_DOOR_OPEN:
-			return "Wood door open";
-			break;
+			return 'Wood door open';
 		default:
-			return "";
+			return '';
 	}
 }
 
 function canMove(f, x, y, d, to) {
-	if (typeof to === "undefined") {
+	if (typeof to === 'undefined') {
 		to = 0;
 	}
 	xy = getOffsetByRotation((d + to) % 4);
-	if (typeof tower[towerThis].floor[f].Map[y + xy.y] === "undefined" || typeof tower[towerThis].floor[f].Map[y + xy.y][x + xy.x] === "undefined") { //edge of floor
+	if (typeof tower[towerThis].floor[f].Map[y + xy.y] === 'undefined' || typeof tower[towerThis].floor[f].Map[y + xy.y][x + xy.x] === 'undefined') { //edge of floor
 		return OBJECT_WALL;
 	}
 
@@ -153,14 +136,14 @@ function canMove(f, x, y, d, to) {
 	var objThis = getHexToBinaryPosition(hex18, 13, 3);
 	var objNext = getHexToBinaryPosition(hex15, 13, 3);
 
-	if (objNext == '1') {
+	if (objNext === '1') {
 		return OBJECT_WALL;
 	} else if (objNext === '7' && getHexToBinaryPosition(hex15, 6, 2) === '3') { //formwall
 		return OBJECT_WALL;
 	}
 
 	//Check wooden walls and doors
-	if (objThis == '2' || objNext == '2') {
+	if (objThis === '2' || objNext === '2') {
 		if (!canMoveByWood(f, x, y, d, to)) {
 			return OBJECT_WOOD;
 		}
@@ -176,11 +159,11 @@ function canMove(f, x, y, d, to) {
 	}
 
 	//Check other objects
-	if (objNext == '3') {
+	if (objNext === '3') {
 		return OBJECT_MISC; //Misc
-	} else if (objNext == '4') { //Stairs
+	} else if (objNext === '4') { //Stairs
 		return OBJECT_STAIRS;
-	} else if (objNext == '5' && getHexToBinaryPosition(hex15, 7, 1) == '1') {
+	} else if (objNext === '5' && getHexToBinaryPosition(hex15, 7, 1) === '1') {
 		return OBJECT_DOOR;
 	}
 
@@ -190,7 +173,7 @@ function canMove(f, x, y, d, to) {
 //for blaze ball
 
 function canMoveByFirepath(f, x, y, d) {
-	if (typeof d !== "undefined") {
+	if (typeof d !== 'undefined') {
 		xy = getOffsetByRotation(d);
 	} else {
 		xy = {
@@ -198,7 +181,7 @@ function canMoveByFirepath(f, x, y, d) {
 			y: 0
 		};
 	}
-	if (typeof tower[towerThis].floor[f].Map[y + xy.y] === "undefined" || typeof tower[towerThis].floor[f].Map[y + xy.y][x + xy.x] === "undefined") { //edge of floor
+	if (typeof tower[towerThis].floor[f].Map[y + xy.y] === 'undefined' || typeof tower[towerThis].floor[f].Map[y + xy.y][x + xy.x] === 'undefined') { //edge of floor
 		return false;
 	}
 	hex15 = tower[towerThis].floor[f].Map[y + xy.y][x + xy.x];
@@ -209,19 +192,19 @@ function canMoveByFirepath(f, x, y, d) {
 }
 
 function canMoveByWood(f, x, y, d, to) {
-	if (typeof to === "undefined") {
+	if (typeof to === 'undefined') {
 		to = 0;
 	}
 	xy = getOffsetByRotation((d + to) % 4);
 	hex18 = tower[towerThis].floor[f].Map[y][x];
 	//Check the space the player is standing on
-	if (getHexToBinaryPosition(hex18, 13, 3) == '2' && getHexToBinaryPosition(hex18, ((7 - ((d + to) % 4)) % 4) * 2 + 1, 1) == '1') {
+	if (getHexToBinaryPosition(hex18, 13, 3) === '2' && getHexToBinaryPosition(hex18, ((7 - ((d + to) % 4)) % 4) * 2 + 1, 1) === '1') {
 		return false;
 	}
 	//Check the space the player is moving to
 	if (typeof tower[towerThis].floor[f].Map[y + xy.y] !== 'undefined' && typeof tower[towerThis].floor[f].Map[y + xy.y][x + xy.x] !== 'undefined') {
 		hex15 = tower[towerThis].floor[f].Map[y + xy.y][x + xy.x];
-		if (getHexToBinaryPosition(hex15, 13, 3) == '2' && getHexToBinaryPosition(hex15, ((5 - ((d + to) % 4)) % 4) * 2 + 1, 1) == '1') {
+		if (getHexToBinaryPosition(hex15, 13, 3) === '2' && getHexToBinaryPosition(hex15, ((5 - ((d + to) % 4)) % 4) * 2 + 1, 1) === '1') {
 			return false;
 		}
 	}
@@ -233,7 +216,7 @@ function getObject(f, x, y, d, to) {
 		var hex = tower[towerThis].floor[f].Map[y][x];
 		var obj = getHexToBinaryPosition(hex, 13, 3);
 		if (obj === '1') { //wall
-			if (typeof to === "undefined" || (d + to) % 4 === parseInt(getHexToBinaryPosition(hex, 10, 2))) {
+			if (typeof to === 'undefined' || (d + to) % 4 === parseInt(getHexToBinaryPosition(hex, 10, 2))) {
 				if (getHexToBinaryPosition(hex, 8) === '1') { //wall deco
 					if (getHexToBinaryPosition(hex, 6, 2) === '0') { //shelf
 						return OBJECT_SHELF;
@@ -251,10 +234,10 @@ function getObject(f, x, y, d, to) {
 			}
 			return OBJECT_WALL;
 		} else if (obj === '2') { //wood
-			if (typeof to !== "undefined") {
+			if (typeof to !== 'undefined') {
 				//if (getHexToBinaryPosition(hex, ((7 - to - d) % 4) * 2) === '1') {
 				if (getHexToBinaryPosition(hex, ((7 - to - d) % 4) * 2) === '1') {
-					if (getHexToBinaryPosition(hex, ((7 - to - d) % 4) * 2 + 1, 1) == '1') {
+					if (getHexToBinaryPosition(hex, ((7 - to - d) % 4) * 2 + 1, 1) === '1') {
 						return OBJECT_WOOD_DOOR;
 					} else {
 						return OBJECT_WOOD_DOOR_OPEN;
@@ -268,20 +251,20 @@ function getObject(f, x, y, d, to) {
 		} else if (obj === '4') { //stairs
 			return OBJECT_STAIRS;
 		} else if (obj === '5') { //door
-			if (typeof to === "undefined" || (d + to) % 2 === parseInt(getHexToBinaryPosition(hex, 5, 1))) {
-				if (getHexToBinaryPosition(hex, 7, 1) == '1') {
+			if (typeof to === 'undefined' || (d + to) % 2 === parseInt(getHexToBinaryPosition(hex, 5, 1))) {
+				if (getHexToBinaryPosition(hex, 7, 1) === '1') {
 					return OBJECT_DOOR;
 				} else {
 					return OBJECT_DOOR_OPEN;
 				}
 			}
-		} else if (obj == '6') { //path, pits
+		} else if (obj === '6') { //path, pits
 			if (getHexToBinaryPosition(hex, 6, 2) === '1') {
 				return OBJECT_PIT;
 			} else if (getHexToBinaryPosition(hex, 6, 2) === '2') {
 				return OBJECT_PATH;
 			}
-		} else if (obj == '7') { //magic
+		} else if (obj === '7') { //magic
 			if (getHexToBinaryPosition(hex, 6, 2) === '1') {
 				return OBJECT_PATH;
 			}
@@ -290,11 +273,11 @@ function getObject(f, x, y, d, to) {
 	return OBJECT_NONE;
 }
 
-function getDungeonHex(f, x, y, index, length) {    
+function getDungeonHex(f, x, y, index, length) {
 	return getHexToBinaryPosition(tower[towerThis].floor[f].Map[y][x], index, length);
 }
 
-function setDungeonHex(f, x, y, index, length, to) {    
+function setDungeonHex(f, x, y, index, length, to) {
 	tower[towerThis].floor[f].Map[y][x] = setHexToBinaryPosition(tower[towerThis].floor[f].Map[y][x], index, length, to);
 }
 
@@ -310,5 +293,5 @@ function getTowerFloorOffset(floor1, floor2) {
 	return {
 		x: tower[towerThis].floor[floor1].xOffset - tower[towerThis].floor[floor2].xOffset,
 		y: tower[towerThis].floor[floor1].yOffset - tower[towerThis].floor[floor2].yOffset
-	}
+	};
 }

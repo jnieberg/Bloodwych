@@ -1,7 +1,6 @@
 function Renderer(game) {
 	this.game = game;
-
-};
+}
 Renderer.prototype = {
 	init: function () {
 		this.fps = 30;
@@ -19,7 +18,7 @@ Renderer.prototype = {
 		//try{
 		updatePlayerViewScreen();
 		//}catch(err){
-		//	PrintLog("Drawing Error: " + err.toString());
+		//	printLog("Drawing Error: " + err.toString());
 		//}
 	},
 

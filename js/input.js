@@ -7,22 +7,34 @@ function doKeyDown(e) {
 						player[1].action();
 						break; //End Key
 					case KEYPAD_8:
-						if (!player[1].frozen) player[1].move(DIRECTION_NORTH);
+						if (!player[1].frozen) {
+							player[1].move(DIRECTION_NORTH);
+						}
 						break; //8
 					case KEYPAD_5:
-						if (!player[1].frozen) player[1].move(DIRECTION_SOUTH);
+						if (!player[1].frozen) {
+							player[1].move(DIRECTION_SOUTH);
+						}
 						break; //5
 					case KEYPAD_4:
-						if (!player[1].frozen) player[1].move(DIRECTION_WEST);
+						if (!player[1].frozen) {
+							player[1].move(DIRECTION_WEST);
+						}
 						break; //4
 					case KEYPAD_6:
-						if (!player[1].frozen) player[1].move(DIRECTION_EAST);
+						if (!player[1].frozen) {
+							player[1].move(DIRECTION_EAST);
+						}
 						break; //6
 					case KEYPAD_7:
-						if (!player[1].frozen) player[1].rotate(-1);
+						if (!player[1].frozen) {
+							player[1].rotate(-1);
+						}
 						break; //7
 					case KEYPAD_9:
-						if (!player[1].frozen) player[1].rotate(1);
+						if (!player[1].frozen) {
+							player[1].rotate(1);
+						}
 						break; //9
 					default:
 						break;
@@ -36,19 +48,29 @@ function doKeyDown(e) {
 					player[0].move(DIRECTION_NORTH);
 					break; // W KEY
 				case KEY_S:
-					if (!player[0].frozen) player[0].move(DIRECTION_SOUTH);
+					if (!player[0].frozen) {
+						player[0].move(DIRECTION_SOUTH);
+					}
 					break; // S KEY
 				case KEY_A:
-					if (!player[0].frozen) player[0].move(DIRECTION_WEST);
+					if (!player[0].frozen) {
+						player[0].move(DIRECTION_WEST);
+					}
 					break; // A KEY
 				case KEY_D:
-					if (!player[0].frozen) player[0].move(DIRECTION_EAST);
+					if (!player[0].frozen) {
+						player[0].move(DIRECTION_EAST);
+					}
 					break; // D KEY
 				case KEY_Q:
-					if (!player[0].frozen) player[0].rotate(-1);
+					if (!player[0].frozen) {
+						player[0].rotate(-1);
+					}
 					break; // Q KEY
 				case KEY_E:
-					if (!player[0].frozen) player[0].rotate(1);
+					if (!player[0].frozen) {
+						player[0].rotate(1);
+					}
 					break; // E KEY
 				case KEY_5:
 					pauseGame(true);
@@ -76,6 +98,11 @@ function doKeyDown(e) {
 					break;
 			}
 			if (debug) {
+				var ch;
+				var floor;
+				var fOff;
+				var x;
+				var y;
 				switch (e.keyCode) {
 
 					//case KEY_1: // Number 1
@@ -87,37 +114,41 @@ function doKeyDown(e) {
 						break;
 					case KEY_T:
 						//player[0].changeUpFloor();
-						var ch = player[0].getActivePocketChampion();
+						ch = player[0].getActivePocketChampion();
 						ch.pocket[POCKET_SLOT_0].setPocketItem((ch.pocket[POCKET_SLOT_0].id + 1) % 110, 1);
 						redrawUI(0);
-						PrintLog(itemJson[champion[player[0].championLeader].pocket[POCKET_SLOT_0].id].name + " ID: " + champion[player[0].championLeader].pocket[POCKET_SLOT_0].id.toString())
+						printLog(itemJson[champion[player[0].championLeader].pocket[POCKET_SLOT_0].id].name + ' ID: ' + champion[player[0].championLeader].pocket[POCKET_SLOT_0].id.toString());
 						break; // T KEY
 					case KEY_G:
 						//player[0].changeDownFloor();
-						var ch = player[0].getActivePocketChampion();
+						ch = player[0].getActivePocketChampion();
 						ch.pocket[POCKET_SLOT_0].setPocketItem((ch.pocket[POCKET_SLOT_0].id + 109) % 110, 1);
 						redrawUI(0);
-						PrintLog(itemJson[champion[player[0].championLeader].pocket[POCKET_SLOT_0].id].name + " ID: " + champion[player[0].championLeader].pocket[POCKET_SLOT_0].id.toString())
+						printLog(itemJson[champion[player[0].championLeader].pocket[POCKET_SLOT_0].id].name + ' ID: ' + champion[player[0].championLeader].pocket[POCKET_SLOT_0].id.toString());
 						break; // G KEY
 					case KEY_Y:
 						if (player[0].floor < tower[towerThis].floor.length) {
-							var floor = player[0].floor + 1;
-							var fOff = getTowerFloorOffset(player[0].floor, floor);
-							var x = player[0].x + fOff.x;
-							var y = player[0].y + fOff.y;
+							floor = player[0].floor + 1;
+							fOff = getTowerFloorOffset(player[0].floor, floor);
+							x = player[0].x + fOff.x;
+							y = player[0].y + fOff.y;
 							player[0].setPlayerPosition(floor, x, y, player[0].d);
 						}
-						for (var p in player) { player[p].redrawViewPort = true; }
+						for (let pl in player) {
+							player[pl].redrawViewPort = true;
+						}
 						break;
 					case KEY_H:
 						if (player[0].floor > 0) {
-							var floor = player[0].floor - 1;
-							var fOff = getTowerFloorOffset(player[0].floor, floor);
-							var x = player[0].x + fOff.x;
-							var y = player[0].y + fOff.y;
+							floor = player[0].floor - 1;
+							fOff = getTowerFloorOffset(player[0].floor, floor);
+							x = player[0].x + fOff.x;
+							y = player[0].y + fOff.y;
 							player[0].setPlayerPosition(floor, x, y, player[0].d);
 						}
-						for (var p in player) { player[p].redrawViewPort = true; }
+						for (let pl in player) {
+							player[pl].redrawViewPort = true;
+						}
 						break;
 					case KEY_PLUS:
 						player[0].uiCenterPanel.mode = UI_CENTER_PANEL_ENDGAME;
@@ -143,11 +174,11 @@ function doKeyDown(e) {
 						break;
 					case KEY_7:
 						testDistance = (testDistance + 1) % 3;
-						PrintLog("Distance: " + testDistance);
+						printLog('Distance: ' + testDistance);
 						break;
 					case KEY_8:
 						testDistance = (testDistance + 3) % 3;
-						PrintLog("Distance: " + testDistance);
+						printLog('Distance: ' + testDistance);
 						break;
 					/*case KEY_0:
 							testMon1 = (testMon1 + 1);
@@ -173,15 +204,15 @@ function doKeyDown(e) {
 				$('canvas').attr('data-game-status', 'menu-champions');
 				// players = 1;
 				drawQuickStartUI(1);
-				break
+				break;
 			case KEY_2:
 				$('canvas').attr('data-game-status', 'menu-champions');
 				// players = 2;
 				drawQuickStartUI(2);
-				break
+				break;
 			case KEY_3:
 				startGame(true, true);
-				break
+				break;
 			case KEY_4:
 				startGame(false, true);
 				break;
@@ -226,11 +257,11 @@ function checkClickEvents() {
 					if (uiClickInArea(x, y, s, player[currentPlayer])) {
 						var it = champion[championSelect[currentPlayer].champID].pocket[(s - UI_CLICK_POCKET_SLOT_1)];
 						if (currentPlayer === 0) {
-							drawFillRect(168, player[currentPlayer].ScreenY + 79, 155, 8, colourData['BLUE_DARK']);
+							drawFillRect(168, player[currentPlayer].ScreenY + 79, 155, 8, colourData.BLUE_DARK);
 						} else {
-							drawFillRect(168, player[currentPlayer].ScreenY + 79, 155, 8, colourData['RED_DARK']);
+							drawFillRect(168, player[currentPlayer].ScreenY + 79, 155, 8, colourData.RED_DARK);
 						}
-						writeFontImage(itemJson[it.id].name, 170, (player[currentPlayer].ScreenY + 80), colourData['YELLOW']);
+						writeFontImage(itemJson[it.id].name, 170, (player[currentPlayer].ScreenY + 80), colourData.YELLOW);
 					}
 				}
 			} else if (championSelect[currentPlayer].mode === UI_CHARACTER_SELECT_SPELLBOOK) {
@@ -244,9 +275,7 @@ function checkClickEvents() {
 function processCanvasInput(pid, x, y) {
 	var p = player[parseInt(pid)];
 	if (!paused) {
-		if (!p.sleeping) {
-
-		} else {
+		if (p.sleeping) {
 			if (uiClickInArea(x, y, UI_CLICK_PLAYERS_AREA, p) && (p.fairyDetails.champ === null || !uiClickInArea(x, y, UI_CLICK_VIEWPORT, p))) {
 				p.wakeUp();
 				return pid;
@@ -367,17 +396,29 @@ function processCanvasInput(pid, x, y) {
 				p.redrawLeftRightUiFlag = UI_REDRAW_RIGHT;
 				return pid;
 			} else if (uiClickInArea(x, y, UI_CLICK_ROTATE_LEFT, p)) {
-				if (!p.frozen) p.rotate(-1);
+				if (!p.frozen) {
+					p.rotate(-1);
+				}
 			} else if (uiClickInArea(x, y, UI_CLICK_ROTATE_RIGHT, p)) {
-				if (!p.frozen) p.rotate(1);
+				if (!p.frozen) {
+					p.rotate(1);
+				}
 			} else if (uiClickInArea(x, y, UI_CLICK_MOVE_FORWARD, p)) {
-				if (!p.frozen) p.move(DIRECTION_NORTH);
+				if (!p.frozen) {
+					p.move(DIRECTION_NORTH);
+				}
 			} else if (uiClickInArea(x, y, UI_CLICK_MOVE_BACKWARDS, p)) {
-				if (!p.frozen) p.move(DIRECTION_SOUTH);
+				if (!p.frozen) {
+					p.move(DIRECTION_SOUTH);
+				}
 			} else if (uiClickInArea(x, y, UI_CLICK_MOVE_LEFT, p)) {
-				if (!p.frozen) p.move(DIRECTION_WEST);
+				if (!p.frozen) {
+					p.move(DIRECTION_WEST);
+				}
 			} else if (uiClickInArea(x, y, UI_CLICK_MOVE_RIGHT, p)) {
-				if (!p.frozen) p.move(DIRECTION_EAST);
+				if (!p.frozen) {
+					p.move(DIRECTION_EAST);
+				}
 			} else if (uiClickInArea(x, y, UI_CLICK_ATTACK, p)) {
 				p.attacking = true;
 			} else if (uiClickInArea(x, y, UI_CLICK_DEFEND, p)) {
@@ -415,11 +456,11 @@ function processCanvasInput(pid, x, y) {
 					return pid;
 				}
 			}
-			for (var cid = UI_CLICK_POCKET_CHARACTER_0; cid <= UI_CLICK_POCKET_CHARACTER_3; cid++) {
+			for (let cid = UI_CLICK_POCKET_CHARACTER_0; cid <= UI_CLICK_POCKET_CHARACTER_3; cid++) {
 				if (uiClickInArea(x, y, cid, p)) {
-					var ap = cid - UI_CLICK_POCKET_CHARACTER_0;
-					var c = p.getOrderedChampionIds();
-					var ch = p.getChampion(c[ap]);
+					let ap = cid - UI_CLICK_POCKET_CHARACTER_0;
+					let c = p.getOrderedChampionIds();
+					let ch = p.getChampion(c[ap]);
 					if (ch !== null && ch.recruitment.attached) {
 						p.uiRightPanel.activePocket = ap;
 						p.redrawLeftRightUiFlag = UI_REDRAW_POCKETS;
@@ -524,7 +565,7 @@ function processCanvasInput(pid, x, y) {
 			}
 			if (p.communication.mode === COMMUNICATION_PAGE_COMMUNICATE_0 || p.communication.mode === COMMUNICATION_PAGE_COMMUNICATE_1) {
 				if (uiClickInArea(x, y, UI_CLICK_TOGGLEUP, p)) {
-					var t = p.communication.mode + 1;
+					let t = p.communication.mode + 1;
 					if (t > 2) {
 						t = 1;
 					}
@@ -532,7 +573,7 @@ function processCanvasInput(pid, x, y) {
 					return pid;
 				}
 				if (uiClickInArea(x, y, UI_CLICK_TOGGLEDOWN, p)) {
-					var t = p.communication.mode - 1;
+					let t = p.communication.mode - 1;
 					if (t < 1) {
 						t = 2;
 					}
@@ -575,7 +616,7 @@ function processCanvasInputMenu(x, y) {
 			loadGFXData();
 			startMenu = false;
 		} else if (uiClickInArea(x, y, UI_CLICK_START_RESUME_GAME)) { //MAP VIEWER
-
+			// Do nothing
 		}
 	} else {
 
@@ -619,18 +660,18 @@ function mouseXY(e) {
 						cursorType = cursorBlue;
 						if (currentColour !== cursorType) {
 							if (cursorType === cursorRed) {
-								canvas.style.cursor = "url(" + GAME_ID[GAME_BLOODWYCH] + "/images/misc/cursor1.png'),auto";
+								canvas.style.cursor = 'url(' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor1.png),auto';
 							} else {
-								canvas.style.cursor = "url(" + GAME_ID[GAME_BLOODWYCH] + "/images/misc/cursor0.png'),auto";
+								canvas.style.cursor = 'url(' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor0.png),auto';
 							}
 						}
 					} else {
 						cursorType = cursorRed;
 						if (currentColour !== cursorType) {
 							if (cursorType === cursorRed) {
-								canvas.style.cursor = "url(" + GAME_ID[GAME_BLOODWYCH] + "/images/misc/cursor1.png'),auto";
+								canvas.style.cursor = 'url(' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor1.png),auto';
 							} else {
-								canvas.style.cursor = "url(" + GAME_ID[GAME_BLOODWYCH] + "/images/misc/cursor0.png'),auto";
+								canvas.style.cursor = 'url(' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor0.png),auto';
 							}
 						}
 					}
@@ -642,14 +683,12 @@ function mouseXY(e) {
 					}
 					if (currentColour !== cursorType) {
 						if (cursorType === cursorRed) {
-							canvas.style.cursor = "url(" + GAME_ID[GAME_BLOODWYCH] + "/images/misc/cursor1.png'),auto";
+							canvas.style.cursor = 'url(' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor1.png),auto';
 						} else {
-							canvas.style.cursor = "url(" + GAME_ID[GAME_BLOODWYCH] + "/images/misc/cursor0.png'),auto";
+							canvas.style.cursor = 'url(' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor0.png),auto';
 						}
 					}
 				}
-			} else {
-
 			}
 
 		}
@@ -805,7 +844,7 @@ function spellBookAreas(x, y, p, ch) {
 
 	pid = p.id;
 
-	var ch = champion[p.champion[p.championLeader]];
+	ch = champion[p.champion[p.championLeader]];
 
 	if (uiClickInArea(x, y, UI_CLICK_CLOSE_SPELLBOOK, p)) {
 		p.uiRightPanel.mode = UI_RIGHT_PANEL_MAIN;
@@ -1479,13 +1518,13 @@ function uiClickAreas() {
 
 function uiClickInArea(x, y, ui, p, clickArea) {
 
-	if (typeof clickArea === "undefined") {
+	if (typeof clickArea === 'undefined') {
 		clickArea = uiClickArea;
 	}
 
 	var px = 0;
 	var py = 0;
-	if (typeof p !== "undefined") {
+	if (typeof p !== 'undefined') {
 		px = p.ScreenX;
 		py = p.ScreenY;
 	}

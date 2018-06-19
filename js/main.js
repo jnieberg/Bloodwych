@@ -35,12 +35,11 @@ Run = function () {
 			requestAnimFrame(run);
 		}
 
-
-		game.init && game.init();
-		render.init && render.init();
+		game.init();
+		render.init();
 		clearCanvas(false);
 		run();
 		players = getPlayerMax();
 		setViewportScale();
-	}
+	};
 }();

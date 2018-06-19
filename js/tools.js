@@ -9,7 +9,7 @@ String.prototype.replaceAt = function (index, character) {
 //Sets a hex value at a certain index
 function setHexToBinaryPosition(s, index, length, to) {
 	var bin = hex2bin(s);
-	if (typeof to === "undefined" || to === '') {
+	if (typeof to === 'undefined' || to === '') {
 		from = bin.substr(index, 1);
 		to = '' + (1 - from);
 	}
@@ -17,7 +17,7 @@ function setHexToBinaryPosition(s, index, length, to) {
 	to = to.substr(to.length - length);
 	bin = bin.substr(0, index) + to + bin.substr(index + to.length);
 	var ret = bin2hex(bin);
-	return ret;
+	return '' + ret;
 }
 //Gets a hex value at a certain index, and a certain length
 function getHexToBinaryPosition(s, index, length) {
@@ -27,18 +27,22 @@ function getHexToBinaryPosition(s, index, length) {
 	var bin = hex2bin(s);
 	bin = bin.substr(index, length);
 	var ret = bin2hex(bin);
-	return ret;
+	return '' + ret;
 }
 
 function hex2bin(num, l) {
-	if (typeof l === "undefined") l = 4;
+	if (typeof l === 'undefined') {
+		l = 4;
+	}
 	var ret = parseInt(num, 16).toString(2);
 	var zeros = Array(Math.floor(num.length * l - ret.length) + 1).join('0');
 	return zeros + ret;
 }
 
 function bin2hex(num, l) {
-	if (typeof l === "undefined") l = 4;
+	if (typeof l === 'undefined') {
+		l = 4;
+	}
 	var ret = parseInt(num, 2).toString(16).toUpperCase();
 	var zeros = Array(Math.floor(num.length / l - ret.length) + 1).join('0');
 	return zeros + ret;
@@ -67,15 +71,15 @@ function convertBase(num) {
 function getArmourNotation(num) {
 	var s = getSpellNotation(num);
 	if (num >= 0) {
-		s = "+" + s;
+		s = '+' + s;
 	} else {
-		s = "-" + s;
+		s = '-' + s;
 	}
 	return s;
 }
 
 function getSpellNotation(num) {
-	var s = "0" + Math.abs(num);
+	var s = '0' + Math.abs(num);
 	s = s.substr(s.length - 2);
 	return s;
 }
@@ -198,31 +202,71 @@ function posToCoordinates(pos, x, y, d) {
 function coordinatesToPos(xt, yt, x, y, d) {
 	var pos = -1;
 	xy = getOffsetByRotation(d);
-	if (yt == y + (4 * xy.y) + (2 * xy.x) && xt == x + (4 * xy.x) - (2 * xy.y)) return 0; //-4 +2
-	if (yt == y + (4 * xy.y) - (2 * xy.x) && xt == x + (4 * xy.x) + (2 * xy.y)) return 1; //-4 -2
-	if (yt == y + (4 * xy.y) + (1 * xy.x) && xt == x + (4 * xy.x) - (1 * xy.y)) return 2; //-4 +1
-	if (yt == y + (4 * xy.y) - (1 * xy.x) && xt == x + (4 * xy.x) + (1 * xy.y)) return 3; //-4 -1
-	if (yt == y + (4 * xy.y) - (0 * xy.x) && xt == x + (4 * xy.x) + (0 * xy.y)) return 4; //-4 0
-	if (yt == y + (3 * xy.y) + (2 * xy.x) && xt == x + (3 * xy.x) - (2 * xy.y)) return 5; //-3 +2 
-	if (yt == y + (3 * xy.y) - (2 * xy.x) && xt == x + (3 * xy.x) + (2 * xy.y)) return 6; //-3 -2
-	if (yt == y + (3 * xy.y) + (1 * xy.x) && xt == x + (3 * xy.x) - (1 * xy.y)) return 7; //-3 +1
-	if (yt == y + (3 * xy.y) - (1 * xy.x) && xt == x + (3 * xy.x) + (1 * xy.y)) return 8; //-3 -1
-	if (yt == y + (3 * xy.y) - (0 * xy.x) && xt == x + (3 * xy.x) - (0 * xy.y)) return 9; //-3 0
-	if (yt == y + (2 * xy.y) + (1 * xy.x) && xt == x + (2 * xy.x) - (1 * xy.y)) return 10; //-2 +1                
-	if (yt == y + (2 * xy.y) - (1 * xy.x) && xt == x + (2 * xy.x) + (1 * xy.y)) return 11; //-2 -1
-	if (yt == y + (2 * xy.y) - (0 * xy.x) && xt == x + (2 * xy.x) + (0 * xy.y)) return 12; //-2 0
-	if (yt == y + (1 * xy.y) + (1 * xy.x) && xt == x + (1 * xy.x) - (1 * xy.y)) return 13; //-1 +1
-	if (yt == y + (1 * xy.y) - (1 * xy.x) && xt == x + (1 * xy.x) + (1 * xy.y)) return 14; //-1 -1
-	if (yt == y + (1 * xy.y) - (0 * xy.x) && xt == x + (1 * xy.x) + (0 * xy.y)) return 15; //-1 0
-	if (yt == y + (0 * xy.y) + (1 * xy.x) && xt == x + (0 * xy.x) - (1 * xy.y)) return 16; //0 +1
-	if (yt == y + (0 * xy.y) - (1 * xy.x) && xt == x + (0 * xy.x) + (1 * xy.y)) return 17; //0 -1
-	if (yt == y && xt == x) return 18; //0 0
-	if (yt == y - (1 * xy.y) - (0 * xy.x) && xt == x - (1 * xy.x) + (0 * xy.y)) return 19; //-1 0
+	if (yt === y + (4 * xy.y) + (2 * xy.x) && xt === x + (4 * xy.x) - (2 * xy.y)) {
+		return 0;
+	} //-4 +2
+	if (yt === y + (4 * xy.y) - (2 * xy.x) && xt === x + (4 * xy.x) + (2 * xy.y)) {
+		return 1;
+	} //-4 -2
+	if (yt === y + (4 * xy.y) + (1 * xy.x) && xt === x + (4 * xy.x) - (1 * xy.y)) {
+		return 2;
+	} //-4 +1
+	if (yt === y + (4 * xy.y) - (1 * xy.x) && xt === x + (4 * xy.x) + (1 * xy.y)) {
+		return 3;
+	} //-4 -1
+	if (yt === y + (4 * xy.y) - (0 * xy.x) && xt === x + (4 * xy.x) + (0 * xy.y)) {
+		return 4;
+	} //-4 0
+	if (yt === y + (3 * xy.y) + (2 * xy.x) && xt === x + (3 * xy.x) - (2 * xy.y)) {
+		return 5;
+	} //-3 +2 
+	if (yt === y + (3 * xy.y) - (2 * xy.x) && xt === x + (3 * xy.x) + (2 * xy.y)) {
+		return 6;
+	} //-3 -2
+	if (yt === y + (3 * xy.y) + (1 * xy.x) && xt === x + (3 * xy.x) - (1 * xy.y)) {
+		return 7;
+	} //-3 +1
+	if (yt === y + (3 * xy.y) - (1 * xy.x) && xt === x + (3 * xy.x) + (1 * xy.y)) {
+		return 8;
+	} //-3 -1
+	if (yt === y + (3 * xy.y) - (0 * xy.x) && xt === x + (3 * xy.x) - (0 * xy.y)) {
+		return 9;
+	} //-3 0
+	if (yt === y + (2 * xy.y) + (1 * xy.x) && xt === x + (2 * xy.x) - (1 * xy.y)) {
+		return 10;
+	} //-2 +1                
+	if (yt === y + (2 * xy.y) - (1 * xy.x) && xt === x + (2 * xy.x) + (1 * xy.y)) {
+		return 11;
+	} //-2 -1
+	if (yt === y + (2 * xy.y) - (0 * xy.x) && xt === x + (2 * xy.x) + (0 * xy.y)) {
+		return 12;
+	} //-2 0
+	if (yt === y + (1 * xy.y) + (1 * xy.x) && xt === x + (1 * xy.x) - (1 * xy.y)) {
+		return 13;
+	} //-1 +1
+	if (yt === y + (1 * xy.y) - (1 * xy.x) && xt === x + (1 * xy.x) + (1 * xy.y)) {
+		return 14;
+	} //-1 -1
+	if (yt === y + (1 * xy.y) - (0 * xy.x) && xt === x + (1 * xy.x) + (0 * xy.y)) {
+		return 15;
+	} //-1 0
+	if (yt === y + (0 * xy.y) + (1 * xy.x) && xt === x + (0 * xy.x) - (1 * xy.y)) {
+		return 16;
+	} //0 +1
+	if (yt === y + (0 * xy.y) - (1 * xy.x) && xt === x + (0 * xy.x) + (1 * xy.y)) {
+		return 17;
+	} //0 -1
+	if (yt === y && xt === x) {
+		return 18;
+	} //0 0
+	if (yt === y - (1 * xy.y) - (0 * xy.x) && xt === x - (1 * xy.x) + (0 * xy.y)) {
+		return 19;
+	} //-1 0
 	return -1;
 }
 
 function getOffsetByRotation(r) {
-	xo = 0, yo = 0;
+	var xo = 0, yo = 0;
 	switch (r) {
 		case 0:
 			xo = 0;
@@ -251,18 +295,18 @@ function getOffsetByRotation(r) {
 
 function decimalToHex(d) {
 	var hex = Number(d).toString(16);
-	hex = "".substr(0, 2 - hex.length) + hex;
+	hex = ''.substr(0, 2 - hex.length) + hex;
 	hex = hex.toUpperCase();
 	if (hex.length === 1) {
-		hex = "0" + hex;
+		hex = '0' + hex;
 	}
 	return hex;
 }
 
-function PrintLog(myString, log) {
+function printLog(myString, log) {
 	if (debug) {
-		if (typeof log === "undefined" || log) {
-			console.log(getTimeStamp() + " Debug: " + myString);
+		if (typeof log === 'undefined' || log) {
+			console.log(getTimeStamp() + ' Debug: ' + myString);
 		} else {
 			console.log(myString);
 		}
@@ -271,16 +315,16 @@ function PrintLog(myString, log) {
 
 function grabImageAt(image, startX, startY, width, height, flip, offsetX, offsetY) {
 	//try {
-	if (typeof offsetX === "undefined") {
+	if (typeof offsetX === 'undefined') {
 		offsetX = 0;
 	}
-	if (typeof offsetY === "undefined") {
+	if (typeof offsetY === 'undefined') {
 		offsetY = 0;
 	}
 	var can = document.createElement('canvas');
 	can.width = width + offsetX;
 	can.height = height + offsetY;
-	var flipcontext = can.getContext("2d");
+	var flipcontext = can.getContext('2d');
 	if (flip) {
 		flipcontext.translate(width, 0);
 		flipcontext.scale(-1, 1);
@@ -289,39 +333,39 @@ function grabImageAt(image, startX, startY, width, height, flip, offsetX, offset
 		flipcontext.scale(1, 1);
 		flipcontext.drawImage(image, startX, startY, width, height, 0, 0, width, height);
 	}
-	//flipcontext.strokeStyle="red";
+	//flipcontext.strokeStyle='red';
 	//flipcontext.rect(0,0,can.width - 1,can.height - 1);
 	//flipcontext.stroke();
 	flipcontext.save();
 	return can;
 	//} catch (e) {
-	//	PrintLog("grabImageAt Error: " + e.toString());
+	//	printLog('grabImageAt Error: ' + e.toString());
 	//}
-};
+}
 
 function flipImage(image) {
 	var can = document.createElement('canvas');
 	can.width = image.width;
 	can.height = image.height;
-	var flipcontext = can.getContext("2d");
+	var flipcontext = can.getContext('2d');
 	flipcontext.translate(image.width, 0);
 	flipcontext.scale(-1, 1);
 	flipcontext.drawImage(image, 0, 0, image.width, image.height);
 	flipcontext.save();
 	return can;
-};
+}
 
 function flipImageVert(image) {
 	var can = document.createElement('canvas');
 	can.width = image.width;
 	can.height = image.height;
-	var flipcontext = can.getContext("2d");
+	var flipcontext = can.getContext('2d');
 	//flipcontext.translate(image.width, 0);
 	flipcontext.scale(1, -1);
 	flipcontext.drawImage(image, 0, (image.height * -1), image.width, image.height);
 	flipcontext.save();
 	return can;
-};
+}
 String.prototype.contains = function (it) {
 	return this.indexOf(it) !== -1;
 };
@@ -338,7 +382,7 @@ function mathSign(n) {
 
 function doubleDigits(v) {
 	if (v < 10) {
-		return "0" + v.toString();
+		return '0' + v.toString();
 	} else {
 		return v.toString();
 	}
@@ -355,7 +399,7 @@ function isCyclic(obj) {
 			seenObjects.push(obj);
 			for (let key in obj) {
 				if (obj.hasOwnProperty(key) && detect(obj[key])) {
-					PrintLog(obj, 'cycle at ' + key);
+					printLog(obj, 'cycle at ' + key);
 					return true;
 				}
 			}
@@ -369,13 +413,15 @@ function dropClasses(o) {
 	for (let p in o) {
 		if (o[p] instanceof jQuery || o[p] instanceof HTMLElement) {
 			o[p] = null;
-		} else if (typeof o[p] === 'object') dropClasses(o[p]);
+		} else if (typeof o[p] === 'object') {
+			dropClasses(o[p]);
+		}
 	}
 	return o;
-};
+}
 
 function hexToRgb(hex) {
-	// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+	// Expand shorthand form (e.g. '03F') to full form (e.g. '0033FF')
 	var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 	hex = hex.replace(shorthandRegex, function (m, r, g, b) {
 		return r + r + g + g + b + b;
@@ -392,7 +438,7 @@ function getObjectByKey(obj, key, val) {
 	var ret = [];
 	for (let i in obj) {
 		if (obj.hasOwnProperty(i)) {
-			if (i == key && (typeof val === "undefined" || obj[key] == val)) {
+			if (i === key && (typeof val === 'undefined' || obj[key] === val)) {
 				ret.push(obj[i]);
 			} else if (typeof obj[i] === 'object') {
 				ret = ret.concat(getObjectByKey(obj[i], key, val));
@@ -406,7 +452,7 @@ function getObjectRootByKey(obj, key, val) {
 	var ret = [];
 	for (let i in obj) {
 		if (obj.hasOwnProperty(i)) {
-			if (i == key && (typeof val === "undefined" || obj[key] == val)) {
+			if (i === key && (typeof val === 'undefined' || obj[key] === val)) {
 				ret.push(obj);
 			} else if (typeof obj[i] === 'object') {
 				ret = ret.concat(getObjectRootByKey(obj[i], key, val));
@@ -417,11 +463,11 @@ function getObjectRootByKey(obj, key, val) {
 }
 
 function getObjectByKeys(obj1, key1, key2, key3) {
-	if (typeof obj1 !== "undefined") {
+	if (typeof obj1 !== 'undefined') {
 		var obj2 = getObjectByKey(obj1, key1)[0];
-		if (typeof obj2 !== "undefined" && typeof key2 !== "undefined") {
+		if (typeof obj2 !== 'undefined' && typeof key2 !== 'undefined') {
 			var obj3 = getObjectByKey(obj2, key2)[0];
-			if (typeof obj3 !== "undefined" && typeof key3 !== "undefined") {
+			if (typeof obj3 !== 'undefined' && typeof key3 !== 'undefined') {
 				return getObjectByKey(obj3, key3)[0];
 			}
 			return obj3;
@@ -432,15 +478,15 @@ function getObjectByKeys(obj1, key1, key2, key3) {
 }
 
 String.prototype.getVar = function () {
-	if (typeof this !== "undefined") {
+	if (typeof this !== 'undefined') {
 		eval('var t = ' + this);
 		return t;
 	}
 	return undefined;
-}
+};
 
 function getVarArray(arr) {
-	if (typeof arr !== "undefined") {
+	if (typeof arr !== 'undefined') {
 		return arr.map(function (x) {
 			return x.getVar();
 		});

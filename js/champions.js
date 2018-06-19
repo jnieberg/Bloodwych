@@ -936,7 +936,7 @@ Champion.prototype.setSpellCost = function (ud) {
 
 Champion.prototype.getSpellCastChance = function () {
 	var res = this.getSpellPower(true);
-	//PrintLog('COST: ' + res + ' f:' + this.spellFatigue);
+	//printLog('COST: ' + res + ' f:' + this.spellFatigue);
 	if (res > 1.0) {
 		return 1.0;
 	} else if (res < 0.0) {
@@ -951,7 +951,7 @@ Champion.prototype.getSpellPower = function (chance) {
 		pow = Math.floor(pow * 10 + this.level * 4);
 	}
 	if (debug) {
-		PrintLog('pcast:' + this.selectedSpell.castSuccessful + ' scost:' + this.selectedSpell.cost + ' pint:' + this.stat.int + ' slvl:' + this.selectedSpell.ref.level + ' fat:' + this.spellFatigue);
+		printLog('pcast:' + this.selectedSpell.castSuccessful + ' scost:' + this.selectedSpell.cost + ' pint:' + this.stat.int + ' slvl:' + this.selectedSpell.ref.level + ' fat:' + this.spellFatigue);
 	}
 	return pow;
 };
@@ -1045,7 +1045,7 @@ function initChampions() {
 		//spellBook[0][1].learnt = true;
 		monster[TOWER_CHAMPIONS][ch] = new Monster(ch, level, 2, ch, TOWER_MOD0, floor, x, y, d, d, 0, ch);
 		champion[ch] = new Champion(ch, TEXT_CHAMPION_NAME[ch], TEXT_CHAMPION_LASTNAME[ch], getChampionClass(ch), getChampionColour(ch), level, stat, spellBook, slot);
-		//PrintLog(champion[ch], false);
-		//PrintLog('Loaded champion: ' + champion[ch] + ', as monster: ' + monster[TOWER_CHAMPIONS][ch]);
+		//printLog(champion[ch], false);
+		//printLog('Loaded champion: ' + champion[ch] + ', as monster: ' + monster[TOWER_CHAMPIONS][ch]);
 	}
 }

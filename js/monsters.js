@@ -43,7 +43,7 @@ function Monster(id, level, type, form, tower, floor, x, y, d, square, teamId, c
 		this.square = CHAR_FRONT_SOLO;
 	}
 	this.champId = -1;
-	if ((typeof champId !== "undefined") && (champId !== null)) {
+	if (typeof champId !== 'undefined' && champId !== null) {
 		this.champId = champId; //optional Champion ID
 		this.hp = 0;
 	} else if (this.square === CHAR_FRONT_SOLO) {
@@ -82,8 +82,8 @@ Monster.prototype.toJSON = function () {
 		square: this.square,
 		champId: this.champId,
 		hp: this.hp
-	}
-}
+	};
+};
 
 Monster.revive = function (data) {
 	var m = new Monster(data.id, data.level, data.type, data.form, data.tower, data.floor, data.x, data.y, data.d, data.square, data.teamId, data.champId, data.pocket);
@@ -105,7 +105,7 @@ Monster.revive = function (data) {
 
 Monster.prototype.getMonsterRef = function () {
 	if (this.ref === null) {
-		if (monsterRef[this.form][this.colour] === "undefined") {
+		if (monsterRef[this.form][this.colour] === 'undefined') {
 			initMonsterGfxNew(this);
 			return monsterRef[this.form][this.colour];
 		} else {
@@ -117,14 +117,12 @@ Monster.prototype.getMonsterRef = function () {
 };
 
 Monster.prototype.toString = function () {
-	var cha = "";
-	var torso = "null";
-	var bodyId = "null";
+	var cha = '';
 	if (this.champId !== -1) {
 		cha = ', champion:' + TEXT_CHAMPION_NAME[this.champId] + '(' + this.champId + ')';
 	}
 	return '[id:' + this.id + ', level:' + this.level + ', type:' + this.type + ', form:' + this.form + ', tower:' + this.tower + ', floor:' + this.floor + ', x:' + this.x + ', y:' + this.y + ', d:' + this.d + ', square:' + this.square + ', hp:' + this.getHP() + ', teamId:' + this.teamId + cha + ']';
-}
+};
 
 Monster.prototype.canInteract = function () {
 	//Check other player to attack
@@ -165,14 +163,14 @@ Monster.prototype.canInteract = function () {
 			ch.recruitment.called = false;
 			pl.updateChampions();
 			redrawUI(ply);
-			pl.message(ch.firstName + TEXT_REJOINS_THE_PARTY, colourData['GREEN']);
+			pl.message(ch.firstName + TEXT_REJOINS_THE_PARTY, colourData.GREEN);
 			return ply;
 		}
 	} else { //vendor and communicating monsters
 		return ply;
 	}
 	return -1;
-}
+};
 
 Monster.prototype.canMove = function () {
 	var sq = this.getSquareByDir();
@@ -188,10 +186,10 @@ Monster.prototype.canMove = function () {
 		return ob;
 	}
 	return OBJECT_NONE;
-}
+};
 
 Monster.prototype.assembleTeamWith = function (m) {
-	if (m.square != CHAR_FRONT_SOLO) {
+	if (m.square !== CHAR_FRONT_SOLO) {
 		if (m.teamId === 0) { //create a new team
 			monsterTeamIdMax++;
 			m.teamId = monsterTeamIdMax;
@@ -207,29 +205,29 @@ Monster.prototype.assembleTeamWith = function (m) {
 		return 3;
 	}
 	return -1;
-}
+};
 
 Monster.prototype.canOpenDoor = function () {
 	var hexThis = this.getBinaryView(18, 0, 16);
 	var hexNext = this.getBinaryView(15, 0, 16);
 	//Check the space the monster is standing on
-	if (getHexToBinaryPosition(hexThis, 13, 3) == '2' && getHexToBinaryPosition(hexThis, ((7 - this.d) % 4) * 2 + 1, 1) == '1') {
-		if (this.isAggressive() && this.type !== MON_TYPE_DRONE && this.type !== MON_TYPE_DRONE_CASTER && getHexToBinaryPosition(hexThis, 11, 1) == '0' && getHexToBinaryPosition(hexThis, ((7 - this.d) % 4) * 2, 1) === '1') {
+	if (getHexToBinaryPosition(hexThis, 13, 3) === '2' && getHexToBinaryPosition(hexThis, ((7 - this.d) % 4) * 2 + 1, 1) === '1') {
+		if (this.isAggressive() && this.type !== MON_TYPE_DRONE && this.type !== MON_TYPE_DRONE_CASTER && getHexToBinaryPosition(hexThis, 11, 1) === '0' && getHexToBinaryPosition(hexThis, ((7 - this.d) % 4) * 2, 1) === '1') {
 			//a door that can be opened
 			this.setBinaryView(18, ((7 - this.d) % 4) * 2 + 1, 1, '0');
 			return true;
 		}
 	}
 	//Check the space the monster is moving to
-	if (getHexToBinaryPosition(hexNext, 13, 3) == '2' && getHexToBinaryPosition(hexNext, ((5 - this.d) % 4) * 2 + 1, 1) == '1') {
-		if (this.isAggressive() && this.type !== MON_TYPE_DRONE && this.type !== MON_TYPE_DRONE_CASTER && getHexToBinaryPosition(hexNext, 11, 1) == '0' && getHexToBinaryPosition(hexNext, ((5 - this.d) % 4) * 2, 1) === '1') {
+	if (getHexToBinaryPosition(hexNext, 13, 3) === '2' && getHexToBinaryPosition(hexNext, ((5 - this.d) % 4) * 2 + 1, 1) === '1') {
+		if (this.isAggressive() && this.type !== MON_TYPE_DRONE && this.type !== MON_TYPE_DRONE_CASTER && getHexToBinaryPosition(hexNext, 11, 1) === '0' && getHexToBinaryPosition(hexNext, ((5 - this.d) % 4) * 2, 1) === '1') {
 			//a door that can be opened
 			this.setBinaryView(15, ((5 - this.d) % 4) * 2 + 1, 1, '0');
 			return true;
 		}
 	}
 	return false;
-}
+};
 
 Monster.prototype.move = function () {
 	var ch = this.getChampion();
@@ -238,13 +236,19 @@ Monster.prototype.move = function () {
 			this.launchSpell();
 		} else if (!this.dead && this.teamId >= 0 && (this.isRecruitedBy() === null || (ch !== null && ch.recruitment.called))) {
 			this.attack(false);
-			if (this.castSpell()) return;
+			if (this.castSpell()) {
+				return;
+			}
 			var canMove = this.canMove();
-			if (canMove === OBJECT_CHARACTER && this.canInteract() > -1) return;
+			if (canMove === OBJECT_CHARACTER && this.canInteract() > -1) {
+				return;
+			}
 			if (canMove === OBJECT_NONE) {
 				xy = getOffsetByRotation(this.d);
 				if (this.teamId > 0 || this.square === CHAR_FRONT_SOLO) {
-					if (this.followPlayer()) return;
+					if (this.followPlayer()) {
+						return;
+					}
 					this.x += xy.x;
 					this.y += xy.y;
 					updateMonsterTeam(this.teamId);
@@ -254,7 +258,9 @@ Monster.prototype.move = function () {
 					switch (sq) {
 						case CHAR_FRONT_LEFT:
 						case CHAR_FRONT_RIGHT:
-							if (this.followPlayer()) return;
+							if (this.followPlayer()) {
+								return;
+							}
 							this.x += xy.x;
 							this.y += xy.y;
 							this.doEvent();
@@ -277,7 +283,7 @@ Monster.prototype.move = function () {
 			}
 		}
 	}
-}
+};
 
 Monster.prototype.doEvent = function () {
 	hex18 = tower[towerThis].floor[this.floor].Map[this.y][this.x];
@@ -294,7 +300,7 @@ Monster.prototype.doEvent = function () {
 		default:
 			break;
 	}
-}
+};
 
 Monster.prototype.attack = function (attack, target) {
 	if (attack) {
@@ -308,9 +314,9 @@ Monster.prototype.attack = function (attack, target) {
 			att.doGesture(CHA_GESTURE_ATTACKING);
 			att.doDamageTo(def, pwr, dExh);
 			if (def instanceof Champion) {
-				PrintLog('MONSTER #' + att.id + ' HITS CHAMPION ' + TEXT_CHAMPION_NAME[def.id] + ' FOR ' + pwr + '!');
+				printLog('MONSTER #' + att.id + ' HITS CHAMPION ' + TEXT_CHAMPION_NAME[def.id] + ' FOR ' + pwr + '!');
 			} else if (def instanceof Monster) {
-				PrintLog('MONSTER #' + att.id + ' HITS HITS MONSTER #' + def.id + ' FOR ' + pwr + '!');
+				printLog('MONSTER #' + att.id + ' HITS HITS MONSTER #' + def.id + ' FOR ' + pwr + '!');
 			}
 			playSound('SOUND_ATTACK');
 		}
@@ -324,11 +330,11 @@ Monster.prototype.attack = function (attack, target) {
 			team[i].attacking = false;
 		}
 	}
-}
+};
 
 Monster.prototype.doDamageTo = function (def, dmg, dExh) {
 	if (def instanceof Champion) {
-		if (typeof dExh !== "undefined") {
+		if (typeof dExh !== 'undefined') {
 			def.stat.vit -= dExh;
 			if (def.stat.vit <= 0) {
 				def.stat.vit = 0;
@@ -338,14 +344,14 @@ Monster.prototype.doDamageTo = function (def, dmg, dExh) {
 	} else if (def instanceof Monster) {
 		def.getDamage(dmg);
 	}
-}
+};
 
 Monster.prototype.getDamage = function (dmg) {
 	this.hp -= dmg;
 	if (this.getHP() < 0) {
 		this.die();
 	}
-}
+};
 
 Monster.prototype.getHP = function () {
 	var ch = this.getChampion();
@@ -353,14 +359,14 @@ Monster.prototype.getHP = function () {
 		return ch.getHP();
 	}
 	return this.hp;
-}
+};
 
 Monster.prototype.addHP = function (hp, safe) {
 	var ch = this.getChampion();
 	if (ch !== null) {
 		ch.addHP(hp, safe);
 	}
-}
+};
 
 Monster.prototype.getVit = function () {
 	var ch = this.getChampion();
@@ -368,14 +374,14 @@ Monster.prototype.getVit = function () {
 		return ch.getVit();
 	}
 	return 0;
-}
+};
 
 Monster.prototype.addVit = function (vit) {
 	var ch = this.getChampion();
 	if (ch !== null) {
 		ch.addVit(vit);
 	}
-}
+};
 
 Monster.prototype.getSP = function () {
 	var ch = this.getChampion();
@@ -383,14 +389,14 @@ Monster.prototype.getSP = function () {
 		return ch.getSP();
 	}
 	return 0;
-}
+};
 
 Monster.prototype.addSP = function (sp) {
 	var ch = this.getChampion();
 	if (ch !== null) {
 		ch.addSP(sp);
 	}
-}
+};
 
 Monster.prototype.castSpell = function () {
 	if (!this.communicating) {
@@ -421,14 +427,14 @@ Monster.prototype.castSpell = function () {
 		}
 	}
 	return false;
-}
+};
 
 Monster.prototype.launchSpell = function () {
 	if (this.type === MON_TYPE_LAUNCHER) {
 		id = SPELL_ARC_BOLT;
 		castSpell(id, this, Math.floor(this.level * 2 + 4 + getSpellById(id).level * 0.4));
 	}
-}
+};
 
 Monster.prototype.followPlayer = function () {
 	//Move to player
@@ -506,7 +512,7 @@ Monster.prototype.followPlayer = function () {
 		}
 	}
 	return false;
-}
+};
 
 Monster.prototype.rotateTo = function (d) {
 	if (this.timerTerror > 0) {
@@ -514,7 +520,7 @@ Monster.prototype.rotateTo = function (d) {
 	}
 	this.d = d;
 	updateMonsterTeam(this.teamId);
-}
+};
 
 //  CHAR_FRONT_LEFT = 0,
 //  CHAR_FRONT_RIGHT = 1,
@@ -527,7 +533,7 @@ Monster.prototype.getSquareByDir = function () {
 	} else {
 		return -1;
 	}
-}
+};
 
 //returns the sub square relative to the direction of the monster, if the (small) monster would move 1 step forwards
 Monster.prototype.getSquareByDirNext = function () {
@@ -573,14 +579,14 @@ Monster.prototype.getSquareByDirNext = function () {
 			}
 			break;
 	}
-}
+};
 
 Monster.prototype.getChampion = function () {
 	if (this.champId > -1) {
 		return champion[this.champId];
 	}
 	return null;
-}
+};
 
 Monster.prototype.isRecruitedBy = function () {
 	var ch = this.getChampion();
@@ -588,14 +594,14 @@ Monster.prototype.isRecruitedBy = function () {
 		return player[ch.recruitment.playerId];
 	}
 	return null;
-}
+};
 
 Monster.prototype.isAggressive = function () {
 	if (this.champId > -1 || this.form === 21 || this.form === 22 || this.timerTerror > 0) {
 		return false;
 	}
 	return true;
-}
+};
 
 Monster.prototype.die = function () {
 	if (!this.dead) {
@@ -615,7 +621,7 @@ Monster.prototype.die = function () {
 				playSound('SOUND_DEATH');
 			}
 		} else {
-			newProjectile('PROJECTILE_BIG', paletteData['MOON_BIG'], null, -1, 0, this.floor, this.x, this.y, 0, null);
+			newProjectile('PROJECTILE_BIG', paletteData.MOON_BIG, null, -1, 0, this.floor, this.x, this.y, 0, null);
 			if (this.type !== MON_TYPE_DRONE && this.type !== MON_TYPE_DRONE_CASTER) {
 				var it = [];
 				for (let i = 0; i < POCKET_MAX + 1; i++) {
@@ -632,7 +638,7 @@ Monster.prototype.die = function () {
 			}
 		}
 	}
-}
+};
 
 //check timers for paralyze and terror, and return a timer factor for slowing the monster down or freezing the monster
 Monster.prototype.getCurseTimers = function () {
@@ -647,7 +653,7 @@ Monster.prototype.getCurseTimers = function () {
 	}
 	var fac = this.timerSpeed;
 	return this.getSpeed(fac);
-}
+};
 
 Monster.prototype.getSpeed = function (fac) {
 	var lvl = this.level;
@@ -655,17 +661,17 @@ Monster.prototype.getSpeed = function (fac) {
 		lvl = 20;
 	}
 	return Math.floor(fac / (1.0 + 0.02 * lvl));
-}
+};
 
 Monster.prototype.doGesture = function (g) {
 	this.gesture = g;
 	this.gestureTimer = timerMaster;
-}
+};
 
 Monster.prototype.setBinaryView = function (pos18, index, length, to) {
 	var xy = posToCoordinates(pos18, this.x, this.y, this.d);
 	tower[towerThis].floor[this.floor].Map[xy.y][xy.x] = setHexToBinaryPosition(tower[towerThis].floor[this.floor].Map[xy.y][xy.x], index, length, to);
-}
+};
 Monster.prototype.getBinaryView = function (pos18, index, length) {
 	var xy = posToCoordinates(pos18, this.x, this.y, this.d);
 	try {
@@ -673,18 +679,18 @@ Monster.prototype.getBinaryView = function (pos18, index, length) {
 	} catch (e) {
 		return '0001';
 	}
-}
+};
 
 Monster.prototype.setSpecialPocketItem = function (i) {
 	this.pocket[POCKET_SLOT_0].setPocketItem(monsterItemData[i], 1, true);
-}
+};
 
 function initMonsters() {
 	var max = CHAMPION_MAX;
 	var mi = 0;
 	for (let t = 0; t < tower.length; t++) {
 		var tw = tower[t];
-		monster[tw.id] = new Array();
+		monster[tw.id] = [];
 		var xLast = 0;
 		var square = 0;
 		for (let i = 0; i < tw.monsterData.length; i++) {
@@ -697,13 +703,13 @@ function initMonsters() {
 			var y = parseInt(hex2dec(getHexToBinaryPosition(md, 16, 8)));
 			var tid = parseInt(hex2dec(getHexToBinaryPosition(md, 40, 8)));
 			if (md.substring(0, 1) > 7) {
-				PrintLog("Match: " + md + " Bit:" + parseInt(hex2dec(getHexToBinaryPosition(md, 0, 1))) + " Type:" + type);
+				printLog('Match: ' + md + ' Bit:' + parseInt(hex2dec(getHexToBinaryPosition(md, 0, 1))) + ' Type:' + type);
 			}
 			var hi = parseInt(hex2dec(getHexToBinaryPosition(md, 0, 1)));
 			var teamId = 0;
-			if (level != 0 || type != 0 || form != 0 || floor != -1 || x != 0 || y != 0) {
-				if (tid != 255) {
-					if (x != 255) {
+			if (level !== 0 || type !== 0 || form !== 0 || floor !== -1 || x !== 0 || y !== 0) {
+				if (tid !== 255) {
+					if (x !== 255) {
 						xLast = x;
 						monsterTeamIdMax++;
 						teamId = monsterTeamIdMax;
@@ -739,15 +745,15 @@ function initMonsters() {
 							qt = Math.floor(Math.random() * (mon.level + 2) * 1) + 1;
 						}
 						var it = mon.pocket[POCKET_HIDDEN];
-						if (typeof it !== "undefined") {
+						if (typeof it !== 'undefined') {
 							it.setPocketItem(id, qt, true);
 						}
 					}
 				}
 				max++;
-				if (debug) {
-					//PrintLog('Loaded monster: ' + monster[tw.id][i] + " HoldingItem: " +hi+ " MD: " + md);
-				}
+				//if (debug) {
+				//printLog('Loaded monster: ' + monster[tw.id][i] + ' HoldingItem: ' +hi+ ' MD: ' + md);
+				//}
 			}
 		}
 	}
@@ -773,7 +779,7 @@ function initMonsters() {
 }
 
 function initMonsterPalettes() {
-
+	var b;
 	for (let i = 0; i < monsterBodiesData.length; i++) {
 		var body = CHA_BODY[monsterBodiesData[i][0]];
 		var j = i * 5;
@@ -794,14 +800,14 @@ function initMonsterPalettes() {
 	}
 
 	for (let i = 0; i < 6; i++) {
-		monsterBigPalette[i] = new Array();
+		monsterBigPalette[i] = [];
 		for (let j = 0; j < 8; j++) { //palettes
 			var k = 431;
-			var b = monsterPaletteMetaData[i][j];
+			b = monsterPaletteMetaData[i][j];
 			monsterBigPalette[i][j] = [colourData[monsterPaletteData[k + b][0]], colourData[monsterPaletteData[k + b][1]], colourData[monsterPaletteData[k + b][2]], colourData[monsterPaletteData[k + b][3]]];
-			//PrintLog("Loading Big Monster Palette: " + i.toString() + " - " + j.toString());
+			//printLog('Loading Big Monster Palette: ' + i.toString() + ' - ' + j.toString());
 		}
-		var b = monsterPaletteMetaData[i][0];
+		b = monsterPaletteMetaData[i][0];
 		monsterBigPalette[i][8] = [colourData[monsterPaletteData[430 + b][0]], colourData[monsterPaletteData[430 + b][1]], colourData[monsterPaletteData[430 + b][2]], colourData[monsterPaletteData[430 + b][3]]];
 	}
 
@@ -907,11 +913,11 @@ function initArmourGfx() {
 
 function createMonsterRef(m, level, gfx) {
 
-	if (typeof monsterRef[m.form] === "undefined") {
-		monsterRef[m.form] = new Array();
+	if (typeof monsterRef[m.form] === 'undefined') {
+		monsterRef[m.form] = [];
 	}
-	if (typeof monsterRef[m.form][level] === "undefined" || typeof monsterRef[m.form][level].gfx === "undefined") {
-		if (typeof gfx !== "undefined") {
+	if (typeof monsterRef[m.form][level] === 'undefined' || typeof monsterRef[m.form][level].gfx === 'undefined') {
+		if (typeof gfx !== 'undefined') {
 			monsterRef[m.form][level] = {
 				id: m.form,
 				level: level,
@@ -923,11 +929,11 @@ function createMonsterRef(m, level, gfx) {
 }
 
 function createArmourRef(id, gen, gfx) {
-	if (typeof armourRef[id] === "undefined") {
-		armourRef[id] = new Array();
+	if (typeof armourRef[id] === 'undefined') {
+		armourRef[id] = [];
 	}
-	if (typeof armourRef[id][gen] === "undefined" || typeof armourRef[id][gen].gfx === "undefined") {
-		if (typeof gfx !== "undefined") {
+	if (typeof armourRef[id][gen] === 'undefined' || typeof armourRef[id][gen].gfx === 'undefined') {
+		if (typeof gfx !== 'undefined') {
 			armourRef[id][gen] = {
 				id: id,
 				gen: gen,
@@ -976,7 +982,7 @@ function getMonsterGfxOffset(pos, sub) {
 	return {
 		x: x,
 		y: y
-	}
+	};
 }
 
 function getMonsterDistanceByPos(pos, sq) {
@@ -1004,10 +1010,10 @@ function getMonsterDistanceByPos(pos, sq) {
 //Returns the number of members in this monster's team
 
 function getMonsterTeam(id) {
-	var team = new Array();
-	if (id != 0) {
+	var team = [];
+	if (id !== 0) {
 		for (let m = 0; m < monster[towerThis].length; m++) {
-			if (typeof monster[towerThis][m] !== "undefined" && !monster[towerThis][m].dead) {
+			if (typeof monster[towerThis][m] !== 'undefined' && !monster[towerThis][m].dead) {
 				if (monster[towerThis][m].teamId === Math.abs(id)) {
 					team.unshift(monster[towerThis][m]);
 				} else if (monster[towerThis][m].teamId === -Math.abs(id)) {
@@ -1020,7 +1026,7 @@ function getMonsterTeam(id) {
 }
 
 function updateMonsterTeam(id) {
-	if (id != 0) {
+	if (id !== 0) {
 		var team = getMonsterTeam(id);
 		leader = team[0];
 		if (team.length > 1) {
@@ -1057,7 +1063,7 @@ function getMonsterById(id) {
 
 //returns a list of monsters on this tower. Includes champions on this tower
 function getMonstersInTower(id, f) {
-	var mon = new Array();
+	var mon = [];
 	var f1 = null;
 	var f2 = null;
 	if (typeof f !== 'undefined') {

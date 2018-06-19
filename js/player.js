@@ -427,9 +427,9 @@ Player.prototype.attack = function (ch, attack, target) {
 					var dExh = combat[com].defExhaustion;
 					att.doDamageTo(def, pwr, aExh, dExh);
 					if (def instanceof Champion) {
-						PrintLog('CHAMPION ' + TEXT_CHAMPION_NAME[att.id] + ' HITS CHAMPION ' + TEXT_CHAMPION_NAME[def.id] + ' FOR ' + pwr + '!');
+						printLog('CHAMPION ' + TEXT_CHAMPION_NAME[att.id] + ' HITS CHAMPION ' + TEXT_CHAMPION_NAME[def.id] + ' FOR ' + pwr + '!');
 					} else if (def instanceof Monster) {
-						PrintLog('CHAMPION ' + TEXT_CHAMPION_NAME[att.id] + ' HITS MONSTER #' + def.id + ' FOR ' + pwr + '!');
+						printLog('CHAMPION ' + TEXT_CHAMPION_NAME[att.id] + ' HITS MONSTER #' + def.id + ' FOR ' + pwr + '!');
 						self.gainChampionXp(pwr, att);
 						if (def.dead) {
 							self.gainChampionXp(128);
@@ -1033,7 +1033,7 @@ Player.prototype.drawItem = function (it, distance, offset) {
 			myDIx(this.Portal, iGfx, { sx: offx, sy: offy, w: iGfx.width, h: iGfx.height, x: 0, y: 0 });
 		}
 	} catch (e) {
-		PrintLog('DRAW ITEM ERROR: ' + e.toString());
+		printLog('DRAW ITEM ERROR: ' + e.toString());
 	}
 };
 Player.prototype.drawProjectile = function (pr, distance, offset) {
@@ -1481,7 +1481,7 @@ Player.prototype.testMode = function () {
 					}
 			}
 	} catch (e) {
-			PrintLog(e.toString());
+			printLog(e.toString());
 	};*/
 	//this.castSpell(SPELL_MINDROCK, this.getChampion(0));
 	//}
@@ -1661,6 +1661,7 @@ Player.prototype.doneCommunication = function () {
 	}
 };
 Player.prototype.getCommunication = function (mode, text) {
+	var suf = '';
 	for (let q = 0; q < TEXT_COMMUNICATION.length; q++) {
 		if ((typeof TEXT_COMMUNICATION[q][1] !== 'undefined' && TEXT_COMMUNICATION[q][1] !== null) || typeof text !== 'number') {
 			if ((typeof text === 'number' && TEXT_COMMUNICATION[q][1] === mode && TEXT_COMMUNICATION[q][2] === text) || (typeof text !== 'number' && q === mode)) {
@@ -1686,7 +1687,7 @@ Player.prototype.getCommunication = function (mode, text) {
 							que += TEXT_COMMUNICATION[q + q1 + qs][0][w][w1];
 						}
 					}
-					var suf = '';
+					suf = '';
 					if (typeof text === 'string') {
 						suf = text;
 					}
@@ -1725,7 +1726,7 @@ Player.prototype.getCommunication = function (mode, text) {
 							ans += TEXT_COMMUNICATION[q + a1 + as][0][w][w1];
 						}
 					}
-					var suf = '';
+					suf = '';
 					if (typeof TEXT_COMMUNICATION[q + a1 + as][7] !== 'undefined') {
 						switch (TEXT_COMMUNICATION[q + a1 + as][7]) {
 							case 'name':

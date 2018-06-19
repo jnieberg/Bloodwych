@@ -1,19 +1,20 @@
 function calculateAttack(att, def, tof) {
-	var combat = new Array();
+	var combat = [];
+	var mon;
 	if (att instanceof Monster) {
-		var mon = new Array();
-		if (att.teamId != 0) {
+		mon = [];
+		if (att.teamId !== 0) {
 			mon = getMonsterTeam(att.teamId);
 		} else {
 			mon[0] = att;
 		}
 	}
 
-	for(var a = 0; a < 4; a++) {
+	for (var a = 0; a < 4; a++) {
 		var attack = 0; //attack points
 		var critChance = 1.0; //chance for a critical strike (2x hit)
 		var hit = 1.0; //chance for attacker for a successful hit
-		var defense = 25; //defense points
+		var defense = 20; //defense points
 		var defenseFactor = 1.0; //defense factor
 		var attExhaustion = 0; //attack exhaustion points. used to decrease vitality of attacker
 		var defExhaustion = 0; //defense exhaustion points. used to decrease vitality of defender
@@ -22,17 +23,18 @@ function calculateAttack(att, def, tof) {
 		var to;
 		var fmon;
 		var tmon;
-		if(typeof tof === "undefined") {
-			var tof = -1;
+		var df;
+		if (typeof tof === 'undefined') {
+			tof = -1;
 		}
-		if(tof === 'all') { //force a 'to' to all in a team
+		if (tof === 'all') { //force a 'to' to all in a team
 			var com = calculateAttack(att, def, a);
-			if(com.length === 1) {
+			if (com.length === 1) {
 				combat.push(com[0]);
 			}
 		} else { //find a 'to'
 			//Attacker calculations
-			if(att instanceof Champion && att.recruitment.playerId > -1 && att.recruitment.position !== a) {
+			if (att instanceof Champion && att.recruitment.playerId > -1 && att.recruitment.position !== a) {
 				continue;
 			}
 			if (att instanceof Player || (att instanceof Champion && att.recruitment.playerId > -1)) {
@@ -41,31 +43,31 @@ function calculateAttack(att, def, tof) {
 					att2 = player[att.recruitment.playerId];
 				}
 				from = att2.getChampion(a);
-				if (typeof from === "undefined" || from === null || !from.recruitment.attached) {
+				if (typeof from === 'undefined' || from === null || !from.recruitment.attached) {
 					continue;
 				}
 				fmon = from.getMonster();
 				if (fmon.dead) {
 					continue;
 				}
-				if(from.selectedSpell === null && !from.hasRangedWeapon()) { //player chars in the back cannot melee
+				if (from.selectedSpell === null && !from.hasRangedWeapon()) { //player chars in the back cannot melee
 					if (a >= 2 || typeof def === 'undefined') {
 						continue;
 					}
 				}
-				if(typeof def !== 'undefined') {
+				if (typeof def !== 'undefined') {
 					fromDir = fmon.d;
 					attack += (from.stat.str / 2.0) + (from.stat.agi / 4.0); //add strength to attack points
-					var atf = from.getActiveSpellActionValue('attackFactor');
-					if(typeof atf !== "undefined") {
+					var atf = from.getActiveSpellActionValue('attackFactor'); //add attack factor from spell
+					if (typeof atf !== 'undefined') {
 						attack += from.activeSpell.power * atf;
 					} else {
 						attack += from.getActiveSpellById(SPELL_WARPOWER).power / 10.0;
 						attack += from.getActiveSpellById(SPELL_ENHANCE).power / 3.0;
 					}
 					var ran = Math.random();
-					var pw = from.getPower();
-					if(ran < pw.crit || (ran < pw.critback && att2.d === def.d)) {
+					var pw = from.getPower(); // weapon power
+					if (ran < pw.crit || (ran < pw.critback && att2.d === def.d)) {
 						critChance = 1.5;
 					} else if (from.prof === PROFESSION_CUTPURSE && (from.pocket[0].id === 'ITEM_DAGGER' || from.pocket[0].id === 'ITEM_STEALTH_BLADE') && att2.d === def.d) { //cutpurses can cut through 50% of the defense
 						critChance = 1.5;
@@ -76,15 +78,15 @@ function calculateAttack(att, def, tof) {
 				}
 			} else if (att instanceof Projectile) {
 				if (a === 0) {
-					if(att.monster === null) {
+					if (att.monster === null) {
 						break;
 					}
 					from = att.monster;
 					fmon = null;
 					attack += att.power * 0.75;
-					if(typeof att.spell !== "undefined") {
-						var df = getObjectByKeys(spellJson[att.spell.id], 'action', 'defenseFactor');
-						if(typeof df !== "undefined") {
+					if (typeof att.spell !== 'undefined') {
+						df = getObjectByKeys(spellJson[att.spell.id], 'action', 'defenseFactor');
+						if (typeof df !== 'undefined') {
 							defenseFactor *= df;
 						}
 					}
@@ -94,7 +96,7 @@ function calculateAttack(att, def, tof) {
 			} else if (att instanceof Monster) { //monster
 				from = mon[a];
 				fmon = from;
-				if (typeof from === "undefined" || from.dead) {
+				if (typeof from === 'undefined' || from.dead) {
 					continue;
 				}
 				fromDir = from.d;
@@ -105,27 +107,27 @@ function calculateAttack(att, def, tof) {
 			if (def instanceof Player) {
 				var ch = [];
 				var ch1 = [];
-				for(var d = 0; d < 2; d++) {
+				for (var d = 0; d < 2; d++) {
 					ch[0] = champion[def.champion[(7 + fromDir - def.d - d) % 4]];
 					ch[1] = champion[def.champion[(4 + fromDir - def.d + d) % 4]];
-					if (typeof ch[0] !== "undefined" && !ch[0].getMonster().dead) {
+					if (typeof ch[0] !== 'undefined' && !ch[0].getMonster().dead) {
 						ch1.push(ch[0]);
-					} else if (typeof ch[1] !== "undefined" && !ch[1].getMonster().dead) {
+					} else if (typeof ch[1] !== 'undefined' && !ch[1].getMonster().dead) {
 						ch1.push(ch[1]);
 					}
 				}
 				if (ch1.length > 0 || tof > -1) {
 					if (tof === -1) {
 						to = ch1[Math.floor(Math.random() * ch1.length)];
-					} else if (typeof champion[def.champion[tof]] !== "undefined" && !champion[def.champion[tof]].dead) {
+					} else if (typeof champion[def.champion[tof]] !== 'undefined' && !champion[def.champion[tof]].dead) {
 						to = champion[def.champion[tof]];
 					}
-					if (typeof to !== "undefined") {
+					if (typeof to !== 'undefined') {
 						tmon = to.getMonster();
 						defense += to.stat.agi / 4.0;
 						defense -= to.getArmourClass();
-						var def = to.getActiveSpellActionValue('defenseFactor');
-						if(typeof def !== "undefined") {
+						def = to.getActiveSpellActionValue('defenseFactor');
+						if (typeof def !== 'undefined') {
 							defense += to.activeSpell.power * def;
 						} else {
 							defense += Math.floor(to.getActiveSpellById(SPELL_ARMOUR).power / 10.0);
@@ -140,28 +142,28 @@ function calculateAttack(att, def, tof) {
 					}
 				}
 			} else if (def instanceof Monster) {
-				var mon = new Array();
-				if (def.teamId != 0) {
+				mon = [];
+				if (def.teamId !== 0) {
 					mon = getMonsterTeam(def.teamId);
 				} else {
 					mon[0] = def;
 				}
-				for(var d = 0; d < mon.length; d++) {
+				for (let d = 0; d < mon.length; d++) {
 					if (Math.random() < 1.0 / (mon.length - d) || tof > -1) {
 						if (tof === -1) {
 							to = mon[d];
 						} else {
 							to = mon[tof];
 						}
-						if (typeof to !== "undefined") {
+						if (typeof to !== 'undefined') {
 							tmon = to;
 							if (to.champId > -1) { //champion
 								to = champion[to.champId];
 								tmon = to.getMonster();
 								defense += to.stat.agi / 4.0;
 								defense -= to.getArmourClass();
-								var df = to.getActiveSpellActionValue('defenseFactor');
-								if(typeof df !== "undefined") {
+								df = to.getActiveSpellActionValue('defenseFactor');
+								if (typeof df !== 'undefined') {
 									defense += to.activeSpell.power * df;
 								} else {
 									defense += Math.floor(to.getActiveSpellById(SPELL_ARMOUR).power / 10.0);
@@ -170,7 +172,7 @@ function calculateAttack(att, def, tof) {
 								//defense += 25;
 								//defense += (6.0 + to.level) * 4.0;
 								defExhaustion = Math.floor(Math.random() * 2) + 1;
-							} else { //monster
+								//} else { //monster
 								//defense += 25; // + to.level * 2;
 								//if (!to.attacking) {
 								//	defense = defense * 1.1;
@@ -186,10 +188,11 @@ function calculateAttack(att, def, tof) {
 			}
 
 			//Final calculations
-			if (typeof from !== "undefined" && (fmon === null || !fmon.dead) && typeof to !== 'undefined' && (tmon === null || !tmon.dead)) {
+			if (typeof from !== 'undefined' && (fmon === null || !fmon.dead) && typeof to !== 'undefined' && (tmon === null || !tmon.dead)) {
 				var power = (attack - defenseFactor * defense) * critChance;
 				//var lvl = (2.0 + from.level) * 2.0;
 				power = Math.floor(Math.random() * power * 0.5 + power * 0.5);
+				printLog('COMBAT: AT ' + attack + ', DEF ' + (defenseFactor * defense) + ', CRIT ' + critChance + ', POW' + power);
 				if (Math.random() > hit || power < 0) {
 					power = 0;
 				}

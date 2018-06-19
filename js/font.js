@@ -114,7 +114,7 @@ function writeFontImage(fontString, locationX, locationY, paletteTo, alignment, 
 			can = null;
 		}
 	} catch (e) {
-		PrintLog('Write font error: ' + e.toString());
+		printLog('Write font error: ' + e.toString());
 	}
 }
 
@@ -288,6 +288,6 @@ function writeSpellFont(fontString, locationX, locationY, paletteTo, alignment, 
 			can = null;
 		}
 	} catch (e) {
-		PrintLog('Write font error: ' + e.toString());
+		printLog('Write font error: ' + e.toString());
 	}
 }

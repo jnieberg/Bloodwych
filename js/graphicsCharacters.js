@@ -947,7 +947,7 @@ function drawMonster(m, dir, dist, player, offset, returnImg) {
 				}
 				//}
 			} catch (e) {
-				PrintLog('JORG - DRAW MONSTER ISSUE! - PT' + part + ' DS' + dist + ' DR' + dir + ' - ' + e.toString());
+				printLog('JORG - DRAW MONSTER ISSUE! - PT' + part + ' DS' + dist + ' DR' + dir + ' - ' + e.toString());
 			}
 		}
 	}
@@ -1054,5 +1054,5 @@ function getSprite(part, dist, dir, action, monster, player) {
 		}
 	}
 
-	// PrintLog(strMonsterForm[monster.form - 100] + ' - Part: ' + partName[part] + ' ' + distName[dist] + ' ' + dirName[dir] + ' ' + strGestures[monster.gesture]);
+	// printLog(strMonsterForm[monster.form - 100] + ' - Part: ' + partName[part] + ' ' + distName[dist] + ' ' + dirName[dir] + ' ' + strGestures[monster.gesture]);
 }

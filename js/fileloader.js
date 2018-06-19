@@ -12,7 +12,7 @@ function loadBinaryFiles(item) {
 
 function getFileData(callback, id, t, type, length) {
 	if (debug) {
-		PrintLog('Processing: ' + type);
+		printLog('Processing: ' + type);
 	}
 
 	switch (type) {

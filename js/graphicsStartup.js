@@ -7,16 +7,16 @@ function startScreen() {
 	configCanvas();
 	clearCanvas();
 
-	writeFontImage("BLOODWYCH HTML", 122, 18, colourData['RED'], FONT_ALIGNMENT_LEFT);
-	writeFontImage(" 1   START ONE PLAYER GAME", 34, 50, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-	writeFontImage(" 2   START TWO PLAYER GAME", 34, 66, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-	writeFontImage(" 3   QUICKSTART ONE PLAYER GAME", 34, 90, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-	writeFontImage(" 4   QUICKSTART TWO PLAYER GAME", 34, 106, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
+	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
+	writeFontImage(' 1   START ONE PLAYER GAME', 34, 50, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+	writeFontImage(' 2   START TWO PLAYER GAME', 34, 66, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+	writeFontImage(' 3   QUICKSTART ONE PLAYER GAME', 34, 90, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+	writeFontImage(' 4   QUICKSTART TWO PLAYER GAME', 34, 106, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	if (getGameName(99) !== '') {
-		writeFontImage(" 5   RESUME LAST GAME", 34, 130, colourData['YELLOW'], FONT_ALIGNMENT_LEFT);
+		writeFontImage(' 5   RESUME LAST GAME', 34, 130, colourData.YELLOW, FONT_ALIGNMENT_LEFT);
 	}
-	writeFontImage("MIRRORSOFT 1989", 114, 178, colourData['GREY_DARK'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("RECREATED BY MAD BONE 2016", 74, 190, colourData['WHITE'], FONT_ALIGNMENT_LEFT);
+	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
+	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
 
 }
 
@@ -29,15 +29,15 @@ function preStartScreen() {
 	configCanvas();
 	clearCanvas();
 
-	writeFontImage("BLOODWYCH HTML", 122, 18, colourData['RED'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("    1   BLOODWYCH", 34, 50, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("    2   EXTENDED LEVELS (WIP)", 34, 66, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("    3   BOOK OF SKULLS (WIP)", 34, 90, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("    4   CUSTOM DATA SET (WIP)", 34, 106, colourData['GREY_DARK'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("    5   MAP VIEWER/EDITOR (WIP)", 34, 129, colourData['GREY_DARK'], FONT_ALIGNMENT_LEFT);
+	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
+	writeFontImage('    1   BLOODWYCH', 34, 50, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+	writeFontImage('    2   EXTENDED LEVELS (WIP)', 34, 66, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+	writeFontImage('    3   BOOK OF SKULLS (WIP)', 34, 90, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+	writeFontImage('    4   CUSTOM DATA SET (WIP)', 34, 106, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
+	writeFontImage('    5   MAP VIEWER/EDITOR (WIP)', 34, 129, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
 
-	writeFontImage("MIRRORSOFT 1989", 114, 178, colourData['GREY_DARK'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("RECREATED BY MAD BONE 2016", 74, 190, colourData['WHITE'], FONT_ALIGNMENT_LEFT);
+	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
+	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
 
 }
 
@@ -50,19 +50,19 @@ function loadingScreen(objProgress) {
 	configCanvas();
 	clearCanvas();
 
-	writeFontImage("BLOODWYCH HTML", 122, 18, colourData['RED'], FONT_ALIGNMENT_LEFT);
-	if (objProgress.type === "fileprogress") {
-		writeFontImage("LOADING DATA...", 122, 80, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-		writeFontImage("   FILE: " + objProgress.item.src, 34, 100, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
+	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
+	if (objProgress.type === 'fileprogress') {
+		writeFontImage('LOADING DATA...', 122, 80, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+		writeFontImage('   FILE: ' + objProgress.item.src, 34, 100, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	} else {
-		writeFontImage("PROCESSING DATA...", 120, 80, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
-		writeFontImage("   FILE: " + objProgress.src, 34, 100, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
+		writeFontImage('PROCESSING DATA...', 120, 80, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+		writeFontImage('   FILE: ' + objProgress.src, 34, 100, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	}
 
-	//writeFontImage(" PROGRESS: " + objProgress.progress, 34, 140, colourData['GREEN'], FONT_ALIGNMENT_LEFT);
+	//writeFontImage(' PROGRESS: ' + objProgress.progress, 34, 140, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 
-	writeFontImage("MIRRORSOFT 1989", 114, 178, colourData['GREY_DARK'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("RECREATED BY MAD BONE 2016", 74, 190, colourData['WHITE'], FONT_ALIGNMENT_LEFT);
+	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
+	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
 
 }
 
@@ -75,11 +75,11 @@ function progressScreen(strDetails) {
 	configCanvas();
 	clearCanvas();
 
-	writeFontImage("BLOODWYCH HTML", 122, 18, colourData['RED'], FONT_ALIGNMENT_LEFT);
-	writeFontImage(strDetails + "...", 160, 80, colourData['GREEN'], FONT_ALIGNMENT_CENTER);
+	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
+	writeFontImage(strDetails + '...', 160, 80, colourData.GREEN, FONT_ALIGNMENT_CENTER);
 
-	writeFontImage("MIRRORSOFT 1989", 114, 178, colourData['GREY_DARK'], FONT_ALIGNMENT_LEFT);
-	writeFontImage("RECREATED BY MAD BONE 2016", 74, 190, colourData['WHITE'], FONT_ALIGNMENT_LEFT);
+	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
+	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
 
 }
 
@@ -87,9 +87,9 @@ function drawQuickStartUI(pl) {
 
 	clearCanvas(false);
 	if (currentPlayer === 1) {
-		writeFontImage("PLAYER 2, " + TEXT_SELECT_CHAMPION, 2, 0, colourData['GREEN']);
+		writeFontImage('PLAYER 2, ' + TEXT_SELECT_CHAMPION, 2, 0, colourData.GREEN);
 	} else {
-		writeFontImage(TEXT_SELECT_CHAMPION, 2, 0, colourData['GREEN']);
+		writeFontImage(TEXT_SELECT_CHAMPION, 2, 0, colourData.GREEN);
 	}
 	var chN = 0;
 
@@ -98,7 +98,7 @@ function drawQuickStartUI(pl) {
 			var ch = champion[chN];
 			var t = createShield(ch.id, ch.prof, ch.colour);
 			if (players === 2 && currentPlayer === 1 && ch.id === championSelect[0].champID) {
-				ctx.drawImage(gfxUI['SHIELD_BLUE'], (col * 40) * scale, ((row * 48) + 15) * scale, gfxUI['SHIELD_BLUE'].width * scale, gfxUI['SHIELD_BLUE'].height * scale);
+				ctx.drawImage(gfxUI.SHIELD_BLUE, (col * 40) * scale, ((row * 48) + 15) * scale, gfxUI.SHIELD_BLUE.width * scale, gfxUI.SHIELD_BLUE.height * scale);
 			} else {
 				if (championSelect[pl].champID !== -1) {
 					if (championSelect[pl].champID !== -1 && ch.id === championSelect[pl].champID) {
@@ -128,9 +128,9 @@ function drawQuickStartUI(pl) {
 		var myY = 50,
 			myX = 0;
 
-		ctx.drawImage(gfxUI[imageColour], 168 * scale, (myY + 75) * scale, gfxUI['CHARACTER_NAME_BLUE'].width * scale, gfxUI['CHARACTER_NAME_BLUE'].height * scale);
-		ctx.drawImage(gfxUI['CHARACTER_BOX'], 168 * scale, (myY) * scale, gfxUI['CHARACTER_BOX'].width * scale, gfxUI['CHARACTER_BOX'].height * scale);
-		ctx.drawImage(gfxUI['CHARACTER_SCROLL'], (myX + 226) * scale, (myY - 1) * scale, gfxUI['CHARACTER_SCROLL'].width * scale, gfxUI['CHARACTER_SCROLL'].height * scale);
+		ctx.drawImage(gfxUI[imageColour], 168 * scale, (myY + 75) * scale, gfxUI.CHARACTER_NAME_BLUE.width * scale, gfxUI.CHARACTER_NAME_BLUE.height * scale);
+		ctx.drawImage(gfxUI.CHARACTER_BOX, 168 * scale, (myY) * scale, gfxUI.CHARACTER_BOX.width * scale, gfxUI.CHARACTER_BOX.height * scale);
+		ctx.drawImage(gfxUI.CHARACTER_SCROLL, (myX + 226) * scale, (myY - 1) * scale, gfxUI.CHARACTER_SCROLL.width * scale, gfxUI.CHARACTER_SCROLL.height * scale);
 
 	}
 
@@ -144,35 +144,35 @@ function showCharacterDetails(ch, pl, col, row) {
 	var a = ch.prof;
 	var b = ch.colour;
 
-	ctx.drawImage(gfxUI['ITEM_' + a][b], 198 * scale, (myY + 57) * scale, gfxUI['ITEM_EMPTY'].width * scale, gfxUI['ITEM_EMPTY'].height * scale);
+	ctx.drawImage(gfxUI['ITEM_' + a][b], 198 * scale, (myY + 57) * scale, gfxUI.ITEM_EMPTY.width * scale, gfxUI.ITEM_EMPTY.height * scale);
 	if (pl === 0) {
-		ctx.drawImage(gfxUI['SHIELD_BLUE'], (col * 40) * scale, ((row * 48) + 15) * scale, gfxUI['SHIELD_BLUE'].width * scale, gfxUI['SHIELD_BLUE'].height * scale);
-		ctx.drawImage(gfxUI['CHARACTER_NAME_BLUE'], 168 * scale, (myY + 75) * scale, gfxUI['CHARACTER_NAME_BLUE'].width * scale, gfxUI['CHARACTER_NAME_BLUE'].height * scale);
+		ctx.drawImage(gfxUI.SHIELD_BLUE, (col * 40) * scale, ((row * 48) + 15) * scale, gfxUI.SHIELD_BLUE.width * scale, gfxUI.SHIELD_BLUE.height * scale);
+		ctx.drawImage(gfxUI.CHARACTER_NAME_BLUE, 168 * scale, (myY + 75) * scale, gfxUI.CHARACTER_NAME_BLUE.width * scale, gfxUI.CHARACTER_NAME_BLUE.height * scale);
 	} else {
-		ctx.drawImage(gfxUI['SHIELD_RED'], (col * 40) * scale, ((row * 48) + 15) * scale, gfxUI['SHIELD_BLUE'].width * scale, gfxUI['SHIELD_BLUE'].height * scale);
-		ctx.drawImage(gfxUI['CHARACTER_NAME_RED'], 168 * scale, (myY + 75) * scale, gfxUI['CHARACTER_NAME_BLUE'].width * scale, gfxUI['CHARACTER_NAME_BLUE'].height * scale);
+		ctx.drawImage(gfxUI.SHIELD_RED, (col * 40) * scale, ((row * 48) + 15) * scale, gfxUI.SHIELD_BLUE.width * scale, gfxUI.SHIELD_BLUE.height * scale);
+		ctx.drawImage(gfxUI.CHARACTER_NAME_RED, 168 * scale, (myY + 75) * scale, gfxUI.CHARACTER_NAME_BLUE.width * scale, gfxUI.CHARACTER_NAME_BLUE.height * scale);
 	}
-	ctx.drawImage(gfxUI['CHARACTER_BOXES'], 170 * scale, (myY + 54) * scale, gfxUI['CHARACTER_BOXES'].width * scale, gfxUI['CHARACTER_BOXES'].height * scale);
-	ctx.drawImage(gfxUI['CHARACTER_BOX'], 168 * scale, (myY) * scale, gfxUI['CHARACTER_BOX'].width * scale, gfxUI['CHARACTER_BOX'].height * scale);
-	ctx.drawImage(gfxUI['PORTRAITS'][ch.id], 176 * scale, (myY + 7) * scale, gfxUI['PORTRAITS'][ch.id].width * scale, gfxUI['PORTRAITS'][ch.id].height * scale);
+	ctx.drawImage(gfxUI.CHARACTER_BOXES, 170 * scale, (myY + 54) * scale, gfxUI.CHARACTER_BOXES.width * scale, gfxUI.CHARACTER_BOXES.height * scale);
+	ctx.drawImage(gfxUI.CHARACTER_BOX, 168 * scale, (myY) * scale, gfxUI.CHARACTER_BOX.width * scale, gfxUI.CHARACTER_BOX.height * scale);
+	ctx.drawImage(gfxUI.PORTRAITS[ch.id], 176 * scale, (myY + 7) * scale, gfxUI.PORTRAITS[ch.id].width * scale, gfxUI.PORTRAITS[ch.id].height * scale);
 
 
 	switch (championSelect[pl].mode) {
 
 		case UI_CHARACTER_SELECT_SPELLBOOK:
-			writeFontImage(ch.getName(), 170, (myY + 80), colourData['YELLOW']);
+			writeFontImage(ch.getName(), 170, (myY + 80), colourData.YELLOW);
 			drawSpellBook(player[pl]);
-			ctx.drawImage(gfxUI['ICON_UNKNOWN'], 174 * scale, (myY + 56) * scale, gfxUI['ICON_POCKETS'].width * scale, gfxUI['ICON_POCKETS'].height * scale);
+			ctx.drawImage(gfxUI.ICON_UNKNOWN, 174 * scale, (myY + 56) * scale, gfxUI.ICON_POCKETS.width * scale, gfxUI.ICON_POCKETS.height * scale);
 			break;
 		case UI_CHARACTER_SELECT_POCKET:
 			drawPocketUI(player[pl], champion[ch.id], true);
-			writeFontImage(ch.getName(), 170, (myY + 80), colourData['YELLOW']);
-			ctx.drawImage(gfxUI['ICON_BOOKOFSKULLS'], 174 * scale, (myY + 56) * scale, gfxUI['ICON_POCKETS'].width * scale, gfxUI['ICON_POCKETS'].height * scale);
+			writeFontImage(ch.getName(), 170, (myY + 80), colourData.YELLOW);
+			ctx.drawImage(gfxUI.ICON_BOOKOFSKULLS, 174 * scale, (myY + 56) * scale, gfxUI.ICON_POCKETS.width * scale, gfxUI.ICON_POCKETS.height * scale);
 			break;
 		case UI_CHARACTER_SELECT_SCROLL:
 			drawStatsPage(player[pl], champion[ch.id], true);
-			writeFontImage(ch.getName(), 170, (myY + 80), colourData['YELLOW']);
-			ctx.drawImage(gfxUI['ICON_POCKETS'], 174 * scale, (myY + 56) * scale, gfxUI['ICON_POCKETS'].width * scale, gfxUI['ICON_POCKETS'].height * scale);
+			writeFontImage(ch.getName(), 170, (myY + 80), colourData.YELLOW);
+			ctx.drawImage(gfxUI.ICON_POCKETS, 174 * scale, (myY + 56) * scale, gfxUI.ICON_POCKETS.width * scale, gfxUI.ICON_POCKETS.height * scale);
 			break;
 		case UI_CHARACTER_SELECT_START_GAME:
 			var t = TEXT_PLAYER;

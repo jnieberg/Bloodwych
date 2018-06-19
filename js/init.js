@@ -80,13 +80,13 @@ function handleFileProgress(event) {
 }
 
 function handleError(event) {
-	PrintLog('Preload ' + event.title + ': ' + event.data.id);
+	printLog('Preload ' + event.title + ': ' + event.data.id);
 }
 
 function handleFileLoad(event) {
 	var item = event.item;
 	if (debug) {
-		PrintLog('Loaded File: ' + item.src);
+		printLog('Loaded File: ' + item.src);
 	}
 	switch (item.type) {
 		case createjs.AbstractLoader.IMAGE:
@@ -134,12 +134,12 @@ function initMenuData() {
 }
 
 function initData() {
-	gfx['character']['heads'] = getCharacterSprite(NUMBER_OF_HEADS, 'character', 'heads', 13, 13, 16);
-	gfx['character']['legs'] = getCharacterSprite(NUMBER_OF_LEGS, 'character', 'legs', 17, 27, 17);
-	gfx['character']['arms'] = getCharacterSprite(NUMBER_OF_ARMS, 'character', 'arms', 13, 19, 13);
-	gfx['character']['minis'] = getCharacterSprite(NUMBER_OF_MINIS, 'character', 'minis', 13, 22, 16);
-	gfx['character']['torsos'] = getCharacterSprite(NUMBER_OF_TORSOS, 'character', 'torsos', 17, 14, 17);
-	gfxUI = grabUISprites(gfx['misc']['uistuff']);
+	gfx.character.heads = getCharacterSprite(NUMBER_OF_HEADS, 'character', 'heads', 13, 13, 16);
+	gfx.character.legs = getCharacterSprite(NUMBER_OF_LEGS, 'character', 'legs', 17, 27, 17);
+	gfx.character.arms = getCharacterSprite(NUMBER_OF_ARMS, 'character', 'arms', 13, 19, 13);
+	gfx.character.minis = getCharacterSprite(NUMBER_OF_MINIS, 'character', 'minis', 13, 22, 16);
+	gfx.character.torsos = getCharacterSprite(NUMBER_OF_TORSOS, 'character', 'torsos', 17, 14, 17);
+	gfxUI = grabUISprites(gfx.misc.uistuff);
 	itemGfxD = initItemGfxD();
 	//audioFiles = loadSounds();
 	initMonsterPalettes();
@@ -228,9 +228,9 @@ function startGame(singlePlayer, quickStart, p1_cid, p2_cid) {
 	}
 	$('canvas').attr('data-game-status', 'started');
 	//for(var p in player) {
-	//      player[p].message('WELCOME THEE TRAVELLER, TO THE REMAKE OF', colourData['YELLOW'], true);
-	//      player[p].message('   BLOODWYCH - REWRITTEN BY MAD BONE    ', colourData['YELLOW'], true);
-	//      player[p].message('          WWW.BLOODWYCH.CO.UK           ', colourData['YELLOW'], true);
+	//      player[p].message('WELCOME THEE TRAVELLER, TO THE REMAKE OF', colourData.YELLOW, true);
+	//      player[p].message('   BLOODWYCH - REWRITTEN BY MAD BONE    ', colourData.YELLOW, true);
+	//      player[p].message('          WWW.BLOODWYCH.CO.UK           ', colourData.YELLOW, true);
 	//  }
 	//saveGame(99, 'autosave');
 	if (resumeLoadGame) {

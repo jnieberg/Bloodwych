@@ -21,7 +21,7 @@ function getImage(Hex, d, pos, p, pos18) {
 
 	//        if (getHexToBinaryPosition(Hex, 13, 3) !== '1'){
 	//            if (getHexToBinaryPosition(Hex, 8, 4) === '8'){
-	//                PrintLog('Should be drawing something...');
+	//                printLog('Should be drawing something...');
 	//            }
 	//        }
 
@@ -74,7 +74,7 @@ function getImage(Hex, d, pos, p, pos18) {
 				return getStoneWall(Hex, d, pos, p, pos18);
 			}
 			break;
-		default: break;//PrintLog('Get Image Failed - ' + Hex);
+		default: break;//printLog('Get Image Failed - ' + Hex);
 	}
 }
 

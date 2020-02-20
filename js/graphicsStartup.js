@@ -48,12 +48,12 @@ function loadingScreen(objProgress) {
 	drawHeaderFooter();
 	if (objProgress.type === 'fileprogress') {
 		writeFontImage('LOADING DATA...', 160, 48, colourData.GREEN_DARK, FONT_ALIGNMENT_CENTER);
-		for (const o in loadingScreenFiles) {
+		for (let o = 0; o < loadingScreenFiles.length; o++) {
 			writeFontImage(loadingScreenFiles[o].item.src, 160, 64 + o * 8, colourData.GREEN, FONT_ALIGNMENT_CENTER);
 		}
 	} else {
 		writeFontImage('PROCESSING DATA...', 160, 48, colourData.GREEN_DARK, FONT_ALIGNMENT_CENTER);
-		for (const o in loadingScreenFiles) {
+		for (let o = 0; o < loadingScreenFiles.length; o++) {
 			writeFontImage(loadingScreenFiles[o].src, 160, 64 + o * 8, colourData.GREEN, FONT_ALIGNMENT_CENTER);
 		}
 	}

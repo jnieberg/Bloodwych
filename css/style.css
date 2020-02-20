@@ -6,28 +6,37 @@ html {
 	transform-origin: 0 0;
 	-moz-transform-origin: 0 0;
 }
+
 body {
 	font: 12px, verdana, sans-serif;
 	background-color: #000;
 	color: #fff;
 	overflow: hidden;
+	height: 100%;
 	margin: 0;
 }
+
 img.gfx {
 	display: none;
 }
+
 div.content {
 	width: 100%;
+	height: 100%;
 	text-align: center;
 }
+
 div.logo {
 	text-align: center;
 	clear: both;
 	width: 100%;
 }
+
 div.canvas-wrapper {
 	position: relative;
+	height: 100%;
 }
+
 /*div.canvas-wrapper:after {
 	content: "";
 	background: url(../images/interlace.gif) top left repeat;
@@ -44,6 +53,7 @@ input.save-game {
 	top: 0;
 	display: none;
 }
+
 canvas {
 	background-color: #000;
 	background-image: none;
@@ -56,6 +66,7 @@ canvas {
 	image-rendering: optimize-contrast;
 	-ms-interpolation-mode: nearest-neighbor;
 }
+
 canvas[data-game-status="loading"] {
 	background: #000 url(../images/loading.png) top left no-repeat;
 	background-size: 320px 200px;
@@ -69,12 +80,14 @@ section.info {
 	margin-top: 20px;
 	display: none;
 }
+
 .debug-input label {
 	float: left;
 	width: 30px;
 	padding: 3px;
 	text-align: right;
 }
+
 .debug-input input[type=text] {
 	font: 12px, verdana, sans-serif;
 	float: left;
@@ -83,6 +96,7 @@ section.info {
 	border: solid 1px #444;
 	width: 30px;
 }
+
 .debug-input input[type=button] {
 	font: 12px"Bookman Old Style", verdana, sans-serif;
 	color: #fff;

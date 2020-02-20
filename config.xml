@@ -35,7 +35,8 @@
 	<preference name="disable-cursor" value="false" />
 	<preference name="android-minSdkVersion" value="9" />
 	<preference name="android-installLocation" value="auto" />
-	<preference name="UIWebViewBounce" value="false" />
+	<preference name="webviewbounce" value="false" />
+	<preference name="DisallowOverscroll" value="true" />
 
 	<icon src="images/icon.png" />
 	<icon src="images/icon.png" gap:platform="android" gap:qualifier="ldpi" />

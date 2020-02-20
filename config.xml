@@ -16,7 +16,7 @@ Bloodwych is an RPG in the style of Dungeon Master and Eye of the Beholder, bein
 Each player controls a party of four characters. The four basic classes are warrior, mage, adventurer, and thief; however, each class also has sub-classes, which are represented by four different colors. These colors come into play also when the characters learn and combine spells.
     </description>
 
-    <author href="http://bloodwych.co.uk/" email="madmunkey@gmail.com">
+    <author href="http://bloodwych.co.uk/" email="jnieberg@gmail.com">
         Mad Bone
     </author>
 
@@ -28,7 +28,7 @@ Each player controls a party of four characters. The four basic classes are warr
     <preference name="permissions"                value="none"/>
 
     <!-- Customize your app and platform with the preference element. -->
-    <preference name="phonegap-version"           value="cli-5.2.0" />      <!-- all: current version of PhoneGap -->
+    <preference name="phonegap-version"           value="cli-9.0.0" />      <!-- all: current version of PhoneGap -->
     <preference name="orientation"                value="landscape" />      <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
     <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->

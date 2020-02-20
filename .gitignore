@@ -217,4 +217,4 @@ bloodwych.sublime-project
 bloodwych.sublime-workspace
 maps/MOD0.charstats
 node_modules
-!trash/multiplay/data.txt
+!trash/*

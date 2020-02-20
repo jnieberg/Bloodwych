@@ -29,40 +29,21 @@ function createDebugWindow() {
 
 }
 
-$(function () {
-	initGame();
-
-	canvas.style.cursor = 'url("data/' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor0.png"),auto';
-
-	document.addEventListener('deviceready', onDeviceReady, false);
-	// PhoneGap is loaded and it is now safe to make calls PhoneGap methods
-	//
-	function onDeviceReady() {
-		// Register the event listener
-		document.addEventListener('menubutton', onMenu, false);
-	}
-
-	setViewportScale();
-	window.addEventListener('orientationchange', function () {
-		setViewportScale(true);
-	});
-
-	// Handle the menu button
-	//
-	function onMenu() {
-		var p = player[0];
-		if (typeof p !== 'undefined') {
-			if (p.uiCenterPanel.mode === UI_CENTER_PANEL_GAMESTATE_MENU || p.uiCenterPanel.mode === UI_CENTER_PANEL_GAMESTATE_SAVE || p.uiCenterPanel.mode === UI_CENTER_PANEL_GAMESTATE_LOAD) {
-				p.uiCenterPanel.mode = UI_CENTER_PANEL_VIEWPORT;
-				p.message();
-			} else {
-				p.uiCenterPanel.mode = UI_CENTER_PANEL_GAMESTATE_MENU;
-				showGameStateMenu(p);
-			}
-			redrawUI(0, UI_REDRAW_LEFT);
+// Handle the menu button
+//
+function onMenu() {
+	var p = player[0];
+	if (typeof p !== 'undefined') {
+		if (p.uiCenterPanel.mode === UI_CENTER_PANEL_GAMESTATE_MENU || p.uiCenterPanel.mode === UI_CENTER_PANEL_GAMESTATE_SAVE || p.uiCenterPanel.mode === UI_CENTER_PANEL_GAMESTATE_LOAD) {
+			p.uiCenterPanel.mode = UI_CENTER_PANEL_VIEWPORT;
+			p.message();
+		} else {
+			p.uiCenterPanel.mode = UI_CENTER_PANEL_GAMESTATE_MENU;
+			showGameStateMenu(p);
 		}
+		redrawUI(0, UI_REDRAW_LEFT);
 	}
-});
+}
 
 function updatePlayerViewScreen() {
 	if (debug) {
@@ -445,6 +426,24 @@ function godMode() {
 }
 
 $(function () {
+	initGame();
+
+	canvas.style.cursor = 'url("data/' + GAME_ID[GAME_BLOODWYCH] + '/images/misc/cursor0.png"),auto';
+
+	document.addEventListener('deviceready', onDeviceReady, false);
+	// PhoneGap is loaded and it is now safe to make calls PhoneGap methods
+	//
+	function onDeviceReady() {
+		// Register the event listener
+		setViewportScale();
+		document.addEventListener('menubutton', onMenu, false);
+	}
+
+	window.addEventListener('orientationchange', function () {
+		setViewportScale(true);
+	});
+	setViewportScale();
+
 	$(document).focusin(function (e) {
 		var t = $(e.target);
 		if (gameStarted && paused && pausedByBrowser) {

@@ -445,10 +445,12 @@ $(function () {
 	window.addEventListener('orientationchange', function () {
 		setViewportScale(true);
 	}, false);
-
 	window.addEventListener('resize', function () {
 		setViewportScale(true);
 	}, false);
+	window.addEventListener('touchmove', function (event) {
+		event.preventDefault();
+	});
 	setViewportScale();
 
 	$(document).focusin(function (e) {

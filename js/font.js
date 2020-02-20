@@ -57,7 +57,7 @@ function fadeFont(p, fontString, speed, delay, locationX, locationY, paletteTo, 
 
 function writeFontImage(fontString, locationX, locationY, paletteTo, alignment, myContent) {
 	try {
-		if (typeof (font[0]) !== 'undefined') {
+		if (typeof (font[0]) !== 'undefined' && typeof fontString !== 'undefined') {
 			if (typeof alignment === 'undefined') {
 				alignment = FONT_ALIGNMENT_LEFT;
 			}

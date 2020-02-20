@@ -101,9 +101,11 @@ function setViewportScale(orientation = false) {
 	var grabbedImgUrl = canvas.toDataURL('image/png');
 	var grabbedImg;
 	//if (isMobile) {
-	scale = (screen.width / 320 < 3) ? screen.width / 320 : 3;
-	if (players !== 1 && screen.height / 200 < scale) {
-		scale = (screen.height / 200) ? screen.height / 200 : 3;
+	var sw = window.screen.width;
+	var sh = window.screen.height;
+	scale = (sw / 320 < 3) ? sw / 320 : 3;
+	if (players !== 1 && sh / 200 < scale) {
+		scale = (sh / 200) ? sh / 200 : 3;
 	}
 	scaleReal = 1;
 	canvas.width = 320 * scale;
@@ -134,7 +136,7 @@ function setViewportScale(orientation = false) {
 	if (orientation) {
 		grabbedImg = new Image();
 		grabbedImg.onload = function () {
-			var sz = screen.width;
+			//var sz = screen.width;
 			ctx.drawImage(grabbedImg, 0, 0, canvas.width, canvas.height);
 		};
 		grabbedImg.src = grabbedImgUrl;

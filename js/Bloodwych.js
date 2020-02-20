@@ -85,8 +85,8 @@ function setViewportScale(orientation = false) {
 		grabbedImgUrl = canvas.toDataURL('image/png');
 	}
 	//if (isMobile) {
-	var sw = screen.width;
-	var sh = screen.height;
+	var sw = window.innerWidth;
+	var sh = window.innerHeight;
 	scale = (sw / 320 < 3) ? sw / 320 : 3;
 	if (players !== 1 && sh / 200 < scale) {
 		scale = (sh / 200) ? sh / 200 : 3;

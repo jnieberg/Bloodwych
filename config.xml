@@ -24,7 +24,7 @@
 	<preference name="orientation" value="landscape" />
 	<preference name="target-device" value="universal" />
 	<preference name="fullscreen" value="true" />
-	<!-- <preference name="webviewbounce" value="true" />
+	<preference name="webviewbounce" value="true" />
 	<preference name="prerendered-icon" value="true" />
 	<preference name="stay-in-webview" value="false" />
 	<preference name="ios-statusbarstyle" value="black-opaque" />
@@ -34,7 +34,7 @@
 	<preference name="auto-hide-splash-screen" value="true" />
 	<preference name="disable-cursor" value="false" />
 	<preference name="android-minSdkVersion" value="9" />
-	<preference name="android-installLocation" value="auto" /> -->
+	<preference name="android-installLocation" value="auto" />
 
 	<icon src="images/icon.png" />
 	<icon src="images/icon.png" gap:platform="android" gap:qualifier="ldpi" />

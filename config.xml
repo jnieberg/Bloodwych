@@ -20,7 +20,7 @@
 	<author href="http://bloodwych.co.uk/" email="jnieberg@gmail.com">
 		Mad Bone
 	</author>
-	<preference name="permissions" value="none" />
+	<!-- <preference name="permissions" value="none" />
 	<preference name="orientation" value="landscape" />
 	<preference name="target-device" value="universal" />
 	<preference name="fullscreen" value="true" />
@@ -34,7 +34,7 @@
 	<preference name="auto-hide-splash-screen" value="true" />
 	<preference name="disable-cursor" value="false" />
 	<preference name="android-minSdkVersion" value="9" />
-	<preference name="android-installLocation" value="auto" />
+	<preference name="android-installLocation" value="auto" /> -->
 
 	<icon src="images/icon.png" />
 	<icon src="images/icon.png" gap:platform="android" gap:qualifier="ldpi" />

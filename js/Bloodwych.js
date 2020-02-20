@@ -79,8 +79,11 @@ function updatePlayerViewScreen() {
 }
 
 function setViewportScale(orientation = false) {
-	var grabbedImgUrl = canvas.toDataURL('image/png');
 	var grabbedImg;
+	var grabbedImgUrl;
+	if (orientation) {
+		grabbedImgUrl = canvas.toDataURL('image/png');
+	}
 	//if (isMobile) {
 	var sw = window.screen.width;
 	var sh = window.screen.height;
@@ -441,7 +444,7 @@ $(function () {
 
 	window.addEventListener('orientationchange', function () {
 		setViewportScale(true);
-	});
+	}, false);
 	setViewportScale();
 
 	$(document).focusin(function (e) {

@@ -612,7 +612,7 @@ function processCanvasInputMenu(x, y) {
 			loadGFXData();
 			startMenu = false;
 		} else if (uiClickInArea(x, y, UI_CLICK_START_QUICK_TWO_PLAYER)) { //CUSTOM DATA
-			gameType = CUSTOM;
+			gameType = GAME_CUSTOM;
 			loadGFXData();
 			startMenu = false;
 		} else if (uiClickInArea(x, y, UI_CLICK_START_RESUME_GAME)) { //MAP VIEWER

@@ -6,8 +6,7 @@ function startScreen() {
 
 	configCanvas();
 	clearCanvas();
-
-	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
+	drawHeaderFooter();
 	writeFontImage(' 1   START ONE PLAYER GAME', 34, 50, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	writeFontImage(' 2   START TWO PLAYER GAME', 34, 66, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	writeFontImage(' 3   QUICKSTART ONE PLAYER GAME', 34, 90, colourData.GREEN, FONT_ALIGNMENT_LEFT);
@@ -15,9 +14,6 @@ function startScreen() {
 	if (getGameName(99) !== '') {
 		writeFontImage(' 5   RESUME LAST GAME', 34, 130, colourData.YELLOW, FONT_ALIGNMENT_LEFT);
 	}
-	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
-	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
-
 }
 
 function preStartScreen() {
@@ -28,17 +24,12 @@ function preStartScreen() {
 
 	configCanvas();
 	clearCanvas();
-
-	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
+	drawHeaderFooter();
 	writeFontImage('    1   BLOODWYCH', 34, 50, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	writeFontImage('    2   EXTENDED LEVELS (WIP)', 34, 66, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	writeFontImage('    3   BOOK OF SKULLS (WIP)', 34, 90, colourData.GREEN, FONT_ALIGNMENT_LEFT);
 	writeFontImage('    4   CUSTOM DATA SET (WIP)', 34, 106, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
 	writeFontImage('    5   MAP VIEWER/EDITOR (WIP)', 34, 129, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
-
-	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
-	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
-
 }
 
 function loadingScreen(objProgress) {
@@ -50,37 +41,39 @@ function loadingScreen(objProgress) {
 	configCanvas();
 	clearCanvas();
 
-	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
-	if (objProgress.type === 'fileprogress') {
-		writeFontImage('LOADING DATA...', 122, 80, colourData.GREEN, FONT_ALIGNMENT_LEFT);
-		writeFontImage('   FILE: ' + objProgress.item.src, 34, 100, colourData.GREEN, FONT_ALIGNMENT_LEFT);
-	} else {
-		writeFontImage('PROCESSING DATA...', 120, 80, colourData.GREEN, FONT_ALIGNMENT_LEFT);
-		writeFontImage('   FILE: ' + objProgress.src, 34, 100, colourData.GREEN, FONT_ALIGNMENT_LEFT);
+	loadingScreenFiles.push(objProgress);
+	if (loadingScreenFiles.length > 12) {
+		loadingScreenFiles.shift();
 	}
 
-	//writeFontImage(' PROGRESS: ' + objProgress.progress, 34, 140, colourData.GREEN, FONT_ALIGNMENT_LEFT);
-
-	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
-	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
-
+	drawHeaderFooter();
+	if (objProgress.type === 'fileprogress') {
+		writeFontImage('LOADING DATA...', 160, 48, colourData.GREEN_DARK, FONT_ALIGNMENT_CENTER);
+		for (let o in loadingScreenFiles) {
+			writeFontImage(loadingScreenFiles[o].item.src, 160, 64 + o * 8, colourData.GREEN, FONT_ALIGNMENT_CENTER);
+		}
+	} else {
+		writeFontImage('PROCESSING DATA...', 160, 48, colourData.GREEN_DARK, FONT_ALIGNMENT_CENTER);
+		for (let o in loadingScreenFiles) {
+			writeFontImage(loadingScreenFiles[o].src, 160, 64 + o * 8, colourData.GREEN, FONT_ALIGNMENT_CENTER);
+		}
+	}
 }
 
 function progressScreen(strDetails) {
-
-	//$('canvas').attr('data-game-status', 'menu');
 	canvas.addEventListener('keydown', doKeyDown, true);
 	canvas.focus();
 
 	configCanvas();
 	clearCanvas();
-
-	writeFontImage('BLOODWYCH HTML', 122, 18, colourData.RED, FONT_ALIGNMENT_LEFT);
+	drawHeaderFooter();
 	writeFontImage(strDetails + '...', 160, 80, colourData.GREEN, FONT_ALIGNMENT_CENTER);
+}
 
-	writeFontImage('MIRRORSOFT 1989', 114, 178, colourData.GREY_DARK, FONT_ALIGNMENT_LEFT);
-	writeFontImage('RECREATED BY MAD BONE 2016', 74, 190, colourData.WHITE, FONT_ALIGNMENT_LEFT);
-
+function drawHeaderFooter() {
+	writeFontImage('BLOODWYCH', 160, 16, colourData.RED, FONT_ALIGNMENT_CENTER);
+	writeFontImage('MIRRORSOFT 1989', 160, 168, colourData.GREY_DARK, FONT_ALIGNMENT_CENTER);
+	writeFontImage('RECREATED BY MAD BONE 2016', 160, 176, colourData.WHITE, FONT_ALIGNMENT_CENTER);
 }
 
 function drawQuickStartUI(pl) {

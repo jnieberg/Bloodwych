@@ -107,7 +107,7 @@ function handleFileLoad(event) {
 
 function handleComplete(event) {
 	loadingScreen({
-		src: 'Creating Towers...'
+		src: 'Creating Towers'
 	});
 	setTimeout(function () {
 		initMenuData();

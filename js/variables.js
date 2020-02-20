@@ -10,7 +10,7 @@ if (isMobile) {
 	debug = false;
 }
 var loadingImg = new Image();
-loadingImg.src = '/images/behemoth.png';
+loadingImg.src = './images/behemoth.png';
 
 //Preloader stuff
 var preload = new createjs.LoadQueue(false);
@@ -69,6 +69,7 @@ var gameType = GAME_BLOODWYCH;
 var spriteData = [];
 var jsonLoaded = false;
 var uiJson;
+var loadingScreenFiles = [];
 //var DataLocationPrefix;
 
 //GAME MODES

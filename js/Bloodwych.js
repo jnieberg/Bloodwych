@@ -85,8 +85,8 @@ function setViewportScale(orientation = false) {
 		grabbedImgUrl = canvas.toDataURL('image/png');
 	}
 	//if (isMobile) {
-	var sw = window.screen.width;
-	var sh = window.screen.height;
+	var sw = window.innerWidth;
+	var sh = window.innerHeight;
 	scale = (sw / 320 < 3) ? sw / 320 : 3;
 	if (players !== 1 && sh / 200 < scale) {
 		scale = (sh / 200) ? sh / 200 : 3;
@@ -445,13 +445,11 @@ $(function () {
 	window.addEventListener('orientationchange', function () {
 		setViewportScale(true);
 	}, false);
-	setViewportScale();
 
-	screen.orientation.lock('landscape').then(function success() {
-		console.log('Successfully locked the orientation');
-	}, function error(errMsg) {
-		console.log('Error locking the orientation :: ' + errMsg);
-	});
+	window.addEventListener('resize', function () {
+		setViewportScale(true);
+	}, false);
+	setViewportScale();
 
 	$(document).focusin(function (e) {
 		var t = $(e.target);

@@ -19,7 +19,7 @@
 	"bugs": {
 		"url": "https://github.com/jnieberg/Bloodwych/issues"
 	},
-	"homepage": "https://github.com/jnieberg/Bloodwych#readme",
+	"homepage": "https://github.com/jnieberg/Bloodwych",
 	"dependencies": {
 		"fs": "0.0.1-security",
 		"http": "0.0.0",

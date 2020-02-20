@@ -1,7 +1,7 @@
 function startScreen() {
 	$('canvas').attr('data-game-status', 'menu');
 	canvas.addEventListener('keydown', doKeyDown, true);
-	//checkClickEvents();
+	// checkClickEvents();
 	canvas.focus();
 
 	configCanvas();
@@ -33,8 +33,7 @@ function preStartScreen() {
 }
 
 function loadingScreen(objProgress) {
-
-	//$('canvas').attr('data-game-status', 'menu');
+	// $('canvas').attr('data-game-status', 'menu');
 	canvas.addEventListener('keydown', doKeyDown, true);
 	canvas.focus();
 
@@ -49,12 +48,12 @@ function loadingScreen(objProgress) {
 	drawHeaderFooter();
 	if (objProgress.type === 'fileprogress') {
 		writeFontImage('LOADING DATA...', 160, 48, colourData.GREEN_DARK, FONT_ALIGNMENT_CENTER);
-		for (let o in loadingScreenFiles) {
+		for (const o in loadingScreenFiles) {
 			writeFontImage(loadingScreenFiles[o].item.src, 160, 64 + o * 8, colourData.GREEN, FONT_ALIGNMENT_CENTER);
 		}
 	} else {
 		writeFontImage('PROCESSING DATA...', 160, 48, colourData.GREEN_DARK, FONT_ALIGNMENT_CENTER);
-		for (let o in loadingScreenFiles) {
+		for (const o in loadingScreenFiles) {
 			writeFontImage(loadingScreenFiles[o].src, 160, 64 + o * 8, colourData.GREEN, FONT_ALIGNMENT_CENTER);
 		}
 	}
@@ -77,7 +76,6 @@ function drawHeaderFooter() {
 }
 
 function drawQuickStartUI(pl) {
-
 	clearCanvas(false);
 	if (currentPlayer === 1) {
 		writeFontImage('PLAYER 2, ' + TEXT_SELECT_CHAMPION, 2, 0, colourData.GREEN);
@@ -92,16 +90,14 @@ function drawQuickStartUI(pl) {
 			var t = createShield(ch.id, ch.prof, ch.colour);
 			if (players === 2 && currentPlayer === 1 && ch.id === championSelect[0].champID) {
 				ctx.drawImage(gfxUI.SHIELD_BLUE, (col * 40) * scale, ((row * 48) + 15) * scale, gfxUI.SHIELD_BLUE.width * scale, gfxUI.SHIELD_BLUE.height * scale);
-			} else {
-				if (championSelect[pl].champID !== -1) {
-					if (championSelect[pl].champID !== -1 && ch.id === championSelect[pl].champID) {
-						showCharacterDetails(ch, pl, col, row);
-					} else {
-						ctx.drawImage(t, (col * 40) * scale, ((row * 48) + 15) * scale, t.width * scale, t.height * scale);
-					}
+			} else if (championSelect[pl].champID !== -1) {
+				if (championSelect[pl].champID !== -1 && ch.id === championSelect[pl].champID) {
+					showCharacterDetails(ch, pl, col, row);
 				} else {
 					ctx.drawImage(t, (col * 40) * scale, ((row * 48) + 15) * scale, t.width * scale, t.height * scale);
 				}
+			} else {
+				ctx.drawImage(t, (col * 40) * scale, ((row * 48) + 15) * scale, t.width * scale, t.height * scale);
 			}
 
 			if (champSelectGrid.length < champion.length) {
@@ -124,13 +120,10 @@ function drawQuickStartUI(pl) {
 		ctx.drawImage(gfxUI[imageColour], 168 * scale, (myY + 75) * scale, gfxUI.CHARACTER_NAME_BLUE.width * scale, gfxUI.CHARACTER_NAME_BLUE.height * scale);
 		ctx.drawImage(gfxUI.CHARACTER_BOX, 168 * scale, (myY) * scale, gfxUI.CHARACTER_BOX.width * scale, gfxUI.CHARACTER_BOX.height * scale);
 		ctx.drawImage(gfxUI.CHARACTER_SCROLL, (myX + 226) * scale, (myY - 1) * scale, gfxUI.CHARACTER_SCROLL.width * scale, gfxUI.CHARACTER_SCROLL.height * scale);
-
 	}
-
 }
 
 function showCharacterDetails(ch, pl, col, row) {
-
 	var myY = 50,
 		myX = 0;
 
@@ -151,7 +144,6 @@ function showCharacterDetails(ch, pl, col, row) {
 
 
 	switch (championSelect[pl].mode) {
-
 		case UI_CHARACTER_SELECT_SPELLBOOK:
 			writeFontImage(ch.getName(), 170, (myY + 80), colourData.YELLOW);
 			drawSpellBook(player[pl]);
@@ -170,14 +162,13 @@ function showCharacterDetails(ch, pl, col, row) {
 		case UI_CHARACTER_SELECT_START_GAME:
 			var t = TEXT_PLAYER;
 			if (pl === 1) {
-				t += TEXT_PLURAL + ' ';
+				t = t + (TEXT_PLURAL + ' ');
 			} else {
-				t += ' ' + (pl + 1) + ' ';
+				t = t + (' ' + (pl + 1) + ' ');
 			}
-			t += ';' + TEXT_READY_QUEST;
+			t = t + (';' + TEXT_READY_QUEST);
 			var txt = t.split(';');
 			drawScroll(txt, player[pl].ScreenX + 226, player[pl].ScreenY - 1, true);
 			break;
-
 	}
 }
